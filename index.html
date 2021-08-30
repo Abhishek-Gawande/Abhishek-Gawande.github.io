@@ -1,311 +1,572 @@
 <!DOCTYPE html>
-<html lang="en">
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <!--==================== FAVICON ====================-->
+        <link rel="icon" href="assets/img/favicon.ico">
 
-  <title>Abhishek Gawande</title>
-  <meta content="" name="descriptison">
-  <meta content="" name="keywords">
+        <!--==================== UNICONS ====================-->
+        <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 
-  <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+        <!--==================== SWIPER CSS ====================-->
+        <link rel="stylesheet" href="assets/css/swiper-bundle.min.css">
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Satisfy" rel="stylesheet">
+        <!--==================== CSS ====================-->
+        <link rel="stylesheet" href="assets/css/styles.css">
 
-  <!-- Vendor CSS Files -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/icofont/icofont.min.css" rel="stylesheet">
-  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
-  <link href="assets/vendor/venobox/venobox.css" rel="stylesheet">
-
-  <!-- Template Main CSS File -->
-  <link href="assets/css/style.css" rel="stylesheet">
-
-</head>
-
-<body>
-
-  <!-- ======= Header ======= -->
-  <header id="header" class="fixed-top  d-flex justify-content-center align-items-center">
-
-    <nav class="nav-menu d-none d-lg-block">
-      <ul>
-        <li class="active"><a href="#header">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#resume">Education</a></li>
-        
-        <li><a href="#portfolio">projects</a></li>
-        <li><a href="#contact">Contact</a></li>
-
-      </ul>
-    </nav><!-- .nav-menu -->
-
-  </header><!-- End Header -->
-
-  <!-- ======= Hero Section ======= -->
-  <section id="hero">
-    <div class="hero-container">
-      <h1>Abhishek</h1>
-	<h1>A</h1>
-      <h1>Gawande</h1>
-      <h2>Software Engineer</h2>
-      <a href="https://drive.google.com/file/d/10idimEsJvEuR9HyuIZ3SgSnGVKMb2xNQ/view?usp=sharing" class="btn-rounded-white">Download Resume</a>
-      <a href="#about" class="btn-scroll scrollto" title="Scroll Down"><i class="bx bx-chevron-down"></i></a>
-    </div>
-  </section><!-- End Hero -->
-
-  <main id="main">
-
-    <!-- ======= About Me Section ======= -->
-    <section id="about" class="about">
-      <div class="container">
-
-        <div class="section-title">
-          <span>About Me</span>
-          <h2>About Me</h2>
-          <p>Software engineer who is curious about machines and aims to leverage power of AI to achieve unparalleled insights</p>
-        </div>
-
-
-            <div class="skills-content pl-lg-4">
-              <div class="progress">
-                <span class="skill">Java <i class="val">60%</i></span>
-                <div class="progress-bar-wrap">
-                  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+        <title>Abhishek Gawande</title>
+    </head>
+    <body>
+        <!--==================== HEADER ====================-->
+        <header class="header" id="header">
+            <nav class="nav container">
+                <a href="#" class="nav__logo">Abhishek A. Gawande</a>
+                <div class="nav__menu" id="nav-menu">
+                    <ul class="nav__list grid">
+                        <li class="nav__item">
+                            <a href="#home" class="nav__link active-link">
+                                <i class="uil uil-estate nav__icon"></i>Home
+                            </a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="#about" class="nav__link">
+                                <i class="uil uil-user nav__icon"></i>About
+                            </a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="#portfolio" class="nav__link">
+                                <i class="uil uil-scenery nav__icon"></i>Portfolio
+                            </a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="https://Abhishek-Gawande.github.io/blog" target="_blank" class="nav__link">
+                                <i class="uil uil-document-layout-left nav__icon"></i>Blog
+                            </a>
+                        </li>
+                    </ul>
+                    <i class="uil uil-times nav__close nav__icon" id="nav-close"></i>
                 </div>
-              </div>
 
-              <div class="progress">
-                <span class="skill">Python <i class="val">60%</i></span>
-                <div class="progress-bar-wrap">
-                  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-              </div>
+                <div class="nav__btns">
+                    <i class="uil uil-moon change-theme" id="theme-button"></i>
 
-              <div class="progress">
-                <span class="skill">Machine Learning <i class="val">40%</i></span>
-                <div class="progress-bar-wrap">
-                  <div class="progress-bar" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="nav__toggle" id="nav-toggle">
+                        <i class="uil uil-apps nav__icon"></i>
+                    </div>
                 </div>
-              </div>
+            </nav>
+        </header>
+
+        <!--==================== MAIN ====================-->
+        <main class="main">
+            <!--==================== HOME ====================-->
+            <section class="home section" id="home">
+                <div class="home__container container grid">
+                    <div class="home__content grid">
+                        <div class="home__social">
+                            <a href="https://www.linkedin.com/in/abhishek-gawande-b4ba81128"  target="_blank" class="home__social-icon">
+                                <i class="uil uil-linkedin-alt"></i>
+                            </a>
+
+                            <a href="https://t.me/woodyinhoo" target="_blank" class="home__social-icon">
+                                <i class="uil uil-telegram-alt"></i>
+                            </a>
+
+                            <a href="https://github.com/Abhishek-Gawande" target="_blank" class="home__social-icon">
+                                <i class="uil uil-github-alt"></i>
+                            </a>
+                        </div>
+                        <div class="home__img">
+                            <svg class="home__blob" viewBox="0 0 200 187" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <mask id="mask0" mask-type="alpha">
+                                    <path d="M190.312 36.4879C206.582 62.1187 201.309 102.826 182.328 134.186C163.346 165.547
+                                    130.807 187.559 100.226 186.353C69.6454 185.297 41.0228 161.023 21.7403 129.362C2.45775
+                                    97.8511 -7.48481 59.1033 6.67581 34.5279C20.9871 10.1032 59.7028 -0.149132 97.9666
+                                    0.00163737C136.23 0.303176 174.193 10.857 190.312 36.4879Z"/>
+                                </mask>
+                                <g mask="url(#mask0)">
+                                    <path d="M190.312 36.4879C206.582 62.1187 201.309 102.826 182.328 134.186C163.346
+                                    165.547 130.807 187.559 100.226 186.353C69.6454 185.297 41.0228 161.023 21.7403
+                                    129.362C2.45775 97.8511 -7.48481 59.1033 6.67581 34.5279C20.9871 10.1032 59.7028
+                                    -0.149132 97.9666 0.00163737C136.23 0.303176 174.193 10.857 190.312 36.4879Z"/>
+
+                                    <image class="home__blob-img" x='-6' y='0' style="transform: scale(1.3);" xlink:href="assets/img/profile.jpg"/>
+                                </g>
+                            </svg>
+                        </div>
+
+                        <div class="home__data">
+                            <h1 class="home__title">Hi, I'm Abhishek</h1>
+                            <h3 class="home__subtitle">Software Engineer | Machine Learning Enthusiast</h3>
+                            <p class="home__description">
+                                I'm a 23 years old computer science student and machine learnig engineer
+                            </p>
+                            <a href="#contact" class="button button--flex">
+                                Contact Me <i class="uil uil-message button__icon"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="home__scroll">
+                        <a href="#about" class="home__scroll-button button--flex">
+                            <i class="uil uil-mouse-alt home__scroll-mouse"></i>
+                            <span class="home__scroll-name">Scroll down</span>
+                            <i class="uil uil-arrow-down home__scroll-arrow "></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!--==================== ABOUT ====================-->
+            <section class="about section" id="about">
+                <h2 class="section__title">About Me</h2>
+                <span class="section__subtitle">A brief introduction</span>
+
+                <div class="about__container container">
+                    <img src="assets/img/about.jpg" alt="" class="about__img">
+
+                    <div class="about__data">
+                        <p class="about__description">
+                            Hi! I'm a Information Technology Graduate from Government College of Engineering Amravati. 
+                            <br /><br />
+                            Passionate about technology, computing, algorithms, data science and, above all, artificial intelligence.
+                            I live the philosophy of always trying to learn something new, whether through mistakes or successes, good or bad experiences, so that I can develop my maximum potential and find the best version of me.
+                            <br /><br />
+                            I also have a blog where I post all the topics I study. Basically it's a place where all my knowledge (of relevant topics) is.
+                            To access it, just <a target="_blank" href="https://Abhishek-Gawande.github.io/blog">click here</a>.
+                            <br /><br />
+                            If you want to know more about me, feel free to contact me.
+                        </p>
+                        <!--
+                        <div class="about__info">
+                            <div>
+                                <span class="about__info-title">08+</span>
+                                <span class="about__info-name">Years <br> experience</span>
+                            </div>
+
+                            <div>
+                                <span class="about__info-title">20+</span>
+                                <span class="about__info-name">Completed <br> project</span>
+                            </div>
+
+                            <div>
+                                <span class="about__info-title">05+</span>
+                                <span class="about__info-name">Companies <br> worked</span>
+                            </div>
+                        </div>
+                        -->
+
+                        <div class="about__buttons">
+                            <a download="" href="assets/pdf/resume.pdf" target="_blank" class="button button--flex">
+                                Download CV<i class="uil uil-download-alt button__icon"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             
 
-            <div class="progress">
-                <span class="skill">Deep learning <i class="val">40%</i></span>
-                <div class="progress-bar-wrap">
-                  <div class="progress-bar" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-              </div>
+            
+            <!--==================== SKILLS ======================-->
+            <section class="skills section" id="skills">
+                <h2 class="section__title">Skills</h2>
+                <span class="section__subtitle">A little bit on my technical level</span>
 
-            <div class="progress">
-                <span class="skill">Tableau <i class="val">40%</i></span>
-                <div class="progress-bar-wrap">
-                  <div class="progress-bar" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-              </div>
+                <div class="skills__container container grid" >
+                    <div>
+                        <div class="skills__content skills__open">
+                            <div class="skills__header">
+                                <i class="uil uil-brackets-curly skills__icon"></i>
 
-              </div>
+                                <div>
+                                    <h1 class="skills__title">Development</h1>
+                                    <span class="skills__subtitle"></span>
+                                </div>
 
-          </div>
-        </div>
+                                <i class="uil uil-angle-down skills__arrow"></i>
+                            </div>
 
-      </div>
-    </section><!-- End About Me Section -->
+                           <div class="skills__list grid">
+                               <div class="skills__data">
+                                   <div class="skills__titles">
+                                       <h3 class="skills__name">Python</h3>
+                                       
+                                   </div>
 
-    <!-- ======= My Resume Section ======= -->
-    <section id="resume" class="resume">
-      <div class="container">
+                               </div>
 
-        <div class="section-title">
-          <span>Education</span>
-          <h2>Education</h2>
-          <p></p>
-        </div>
+                               <div class="skills__data">
+                                <div class="skills__titles">
+                                    <h3 class="skills__name">Java</h3>
+                                    
+                                </div>
 
+                            </div>
 
-            <h3 class="resume-title">Education</h3>
-            <div class="resume-item">
-              <h4>Bachelor of Technology (Information Technology)</h4>
-              <h5>2015 - 2019</h5>
-              <h5>CGPA =7.92</h5>
-              <p><em>Government College of Engineering,Amravati</em></p>
-              <p>Bachelor of technology with Information Technology as major</p>
-            </div>
-            <div class="resume-item">
-              <h4>Higher Secondary Certification</h4>
-              <h5>2013 - 2015</h5>
-              <h5>Percentage =78.77</h5>
-              <p><em>Vidyabharati Junior College,Amravati</em></p>
-              
-            </div>
-            <div class="resume-item">
-              <h4>Secondary School Certification</h4>
-              <h5>2008 - 2013</h5>
-              <h5>Percentage =88.4</h5>
-              <p><em>Manibai Gujarati High School,Amravati</em></p>
-              
-            </div>
+                            <div class="skills__data">
+                                <div class="skills__titles">
+                                    <h3 class="skills__name">SQL</h3>
+                                    
+                                </div>
 
-          </div>
-          
-        </div>
+                            </div>
 
-      </div>
-    </section><!-- End My Resume Section -->
+                            <div class="skills__data">
+                                <div class="skills__titles">
+                                    <h3 class="skills__name">Git</h3>
+                                    
+                                </div>
 
-    <!-- Portfolio of projects -->
-    <section id="portfolio" class="portfolio">
-      <div class="container">
-
-        <div class="section-title">
-          <span>Projects</span>
-          <h2>Projects</h2>
-          <p></p>
-        </div>
+                            </div>
 
 
-            <h3 class="resume-title">Government College of Engineering,Amravati</h3>
-            <div class="resume-item">
-              <p><em></em></p>
-              
-              <h4>Image Restoration using machine learning</h4>
-              <h5>DEC 2018 - MAY 2019</h5>
-              <h5>Guide :Dr K.P. Wagh</h5>
-              <p><em></em></p>
-              <p>Learning infinite-resolution image processing with GAN and RL from unpaired image datasets, using a differentiable photo editing model.</p>
-              <a href="https://github.com/Abhishek-Gawande/exposure">View Project</a>
-            </div>
-            <div class="resume-item">
-              <h4>Noticeboard app using Firebase</h4>
-              <h5>JAN 2018- APRIL 2018</h5>
-              <h5>Guide :Prof. D.R. Uike</h5>
-              <p><em></em></p>
-              <p>This is an android app based on firebase(FCM).This is basically a departmental android app for engineering colleges.Anyone who is registered on app may post their notices.</p>
-              <a href="https://github.com/Abhishek-Gawande/Notice-Board-App">View Project</a>
-            </div>
-          </div>
-          
-        </div>
+                           </div>
+                        </div>
 
-      </div>
-    </section><!-- End of portfolio -->
+                        <div class="skills__content skills__close" >
+                            <div class="skills__header">
+                                <i class="uil uil-server-network skills__icon"></i>
 
+                                <div>
+                                    <h1 class="skills__title">Frameworks & APIs</h1>
+                                    <span class="skills__subtitle"></span>
+                                </div>
 
+                                <i class="uil uil-angle-down skills__arrow"></i>
+                            </div>
+
+                            <div class="skills__list grid">
+
+                                <div class="skills__data">
+                                    <div class="skills__titles">
+                                        <h3 class="skills__name">Scikit-learn</h3>
+                                        
+                                    </div>
+
+                                </div>
+
+                                <div class="skills__data">
+                                    <div class="skills__titles">
+                                        <h3 class="skills__name">NumPy</h3>
     
-    <!-- ======= Contact Me Section ======= -->
-    <section id="contact" class="contact">
-      <div class="container">
+                                    </div>
 
-        <div class="section-title">
-          <span>Contact Me</span>
-          <h2>Contact Me</h2>
-          <p></p>
-        </div>
+                                </div>
 
-        <div class="row">
-        <div class="col-md-6">
+                                <div class="skills__data">
+                                    <div class="skills__titles">
+                                        <h3 class="skills__name">Pandas</h3>
+                                        
+                                    </div>
 
-          <div class="col-md-6">
-                <div class="info-box mt-4">
-                  <i class="bx bx-envelope"></i>
-                  <h3>Email Me</h3>
-                  <p>abhishekgawande7452@gmail.com</p>
+                                </div>
+
+
+                                <div class="skills__data">
+                                    <div class="skills__titles">
+                                        <h3 class="skills__name">TensorFlow</h3>
+                                        
+                                    </div>
+
+                                </div>
+
+                                
+
+                                <div class="skills__data">
+                                    <div class="skills__titles">
+                                        <h3 class="skills__name">Matplotlib & Seaborn</h3>
+                                        
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-    
-          
-        </div>
+            </section>
 
-          <div class="col-lg-6">
 
-            <div class="row">
-              <div class="col-md-12">
-                <div class="info-box">
-                  <i class="bx bx-share-alt"></i>
-                  <h3>Social Profiles</h3>
-                  <div class="social-links">
-                    <a href="https://stackoverflow.com/users/13425956/abhishek-gawande" class="facebook"><i class="icofont-stack-overflow"></i>
-                      <p>Stack Overflow</p>
-                    </a>
-                    <a href="https://github.com/Abhishek-Gawande" class="instagram"><i class="icofont-github"></i>
-                      <p>Github</p>
-                    </a>
+            <!--==================== QUALIFICATION ====================-->
+            <section class="qualification section">
+                <h2 class="section__title">Qualification</h2>
+                <span class="section__subtitle">My personal journey</span>
+
+                <div class="qualification__container container">
+                    <div class="qualification__tabs">
+                        <div class="qualification__button button--flex qualification__active" data-target="#education">
+                            <i class="uil uil-graduation-cap qualification__icon"></i>
+                            Education
+                        </div>
+
+                        <div class="qualification__button button--flex" data-target="#work">
+                            <i class="uil uil-briefcase-alt qualification__icon"></i>
+                            Work
+                        </div>
+                    </div>
+
+                    <div class="qualification__sections">
+                        <!--==================== QUALIFICATION CONTENT 1 ====================-->
+                        <div class="qualification__content qualification__active" data-content id="education">
+                            <!--==================== QUALIFICATION 1 ====================-->
+                            <div class="qualification__data">
+                                <div>
+                                    <h3 class="qualification__title">Junior College</h3>
+                                    <span class="qualification__subtitle">Vidyabharati Junior College</span>
+                                    <div class="qualification__calendar">
+                                       <i class="uil uil-calendar-alt"></i>
+                                       2013 - 2015
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <span class="qualification__rounder"></span>
+                                    <span class="qualification__line"></span>
+                                </div>
+                            </div>
+
+                            <!--==================== QUALIFICATION 2 ====================-->
+                            <div class="qualification__data">
+                                <div>
+
+                                </div>
+
+                                <div>
+                                    <span class="qualification__rounder"></span>
+                                    <span class="qualification__line"></span>
+                                </div>
+
+                                <div>
+                                    <h3 class="qualification__title">B.Tech IT</h3>
+                                    <span class="qualification__subtitle">Government College of engineering Amravati</span>
+                                    <div class="qualification__calendar">
+                                       <i class="uil uil-calendar-alt"></i>
+                                       2015 - 2019
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+                         <!--==================== QUALIFICATION CONTENT 2 ====================-->
+                         <div class="qualification__content" data-content id="work">
+                            <!--==================== QUALIFICATION 1 ====================-->
+                            <div class="qualification__data">
+                                <div>
+                                    <h3 class="qualification__title">Intern</h3>
+                                    <span class="qualification__subtitle">IIT Kanpur</span>
+                                    <div class="qualification__calendar">
+                                       <i class="uil uil-calendar-alt"></i>
+                                       March 2020 - Jun 2020 
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <span class="qualification__rounder"></span>
+                                    <span class="qualification__line"></span>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+
+        <!--==================== PORTFOLIO ====================-->
+            <section class="portfolio section" id="portfolio">
+                <h2 class="section__title">Portfolio</h2>
+                <span class="section__subtitle"><a href="#"></a></span>
+
+                <div class="portfolio__container container swiper-container">
+                    <div class="swiper-wrapper">
+
+                        <!--==================== PORTFOLIO 2 ====================-->
+                        <div class="portfolio__content grid swiper-slide">
+                            <img src="assets/img/portfolio1.jpg" alt="" class="portfolio__img">
+
+                            <div class="portfolio__data">
+                               <h3 class="portfolio__title">Image Caption generation using LSTM</h3>
+                                <p class="portfolio__description">Generating sequential text from image encodings to create caption suitable for the given image. Evaluated using BLEU Score</p>
+                                <a href="https://www.kaggle.com/abhishekgawande/image-caption-eda" target="_blank" class="button button--flex button--small portfolio__button">
+                                    See More
+                                    <i class="uil uil-arrow-right button__icon"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!--==================== PORTFOLIO 2 ====================-->
+                        <div class="portfolio__content grid swiper-slide">
+                            <img src="assets/img/portfolio1.jpg" alt="" class="portfolio__img">
+
+                            <div class="portfolio__data">
+                               <h3 class="portfolio__title">Image Restoration using Machine learning</h3>
+                                <p class="portfolio__description">Infinite Resolution Image processing with GAN and RL from unpaired image datasets.</p>
+                                <a href="https://github.com/Abhishek-Gawande/exposure" target="_blank" class="button button--flex button--small portfolio__button">
+                                    See More
+                                    <i class="uil uil-arrow-right button__icon"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add Arrows -->
+                    <div class="swiper-button-next">
+                        <i class="uil uil-angle-right-b swiper-portfolio-icon"></i>
+                    </div>
+                    <div class="swiper-button-prev">
+                        <i class="uil uil-angle-left-b swiper-portfolio-icon"></i>
+                    </div>
+
+                    <!-- Add Pagination -->
+                    <div class="swiper-pagination"></div>
+                </div>
+            </section>
+            <br /><br />
+
+            <!--==================== CONTACT ME ====================-->
+            <section class="contact section" id="contact">
+                <h2 class="section__title">Contact</h2>
+                <span class="section__subtitle">Get in touch</span>
+
+                <div class="contact__container container grid">
+                    <div>
+                        <div class="contact__information">
+                            <a href="https://t.me/Woodyinhoo" target="_blank"><i class="uil uil-telegram contact__icon"></i></a>
+                            <div>
+                               <h3 class="contact__title">Telegram</h3>
+                               <a href="https://t.me/Woodyinhoo" target="_blank"><span class="contact__subtitle">@Woodyinhoo</span></a>
+                            </div>
+                        </div>
+
+                        <div class="contact__information">
+                            <a href="https://www.linkedin.com/in/abhishek-gawande-b4ba81128" target="_blank"><i class="uil uil-linkedin contact__icon"></i></a>
+                            <div>
+                               <h3 class="contact__title">LinkedIn</h3>
+                               <a href="https://www.linkedin.com/in/abhishek-gawande-b4ba81128" target="_blank"><span class="contact__subtitle">https://www.linkedin.com/in/abhishek-gawande-b4ba81128</span></a>
+                            </div>
+                        </div>
+
+                        <div class="contact__information">
+                            <a href="https://github/Abhishek-Gawande/" target="_blank"><i class="uil uil-github contact__icon"></i></a>
+                            <div>
+                               <h3 class="contact__title">GitHub</h3>
+                               <a href="https://github/Abhishek-Gawande/" target="_blank"><span class="contact__subtitle">@Abhishek-Gawande</span></a>
+                            </div>
+                        </div>
+
+                        <div class="contact__information">
+                            <a href="mailto:abhishekgawande7452@gmail.com"><i class="uil uil-envelope-alt contact__icon"></i></a>
+                            <div>
+                               <h3 class="contact__title">Email</h3>
+                               <a href="mailto:abhishekgawande7452@gmail.com"><span class="contact__subtitle">abhishekgawande7452@gmail.com</span></a>
+
+                            </div>
+                        </div>
+
+                        <div class="contact__information">
+                            <i class="uil uil-map-marker contact__icon"></i>
+                            <div>
+                               <h3 class="contact__title">Location</h3>
+                               <span class="contact__subtitle">Amravati</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form action="https://formspree.io/f/xzbykwkp" method="POST" class="contact__form grid">
+
+                        <script src="https://www.google.com/recaptcha/api.js" async defer></script> <!--Captcha -->
+                        <div class="contact__inputs grid">
+                            <div class="contact__content">
+                                <label for=""  class="contact__label">Name</label>
+                                <input type="text" name="name" class="contact__input">
+                            </div>
+
+                            <div class="contact__content">
+                                <label for="" class="contact__label">Email</label>
+                                <input type="email" name="email" class="contact__input">
+                            </div>
+                        </div>
+                        <div class="contact__content">
+                            <label for="" class="contact__label">Subject</label>
+                            <input type="text" name="Subject" class="contact__input">
+                        </div>
+                        <div class="contact__content">
+                            <label for="" class="contact__label">Message</label>
+                            <textarea name="Message" id="" cols="0" rows="7" class="contact__input"> </textarea>
+                        </div>
+
+                        <div>
+                        <div class="g-recaptcha" data-sitekey="6LdtuS8cAAAAAA0vLqz0n1vmNEPlpLJI7q61dZ4A"></div><!--Captcha -->
+                        <button class="button button--flex" type="submit">Submit <i class="uil uil-message button__icon"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+
+        <!--==================== FOOTER ====================-->
+        <footer class="footer">
+            <div class="footer__bg">
+                <div class="footer__container container grid">
+                    <div>
+                        <span class="footer__title">Abhishek      Gawande</span>
+                        <span class="footer__subtitle"></span>
+                    </div>
+
+                    <ul class="footer__links">
+                        <li>
+                            <a href="#home" class="footer__link">Home</a>
+                        </li>
+                        <li>
+                            <a href="#about" class="footer__link">About</a>
+                        </li>
+                        <li>
+                            <a href="#portfolio" class="footer__link">Portfolio</a>
+                        </li>
+                        <li>
+                            <a href="https://Abhishek-Gawande.github.io/blog" target="_blank" class="footer__link">Blog</a>
+                        </li>
+                    </ul>
+
+                    <div class="footer__socials">
+                        <a href="https://www.linkedin.com/in/abhishek-gawande-b4ba81128" target="_blank" class="footer__social">
+                            <i class="uil uil-linkedin"></i>
+                        </a>
+                        <a href="https://github.com/Abhishek-Gawande" target="_blank" class="footer__social">
+                            <i class="uil uil-github"></i>
+                        </a>
+                    </div>
+
+                </div>
+                <p class="footer__copy">
+                    Made with <span >&hearts;</span> by
+                    <a href="https://www.linkedin.com/in/abhishek-gawande-b4ba81128" target="_blank">Abhishek</a>
+                    <br>
+                    Based on <a >Responsive Website Theme Alexa</a> by <a href=" https://github.com/bedimcode" target="_blank">Bedimcode</a>
+                    <br>
                     
-                    <a href="https://www.linkedin.com/in/abhishek-gawande-b4ba81128" class="linkedin"><i class="icofont-linkedin"></i>
-                      <p>Linkedin</p>
-                    </a>
-                  </div>
-                </div>
-              </div>
-               
-              <div class="col-md-6">
-
-                </div>
-              
-             
-              
+                </p>
             </div>
+        </footer>
 
-          </div>
-<!--
-          <div class="col-lg-6">
-            <form action="forms/contact.php" method="post" role="form" class="php-email-form">
-              <div class="form-row">
-                <div class="col-md-6 form-group">
-                  <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
-                  <div class="validate"></div>
-                </div>
-                <div class="col-md-6 form-group">
-                  <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email" />
-                  <div class="validate"></div>
-                </div>
-              </div>
-              <div class="form-group">
-                <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
-                <div class="validate"></div>
-              </div>
-              <div class="form-group">
-                <textarea class="form-control" name="message" rows="6" data-rule="required" data-msg="Please write something for us" placeholder="Message"></textarea>
-                <div class="validate"></div>
-              </div>
-              <div class="mb-3">
-                <div class="loading">Loading</div>
-                <div class="error-message"></div>
-                <div class="sent-message">Your message has been sent. Thank you!</div>
-              </div>
-              <div class="text-center"><button type="submit">Send Message</button></div>
-            </form>
-          </div>
--->
-        </div>
+        <!--==================== SCROLL TOP ====================-->
+        <a href="#" class="scrollup" id="scroll-up">
+            <i class="uil uil-arrow-up scrollup__icon"></i>
+        </a>
 
-      </div>
-    </section><!-- End Contact Me Section -->
+        <!--==================== SWIPER JS ====================-->
+        <script src="assets/js/swiper-bundle.min.js"></script>
 
-  </main><!-- End #main -->
-
-
-  <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
-
-  <!-- Vendor JS Files -->
-  <script src="assets/vendor/jquery/jquery.min.js"></script>
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/jquery.easing/jquery.easing.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
-  <script src="assets/vendor/waypoints/jquery.waypoints.min.js"></script>
-  <script src="assets/vendor/counterup/counterup.min.js"></script>
-  <script src="assets/vendor/owl.carousel/owl.carousel.min.js"></script>
-  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="assets/vendor/venobox/venobox.min.js"></script>
-
-  <!-- Template Main JS File -->
-  <script src="assets/js/main.js"></script>
-
-</body>
-
+        <!--==================== MAIN JS ====================-->
+        <script src="assets/js/main.js"></script>
+    </body>
 </html>
