@@ -1,0 +1,2022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Java Interview Refresher</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #232734;
+    --border: #2e3347;
+    --accent: #6c63ff;
+    --accent2: #00d2ff;
+    --accent3: #ff6b6b;
+    --accent4: #feca57;
+    --accent5: #48dbfb;
+    --accent6: #ff9ff3;
+    --accent7: #54a0ff;
+    --accent8: #5f27cd;
+    --text: #e4e6f0;
+    --text2: #9ba1b8;
+    --green: #00e676;
+    --orange: #ff9100;
+    --red: #ff5252;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .header {
+    text-align: center;
+    padding: 30px 20px 10px;
+    background: linear-gradient(135deg, rgba(108,99,255,0.15), rgba(0,210,255,0.1));
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header h1 {
+    font-size: 2.2em;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 5px;
+  }
+
+  .header p {
+    color: var(--text2);
+    font-size: 1em;
+  }
+
+  /* Tab Navigation */
+  .tab-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    padding: 18px 20px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .tab-btn {
+    padding: 10px 20px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text2);
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.88em;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tab-btn:hover {
+    border-color: var(--accent);
+    color: var(--text);
+    transform: translateY(-2px);
+  }
+
+  .tab-btn.active {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 4px 20px rgba(108,99,255,0.4);
+  }
+
+  .tab-btn .emoji { margin-right: 5px; }
+
+  /* Tab Content */
+  .tab-content { display: none; padding: 25px; max-width: 1200px; margin: 0 auto; }
+  .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Section Cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 20px;
+    transition: border-color 0.3s;
+  }
+  .card:hover { border-color: var(--accent); }
+
+  .card h2 {
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .card h2 .badge {
+    font-size: 0.55em;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+
+  .badge-green { background: rgba(0,230,118,0.15); color: var(--green); }
+  .badge-orange { background: rgba(255,145,0,0.15); color: var(--orange); }
+  .badge-red { background: rgba(255,82,82,0.15); color: var(--red); }
+  .badge-blue { background: rgba(84,160,255,0.15); color: var(--accent7); }
+
+  /* Code Blocks */
+  .code-block {
+    background: #0d0f16;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    margin: 12px 0;
+    overflow-x: auto;
+    position: relative;
+  }
+
+  .code-block pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85em;
+    line-height: 1.7;
+    color: #c8cee0;
+  }
+
+  .code-label {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 0.7em;
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(108,99,255,0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  /* Syntax Highlighting */
+  .kw { color: #c792ea; }
+  .type { color: #82aaff; }
+  .str { color: #c3e88d; }
+  .num { color: #f78c6c; }
+  .cm { color: #546e7a; font-style: italic; }
+  .fn { color: #82aaff; }
+  .op { color: #89ddff; }
+  .ann { color: #ffd700; }
+  .var { color: #f07178; }
+  .cls { color: #ffcb6b; }
+
+  /* Visual Diagrams */
+  .visual {
+    background: linear-gradient(135deg, rgba(108,99,255,0.05), rgba(0,210,255,0.05));
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 15px 0;
+    text-align: center;
+  }
+
+  .visual-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin: 10px 0;
+  }
+
+  .cell {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 1.1em;
+    background: rgba(108,99,255,0.1);
+    transition: all 0.3s;
+  }
+
+  .cell:hover { background: rgba(108,99,255,0.3); transform: scale(1.1); }
+  .cell .idx { font-size: 0.55em; color: var(--text2); font-weight: 400; margin-top: 2px; }
+  .cell.highlight { border-color: var(--accent4); background: rgba(254,202,87,0.15); }
+
+  .arrow { color: var(--accent2); font-size: 1.3em; font-weight: 700; }
+
+  .node {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .node-box {
+    border: 2px solid var(--accent5);
+    border-radius: 50%;
+    width: 48px; height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    background: rgba(72,219,251,0.1);
+  }
+
+  /* Complexity Table */
+  .complexity-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 0.9em;
+  }
+  .complexity-table th, .complexity-table td {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    text-align: left;
+  }
+  .complexity-table th {
+    background: var(--surface2);
+    color: var(--accent2);
+    font-weight: 700;
+  }
+  .complexity-table td { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; }
+  .complexity-table tr:hover td { background: rgba(108,99,255,0.05); }
+
+  .tc-good { color: var(--green); }
+  .tc-mid { color: var(--orange); }
+  .tc-bad { color: var(--red); }
+
+  /* Problem Cards */
+  .problem {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin: 12px 0;
+    overflow: hidden;
+  }
+
+  .problem-header {
+    padding: 14px 18px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.3s;
+  }
+  .problem-header:hover { background: rgba(108,99,255,0.08); }
+
+  .problem-title {
+    font-weight: 700;
+    font-size: 0.95em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .problem-toggle {
+    color: var(--accent);
+    font-size: 1.2em;
+    transition: transform 0.3s;
+    font-weight: 700;
+  }
+
+  .problem-body {
+    display: none;
+    padding: 0 18px 18px;
+    border-top: 1px solid var(--border);
+  }
+  .problem-body.open { display: block; animation: fadeIn 0.3s ease; }
+
+  .problem-desc {
+    color: var(--text2);
+    font-size: 0.88em;
+    margin: 12px 0;
+    line-height: 1.6;
+  }
+
+  /* Info boxes */
+  .info-box {
+    background: rgba(108,99,255,0.08);
+    border-left: 3px solid var(--accent);
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    margin: 12px 0;
+    font-size: 0.9em;
+    line-height: 1.7;
+  }
+
+  .info-box.tip { border-left-color: var(--green); background: rgba(0,230,118,0.06); }
+  .info-box.warn { border-left-color: var(--orange); background: rgba(255,145,0,0.06); }
+
+  /* Subtabs */
+  .sub-tabs {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+  }
+  .sub-tab {
+    padding: 7px 16px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.82em;
+    font-weight: 600;
+    color: var(--text2);
+    transition: all 0.3s;
+  }
+  .sub-tab:hover { color: var(--text); }
+  .sub-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  .sub-content { display: none; }
+  .sub-content.active { display: block; animation: fadeIn 0.3s ease; }
+
+  /* Cheat sheet grid */
+  .cheat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 15px;
+  }
+
+  ul { padding-left: 20px; margin: 8px 0; }
+  li { margin: 4px 0; font-size: 0.92em; line-height: 1.6; color: var(--text2); }
+  li strong { color: var(--text); }
+
+  @media(max-width: 700px) {
+    .tab-btn { padding: 8px 12px; font-size: 0.78em; }
+    .header h1 { font-size: 1.5em; }
+    .cell { width: 42px; height: 42px; font-size: 0.9em; }
+    .cheat-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>☕ Java DSA Interview Refresher</h1>
+  <p>Arrays · Strings · ArrayList · LinkedList · Queue · Stack · HashMap · LinkedHashMap</p>
+</div>
+
+<nav class="tab-nav" id="tabNav">
+  <button class="tab-btn active" data-tab="arrays"><span class="emoji">📦</span>Array</button>
+  <button class="tab-btn" data-tab="strings"><span class="emoji">🔤</span>String</button>
+  <button class="tab-btn" data-tab="arraylist"><span class="emoji">📋</span>ArrayList</button>
+  <button class="tab-btn" data-tab="linkedlist"><span class="emoji">🔗</span>LinkedList</button>
+  <button class="tab-btn" data-tab="queue"><span class="emoji">🚶</span>Queue</button>
+  <button class="tab-btn" data-tab="stack"><span class="emoji">📚</span>Stack</button>
+  <button class="tab-btn" data-tab="hashmap"><span class="emoji">🗺️</span>HashMap</button>
+  <button class="tab-btn" data-tab="linkedhashmap"><span class="emoji">🔗🗺️</span>LinkedHashMap</button>
+  <button class="tab-btn" data-tab="cheatsheet"><span class="emoji">📝</span>Cheat Sheet</button>
+</nav>
+
+<!-- ===================== ARRAYS ===================== -->
+<div class="tab-content active" id="arrays">
+  <div class="card">
+    <h2>📦 What is an Array? <span class="badge badge-green">Foundation</span></h2>
+    <p>A <strong>fixed-size, contiguous block of memory</strong> storing elements of the <strong>same type</strong>. Accessed by index in O(1). This is the most fundamental data structure.</p>
+    <div class="visual">
+      <p style="color:var(--text2);font-size:0.85em;margin-bottom:8px;">Memory Layout — contiguous cells, 0-indexed</p>
+      <div class="visual-row">
+        <div class="cell">10<span class="idx">0</span></div>
+        <div class="cell">20<span class="idx">1</span></div>
+        <div class="cell highlight">30<span class="idx">2</span></div>
+        <div class="cell">40<span class="idx">3</span></div>
+        <div class="cell">50<span class="idx">4</span></div>
+      </div>
+      <p style="color:var(--accent4);font-size:0.8em;margin-top:8px;">↑ arr[2] = 30 — direct access O(1)</p>
+    </div>
+    <div class="info-box">
+      <strong>First Principles:</strong> An array is a pointer to the first element. <code>arr[i]</code> = <code>baseAddress + i × elementSize</code>. That's why access is O(1) — it's simple pointer arithmetic.
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>⚙️ Declaration & Basic Operations</h2>
+    <div class="code-block">
+      <span class="code-label">Java</span>
+<pre><span class="cm">// === DECLARATION ===</span>
+<span class="type">int</span>[] arr = <span class="kw">new</span> <span class="type">int</span>[<span class="num">5</span>];              <span class="cm">// default zeros</span>
+<span class="type">int</span>[] arr2 = {<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>, <span class="num">40</span>, <span class="num">50</span>};  <span class="cm">// literal init</span>
+<span class="type">String</span>[] names = {<span class="str">"Alice"</span>, <span class="str">"Bob"</span>};
+
+<span class="cm">// === ACCESS & MODIFY — O(1) ===</span>
+<span class="type">int</span> val = arr2[<span class="num">2</span>];       <span class="cm">// 30</span>
+arr2[<span class="num">2</span>] = <span class="num">99</span>;            <span class="cm">// modify</span>
+
+<span class="cm">// === LENGTH ===</span>
+<span class="type">int</span> len = arr2.<span class="fn">length</span>;   <span class="cm">// 5 (property, not method)</span>
+
+<span class="cm">// === ITERATE ===</span>
+<span class="kw">for</span> (<span class="type">int</span> i = <span class="num">0</span>; i < arr2.<span class="fn">length</span>; i++) {
+    System.out.<span class="fn">print</span>(arr2[i] + <span class="str">" "</span>);
+}
+
+<span class="kw">for</span> (<span class="type">int</span> x : arr2) {   <span class="cm">// enhanced for-each</span>
+    System.out.<span class="fn">print</span>(x + <span class="str">" "</span>);
+}
+
+<span class="cm">// === SORT — O(n log n) ===</span>
+Arrays.<span class="fn">sort</span>(arr2);                     <span class="cm">// ascending</span>
+Arrays.<span class="fn">sort</span>(arr2, <span class="num">1</span>, <span class="num">4</span>);              <span class="cm">// sort index [1,4)</span>
+
+<span class="cm">// === SEARCH ===</span>
+<span class="type">int</span> idx = Arrays.<span class="fn">binarySearch</span>(arr2, <span class="num">30</span>); <span class="cm">// must be sorted first</span>
+
+<span class="cm">// === FILL ===</span>
+Arrays.<span class="fn">fill</span>(arr, <span class="num">-1</span>);    <span class="cm">// all elements become -1</span>
+
+<span class="cm">// === COPY ===</span>
+<span class="type">int</span>[] copy = Arrays.<span class="fn">copyOf</span>(arr2, arr2.<span class="fn">length</span>);
+<span class="type">int</span>[] partial = Arrays.<span class="fn">copyOfRange</span>(arr2, <span class="num">1</span>, <span class="num">4</span>);
+
+<span class="cm">// === COMPARE ===</span>
+<span class="type">boolean</span> eq = Arrays.<span class="fn">equals</span>(arr2, copy);
+
+<span class="cm">// === TO STRING ===</span>
+System.out.<span class="fn">println</span>(Arrays.<span class="fn">toString</span>(arr2)); <span class="cm">// [10, 20, 99, 40, 50]</span>
+
+<span class="cm">// === 2D ARRAY ===</span>
+<span class="type">int</span>[][] matrix = <span class="kw">new</span> <span class="type">int</span>[<span class="num">3</span>][<span class="num">4</span>];
+<span class="type">int</span>[][] grid = {{<span class="num">1</span>,<span class="num">2</span>},{<span class="num">3</span>,<span class="num">4</span>},{<span class="num">5</span>,<span class="num">6</span>}};
+<span class="type">int</span> rows = grid.<span class="fn">length</span>;      <span class="cm">// 3</span>
+<span class="type">int</span> cols = grid[<span class="num">0</span>].<span class="fn">length</span>;   <span class="cm">// 2</span></pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>⏱️ Time Complexity</h2>
+    <table class="complexity-table">
+      <tr><th>Operation</th><th>Time</th><th>Notes</th></tr>
+      <tr><td>Access by index</td><td class="tc-good">O(1)</td><td>Direct pointer arithmetic</td></tr>
+      <tr><td>Modify by index</td><td class="tc-good">O(1)</td><td>Direct write</td></tr>
+      <tr><td>Search (unsorted)</td><td class="tc-mid">O(n)</td><td>Linear scan</td></tr>
+      <tr><td>Search (sorted)</td><td class="tc-good">O(log n)</td><td>Binary search</td></tr>
+      <tr><td>Insert / Delete</td><td class="tc-mid">O(n)</td><td>Shift elements</td></tr>
+      <tr><td>Sort</td><td class="tc-mid">O(n log n)</td><td>Dual-pivot Quicksort</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>🏆 Top Interview Problems</h2>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">1️⃣ Two Sum <span class="badge badge-green">Easy</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <p class="problem-desc">Given an array and a target, find two indices whose values sum to target.</p>
+        <div class="code-block"><pre><span class="kw">public</span> <span class="type">int</span>[] <span class="fn">twoSum</span>(<span class="type">int</span>[] nums, <span class="type">int</span> target) {
+    Map&lt;<span class="type">Integer</span>, <span class="type">Integer</span>&gt; map = <span class="kw">new</span> HashMap&lt;&gt;();
+    <span class="kw">for</span> (<span class="type">int</span> i = <span class="num">0</span>; i &lt; nums.<span class="fn">length</span>; i++) {
+        <span class="type">int</span> complement = target - nums[i];
+        <span class="kw">if</span> (map.<span class="fn">containsKey</span>(complement)) {
+            <span class="kw">return new</span> <span class="type">int</span>[]{map.<span class="fn">get</span>(complement), i};
+        }
+        map.<span class="fn">put</span>(nums[i], i);
+    }
+    <span class="kw">return new</span> <span class="type">int</span>[]{};
+}
+<span class="cm">// Time: O(n) | Space: O(n)</span></pre></div>
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">2️⃣ Maximum Subarray (Kadane's) <span class="badge badge-orange">Medium</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <p class="problem-desc">Find the contiguous subarray with the largest sum.</p>
+        <div class="code-block"><pre><span class="kw">public</span> <span class="type">int</span> <span class="fn">maxSubArray</span>(<span class="type">int</span>[] nums) {
+    <span class="type">int</span> maxSum = nums[<span class="num">0</span>], curSum = nums[<span class="num">0</span>];
+    <span class="kw">for</span> (<span class="type">int</span> i = <span class="num">1</span>; i &lt; nums.<span class="fn">length</span>; i++) {
+        curSum = Math.<span class="fn">max</span>(nums[i], curSum + nums[i]);
+        maxSum = Math.<span class="fn">max</span>(maxSum, curSum);
+    }
+    <span class="kw">return</span> maxSum;
+}
+<span class="cm">// Time: O(n) | Space: O(1)</span></pre></div>
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">3️⃣ Merge Sorted Arrays <span class="badge badge-green">Easy</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <p class="problem-desc">Merge nums2 into nums1 (which has extra space) in sorted order.</p>
+        <div class="code-block"><pre><span class="kw">public void</span> <span class="fn">merge</span>(<span class="type">int</span>[] nums1, <span class="type">int</span> m, <span class="type">int</span>[] nums2, <span class="type">int</span> n) {
+    <span class="type">int</span> i = m - <span class="num">1</span>, j = n - <span class="num">1</span>, k = m + n - <span class="num">1</span>;
+    <span class="kw">while</span> (j >= <span class="num">0</span>) {
+        <span class="kw">if</span> (i >= <span class="num">0</span> && nums1[i] > nums2[j]) {
+            nums1[k--] = nums1[i--];
+        } <span class="kw">else</span> {
+            nums1[k--] = nums2[j--];
+        }
+    }
+}
+<span class="cm">// Time: O(m+n) | Space: O(1) — fill from the end!</span></pre></div>
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">4️⃣ Move Zeroes <span class="badge badge-green">Easy</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <p class="problem-desc">Move all zeros to end, maintaining relative order of non-zero elements.</p>
+        <div class="code-block"><pre><span class="kw">public void</span> <span class="fn">moveZeroes</span>(<span class="type">int</span>[] nums) {
+    <span class="type">int</span> insertPos = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="type">int</span> num : nums) {
+        <span class="kw">if</span> (num != <span class="num">0</span>) {
+            nums[insertPos++] = num;
+        }
+    }
+    <span class="kw">while</span> (insertPos &lt; nums.<span class="fn">length</span>) {
+        nums[insertPos++] = <span class="num">0</span>;
+    }
+}
+<span class="cm">// Time: O(n) | Space: O(1)</span></pre></div>
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">5️⃣ Best Time to Buy & Sell Stock <span class="badge badge-green">Easy</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <div class="code-block"><pre><span class="kw">public</span> <span class="type">int</span> <span class="fn">maxProfit</span>(<span class="type">int</span>[] prices) {
+    <span class="type">int</span> minPrice = Integer.MAX_VALUE, maxProfit = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="type">int</span> price : prices) {
+        minPrice = Math.<span class="fn">min</span>(minPrice, price);
+        maxProfit = Math.<span class="fn">max</span>(maxProfit, price - minPrice);
+    }
+    <span class="kw">return</span> maxProfit;
+}
+<span class="cm">// Time: O(n) | Space: O(1)</span></pre></div>
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">6️⃣ Product of Array Except Self <span class="badge badge-orange">Medium</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <div class="code-block"><pre><span class="kw">public</span> <span class="type">int</span>[] <span class="fn">productExceptSelf</span>(<span class="type">int</span>[] nums) {
+    <span class="type">int</span> n = nums.<span class="fn">length</span>;
+    <span class="type">int</span>[] res = <span class="kw">new</span> <span class="type">int</span>[n];
+    res[<span class="num">0</span>] = <span class="num">1</span>;
+    <span class="kw">for</span> (<span class="type">int</span> i = <span class="num">1</span>; i &lt; n; i++)
+        res[i] = res[i-<span class="num">1</span>] * nums[i-<span class="num">1</span>]; <span class="cm">// left products</span>
+    <span class="type">int</span> right = <span class="num">1</span>;
+    <span class="kw">for</span> (<span class="type">int</span> i = n-<span class="num">1</span>; i >= <span class="num">0</span>; i--) {
+        res[i] *= right;
+        right *= nums[i];  <span class="cm">// right products</span>
+    }
+    <span class="kw">return</span> res;
+}
+<span class="cm">// Time: O(n) | Space: O(1) extra (result doesn't count)</span></pre></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== STRINGS ===================== -->
+<div class="tab-content" id="strings">
+  <div class="card">
+    <h2>🔤 What is a String? <span class="badge badge-green">Immutable</span></h2>
+    <p>In Java, String is an <strong>immutable sequence of characters</strong> backed by a <code>char[]</code> (or <code>byte[]</code> since Java 9). Once created, it <strong>cannot be modified</strong> — every "modification" creates a new String object.</p>
+    <div class="visual">
+      <p style="color:var(--text2);font-size:0.85em;margin-bottom:8px;">String s = "HELLO" — immutable char sequence</p>
+      <div class="visual-row">
+        <div class="cell" style="border-color:#ff9ff3">H<span class="idx">0</span></div>
+        <div class="cell" style="border-color:#ff9ff3">E<span class="idx">1</span></div>
+        <div class="cell highlight" style="border-color:#ff9ff3">L<span class="idx">2</span></div>
+        <div class="cell" style="border-color:#ff9ff3">L<span class="idx">3</span></div>
+        <div class="cell" style="border-color:#ff9ff3">O<span class="idx">4</span></div>
+      </div>
+    </div>
+    <div class="info-box warn">
+      <strong>⚠️ String Pool:</strong> Java interns string literals. <code>"abc" == "abc"</code> is true (same pool reference), but <code>new String("abc") == "abc"</code> is false. Always use <code>.equals()</code> for content comparison!
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>⚙️ All Essential Operations</h2>
+    <div class="code-block">
+      <span class="code-label">Java</span>
+<pre><span class="cm">// === CREATION ===</span>
+<span class="type">String</span> s = <span class="str">"Hello World"</span>;
+<span class="type">String</span> s2 = <span class="kw">new</span> <span class="type">String</span>(<span class="str">"Hello"</span>);
+<span class="type">char</span>[] ch = {<span class="str">'H'</span>,<span class="str">'i'</span>};
+<span class="type">String</span> s3 = <span class="kw">new</span> <span class="type">String</span>(ch);
+
+<span class="cm">// === BASIC ===</span>
+s.<span class="fn">length</span>();            <span class="cm">// 11  (method, not property!)</span>
+s.<span class="fn">charAt</span>(<span class="num">0</span>);           <span class="cm">// 'H'</span>
+s.<span class="fn">isEmpty</span>();            <span class="cm">// false</span>
+s.<span class="fn">isBlank</span>();            <span class="cm">// false (Java 11+)</span>
+
+<span class="cm">// === COMPARE ===</span>
+s.<span class="fn">equals</span>(<span class="str">"Hello World"</span>);        <span class="cm">// true ✓ ALWAYS USE THIS</span>
+s.<span class="fn">equalsIgnoreCase</span>(<span class="str">"hello world"</span>); <span class="cm">// true</span>
+s.<span class="fn">compareTo</span>(<span class="str">"Apple"</span>);           <span class="cm">// +ve (lexicographic)</span>
+
+<span class="cm">// === SEARCH ===</span>
+s.<span class="fn">indexOf</span>(<span class="str">'o'</span>);          <span class="cm">// 4  (first occurrence)</span>
+s.<span class="fn">lastIndexOf</span>(<span class="str">'o'</span>);      <span class="cm">// 7</span>
+s.<span class="fn">indexOf</span>(<span class="str">"World"</span>);      <span class="cm">// 6</span>
+s.<span class="fn">contains</span>(<span class="str">"World"</span>);     <span class="cm">// true</span>
+s.<span class="fn">startsWith</span>(<span class="str">"He"</span>);     <span class="cm">// true</span>
+s.<span class="fn">endsWith</span>(<span class="str">"ld"</span>);        <span class="cm">// true</span>
+
+<span class="cm">// === EXTRACT ===</span>
+s.<span class="fn">substring</span>(<span class="num">6</span>);          <span class="cm">// "World"</span>
+s.<span class="fn">substring</span>(<span class="num">0</span>, <span class="num">5</span>);      <span class="cm">// "Hello" (exclusive end)</span>
+s.<span class="fn">toCharArray</span>();         <span class="cm">// char[] {'H','e','l','l','o',...}</span>
+
+<span class="cm">// === TRANSFORM (returns NEW string) ===</span>
+s.<span class="fn">toUpperCase</span>();         <span class="cm">// "HELLO WORLD"</span>
+s.<span class="fn">toLowerCase</span>();         <span class="cm">// "hello world"</span>
+s.<span class="fn">trim</span>();                <span class="cm">// remove leading/trailing spaces</span>
+s.<span class="fn">strip</span>();               <span class="cm">// (Java 11+) Unicode-aware trim</span>
+s.<span class="fn">replace</span>(<span class="str">'l'</span>, <span class="str">'r'</span>);   <span class="cm">// "Herro Worrd"</span>
+s.<span class="fn">replace</span>(<span class="str">"World"</span>, <span class="str">"Java"</span>); <span class="cm">// "Hello Java"</span>
+s.<span class="fn">replaceAll</span>(<span class="str">"[aeiou]"</span>, <span class="str">"*"</span>); <span class="cm">// regex replace</span>
+
+<span class="cm">// === SPLIT & JOIN ===</span>
+<span class="type">String</span>[] words = s.<span class="fn">split</span>(<span class="str">" "</span>);  <span class="cm">// ["Hello", "World"]</span>
+<span class="type">String</span> joined = String.<span class="fn">join</span>(<span class="str">"-"</span>, words); <span class="cm">// "Hello-World"</span>
+
+<span class="cm">// === CONVERSIONS ===</span>
+<span class="type">int</span> num = Integer.<span class="fn">parseInt</span>(<span class="str">"123"</span>);
+<span class="type">String</span> numStr = String.<span class="fn">valueOf</span>(<span class="num">123</span>);
+<span class="type">String</span> numStr2 = <span class="num">123</span> + <span class="str">""</span>; <span class="cm">// quick trick</span>
+
+<span class="cm">// === STRINGBUILDER (mutable, for building strings) ===</span>
+StringBuilder sb = <span class="kw">new</span> StringBuilder();
+sb.<span class="fn">append</span>(<span class="str">"Hello"</span>);
+sb.<span class="fn">append</span>(<span class="str">" World"</span>);
+sb.<span class="fn">insert</span>(<span class="num">5</span>, <span class="str">","</span>);       <span class="cm">// "Hello, World"</span>
+sb.<span class="fn">delete</span>(<span class="num">5</span>, <span class="num">6</span>);         <span class="cm">// "Hello World"</span>
+sb.<span class="fn">reverse</span>();             <span class="cm">// "dlroW olleH"</span>
+<span class="type">String</span> result = sb.<span class="fn">toString</span>();
+sb.<span class="fn">setCharAt</span>(<span class="num">0</span>, <span class="str">'h'</span>);  <span class="cm">// modify in place</span></pre>
+    </div>
+    <div class="info-box tip">
+      <strong>💡 Interview Rule:</strong> Use <code>StringBuilder</code> when building strings in loops — String concatenation in loops creates O(n²) garbage objects!
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>⏱️ Time Complexity</h2>
+    <table class="complexity-table">
+      <tr><th>Operation</th><th>String</th><th>StringBuilder</th></tr>
+      <tr><td>charAt(i)</td><td class="tc-good">O(1)</td><td class="tc-good">O(1)</td></tr>
+      <tr><td>length()</td><td class="tc-good">O(1)</td><td class="tc-good">O(1)</td></tr>
+      <tr><td>substring()</td><td class="tc-mid">O(n)</td><td>—</td></tr>
+      <tr><td>concat / append</td><td class="tc-mid">O(n)</td><td class="tc-good">O(1) amortized</td></tr>
+      <tr><td>indexOf / contains</td><td class="tc-mid">O(n×m)</td><td>—</td></tr>
+      <tr><td>equals</td><td class="tc-mid">O(n)</td><td>—</td></tr>
+      <tr><td>replace</td><td class="tc-mid">O(n)</td><td>—</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>🏆 Top Interview Problems</h2>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">1️⃣ Reverse a String <span class="badge badge-green">Easy</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <div class="code-block"><pre><span class="kw">public</span> <span class="type">String</span> <span class="fn">reverse</span>(<span class="type">String</span> s) {
+    <span class="type">char</span>[] c = s.<span class="fn">toCharArray</span>();
+    <span class="type">int</span> l = <span class="num">0</span>, r = c.<span class="fn">length</span> - <span class="num">1</span>;
+    <span class="kw">while</span> (l &lt; r) {
+        <span class="type">char</span> tmp = c[l];
+        c[l++] = c[r];
+        c[r--] = tmp;
+    }
+    <span class="kw">return new</span> <span class="type">String</span>(c);
+}
+<span class="cm">// Or simply: new StringBuilder(s).reverse().toString();</span></pre></div>
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">2️⃣ Valid Anagram <span class="badge badge-green">Easy</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <div class="code-block"><pre><span class="kw">public boolean</span> <span class="fn">isAnagram</span>(<span class="type">String</span> s, <span class="type">String</span> t) {
+    <span class="kw">if</span> (s.<span class="fn">length</span>() != t.<span class="fn">length</span>()) <span class="kw">return false</span>;
+    <span class="type">int</span>[] count = <span class="kw">new</span> <span class="type">int</span>[<span class="num">26</span>];
+    <span class="kw">for</span> (<span class="type">int</span> i = <span class="num">0</span>; i &lt; s.<span class="fn">length</span>(); i++) {
+        count[s.<span class="fn">charAt</span>(i) - <span class="str">'a'</span>]++;
+        count[t.<span class="fn">charAt</span>(i) - <span class="str">'a'</span>]--;
+    }
+    <span class="kw">for</span> (<span class="type">int</span> c : count)
+        <span class="kw">if</span> (c != <span class="num">0</span>) <span class="kw">return false</span>;
+    <span class="kw">return true</span>;
+}
+<span class="cm">// Time: O(n) | Space: O(1) — fixed 26-char array</span></pre></div>
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">3️⃣ Longest Substring Without Repeating Chars <span class="badge badge-orange">Medium</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <div class="code-block"><pre><span class="kw">public</span> <span class="type">int</span> <span class="fn">lengthOfLongestSubstring</span>(<span class="type">String</span> s) {
+    Map&lt;<span class="type">Character</span>, <span class="type">Integer</span>&gt; map = <span class="kw">new</span> HashMap&lt;&gt;();
+    <span class="type">int</span> max = <span class="num">0</span>, left = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="type">int</span> right = <span class="num">0</span>; right &lt; s.<span class="fn">length</span>(); right++) {
+        <span class="type">char</span> c = s.<span class="fn">charAt</span>(right);
+        <span class="kw">if</span> (map.<span class="fn">containsKey</span>(c)) {
+            left = Math.<span class="fn">max</span>(left, map.<span class="fn">get</span>(c) + <span class="num">1</span>);
+        }
+        map.<span class="fn">put</span>(c, right);
+        max = Math.<span class="fn">max</span>(max, right - left + <span class="num">1</span>);
+    }
+    <span class="kw">return</span> max;
+}
+<span class="cm">// Sliding window — Time: O(n) | Space: O(min(m,n))</span></pre></div>
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">4️⃣ Valid Palindrome <span class="badge badge-green">Easy</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <div class="code-block"><pre><span class="kw">public boolean</span> <span class="fn">isPalindrome</span>(<span class="type">String</span> s) {
+    <span class="type">int</span> l = <span class="num">0</span>, r = s.<span class="fn">length</span>() - <span class="num">1</span>;
+    <span class="kw">while</span> (l &lt; r) {
+        <span class="kw">while</span> (l &lt; r && !Character.<span class="fn">isLetterOrDigit</span>(s.<span class="fn">charAt</span>(l))) l++;
+        <span class="kw">while</span> (l &lt; r && !Character.<span class="fn">isLetterOrDigit</span>(s.<span class="fn">charAt</span>(r))) r--;
+        <span class="kw">if</span> (Character.<span class="fn">toLowerCase</span>(s.<span class="fn">charAt</span>(l)) != 
+            Character.<span class="fn">toLowerCase</span>(s.<span class="fn">charAt</span>(r)))
+            <span class="kw">return false</span>;
+        l++; r--;
+    }
+    <span class="kw">return true</span>;
+}
+<span class="cm">// Two pointers — Time: O(n) | Space: O(1)</span></pre></div>
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">5️⃣ Longest Palindromic Substring <span class="badge badge-orange">Medium</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <div class="code-block"><pre><span class="type">int</span> start = <span class="num">0</span>, maxLen = <span class="num">0</span>;
+
+<span class="kw">public</span> <span class="type">String</span> <span class="fn">longestPalindrome</span>(<span class="type">String</span> s) {
+    <span class="kw">for</span> (<span class="type">int</span> i = <span class="num">0</span>; i &lt; s.<span class="fn">length</span>(); i++) {
+        <span class="fn">expand</span>(s, i, i);     <span class="cm">// odd length</span>
+        <span class="fn">expand</span>(s, i, i+<span class="num">1</span>);   <span class="cm">// even length</span>
+    }
+    <span class="kw">return</span> s.<span class="fn">substring</span>(start, start + maxLen);
+}
+
+<span class="kw">void</span> <span class="fn">expand</span>(<span class="type">String</span> s, <span class="type">int</span> l, <span class="type">int</span> r) {
+    <span class="kw">while</span> (l >= <span class="num">0</span> && r &lt; s.<span class="fn">length</span>() && s.<span class="fn">charAt</span>(l) == s.<span class="fn">charAt</span>(r)) {
+        <span class="kw">if</span> (r - l + <span class="num">1</span> > maxLen) {
+            start = l;
+            maxLen = r - l + <span class="num">1</span>;
+        }
+        l--; r++;
+    }
+}
+<span class="cm">// Expand around center — Time: O(n²) | Space: O(1)</span></pre></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== ARRAYLIST ===================== -->
+<div class="tab-content" id="arraylist">
+  <div class="card">
+    <h2>📋 What is ArrayList? <span class="badge badge-green">Dynamic Array</span></h2>
+    <p>A <strong>resizable array</strong> implementation of the List interface. Internally uses a plain array that <strong>grows by 50%</strong> when full. Best for <strong>random access</strong>, bad for frequent insertions in the middle.</p>
+    <div class="visual">
+      <p style="color:var(--text2);font-size:0.85em;margin-bottom:8px;">Internal: Object[] with size tracking — auto-resizes</p>
+      <div class="visual-row">
+        <div class="cell" style="border-color:var(--green)">10<span class="idx">0</span></div>
+        <div class="cell" style="border-color:var(--green)">20<span class="idx">1</span></div>
+        <div class="cell" style="border-color:var(--green)">30<span class="idx">2</span></div>
+        <div class="cell" style="border-color:var(--green);opacity:0.3">_<span class="idx">3</span></div>
+        <div class="cell" style="border-color:var(--green);opacity:0.3">_<span class="idx">4</span></div>
+      </div>
+      <p style="color:var(--green);font-size:0.8em;margin-top:8px;">size=3, capacity=5 — capacity grows when full</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>⚙️ All Operations</h2>
+    <div class="code-block">
+      <span class="code-label">Java</span>
+<pre><span class="cm">// === CREATION ===</span>
+List&lt;<span class="type">Integer</span>&gt; list = <span class="kw">new</span> ArrayList&lt;&gt;();
+List&lt;<span class="type">Integer</span>&gt; list2 = <span class="kw">new</span> ArrayList&lt;&gt;(Arrays.<span class="fn">asList</span>(<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>));
+List&lt;<span class="type">Integer</span>&gt; list3 = <span class="kw">new</span> ArrayList&lt;&gt;(List.<span class="fn">of</span>(<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>));
+
+<span class="cm">// === ADD — O(1) amortized ===</span>
+list.<span class="fn">add</span>(<span class="num">10</span>);              <span class="cm">// append to end</span>
+list.<span class="fn">add</span>(<span class="num">0</span>, <span class="num">5</span>);           <span class="cm">// insert at index 0 — O(n) shift!</span>
+list.<span class="fn">addAll</span>(list2);        <span class="cm">// append entire collection</span>
+
+<span class="cm">// === ACCESS — O(1) ===</span>
+<span class="type">int</span> val = list.<span class="fn">get</span>(<span class="num">0</span>);     <span class="cm">// 5</span>
+
+<span class="cm">// === MODIFY — O(1) ===</span>
+list.<span class="fn">set</span>(<span class="num">0</span>, <span class="num">99</span>);           <span class="cm">// replace element at index</span>
+
+<span class="cm">// === REMOVE ===</span>
+list.<span class="fn">remove</span>(<span class="num">0</span>);            <span class="cm">// by index — O(n) shift</span>
+list.<span class="fn">remove</span>(Integer.<span class="fn">valueOf</span>(<span class="num">10</span>)); <span class="cm">// by value — O(n)</span>
+list.<span class="fn">clear</span>();              <span class="cm">// remove all</span>
+
+<span class="cm">// === SEARCH ===</span>
+list.<span class="fn">contains</span>(<span class="num">10</span>);        <span class="cm">// true/false — O(n)</span>
+list.<span class="fn">indexOf</span>(<span class="num">10</span>);         <span class="cm">// first index or -1 — O(n)</span>
+
+<span class="cm">// === SIZE & CHECK ===</span>
+list.<span class="fn">size</span>();               <span class="cm">// number of elements</span>
+list.<span class="fn">isEmpty</span>();            <span class="cm">// true if empty</span>
+
+<span class="cm">// === SORT ===</span>
+Collections.<span class="fn">sort</span>(list);                <span class="cm">// ascending</span>
+list.<span class="fn">sort</span>(Collections.<span class="fn">reverseOrder</span>()); <span class="cm">// descending</span>
+list.<span class="fn">sort</span>((a,b) -> a - b);             <span class="cm">// custom comparator</span>
+
+<span class="cm">// === CONVERT ===</span>
+<span class="type">Integer</span>[] arr = list.<span class="fn">toArray</span>(<span class="kw">new</span> <span class="type">Integer</span>[<span class="num">0</span>]);
+List&lt;<span class="type">Integer</span>&gt; fromArr = <span class="kw">new</span> ArrayList&lt;&gt;(Arrays.<span class="fn">asList</span>(arr));
+
+<span class="cm">// === ITERATE ===</span>
+<span class="kw">for</span> (<span class="type">int</span> x : list) { }          <span class="cm">// for-each</span>
+list.<span class="fn">forEach</span>(x -> { });         <span class="cm">// lambda</span>
+Iterator&lt;<span class="type">Integer</span>&gt; it = list.<span class="fn">iterator</span>();
+<span class="kw">while</span> (it.<span class="fn">hasNext</span>()) it.<span class="fn">next</span>();
+
+<span class="cm">// === SUBLIST ===</span>
+List&lt;<span class="type">Integer</span>&gt; sub = list.<span class="fn">subList</span>(<span class="num">1</span>, <span class="num">3</span>); <span class="cm">// view [1,3)</span></pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>⏱️ Time Complexity</h2>
+    <table class="complexity-table">
+      <tr><th>Operation</th><th>Time</th><th>Why</th></tr>
+      <tr><td>get(i) / set(i)</td><td class="tc-good">O(1)</td><td>Direct array index</td></tr>
+      <tr><td>add(end)</td><td class="tc-good">O(1)*</td><td>Amortized — occasional resize</td></tr>
+      <tr><td>add(i, val)</td><td class="tc-mid">O(n)</td><td>Shift elements right</td></tr>
+      <tr><td>remove(i)</td><td class="tc-mid">O(n)</td><td>Shift elements left</td></tr>
+      <tr><td>contains / indexOf</td><td class="tc-mid">O(n)</td><td>Linear scan</td></tr>
+      <tr><td>sort</td><td class="tc-mid">O(n log n)</td><td>TimSort</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>🏆 Key Interview Pattern: ArrayList as Dynamic Collector</h2>
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">Group Anagrams <span class="badge badge-orange">Medium</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <div class="code-block"><pre><span class="kw">public</span> List&lt;List&lt;<span class="type">String</span>&gt;&gt; <span class="fn">groupAnagrams</span>(<span class="type">String</span>[] strs) {
+    Map&lt;<span class="type">String</span>, List&lt;<span class="type">String</span>&gt;&gt; map = <span class="kw">new</span> HashMap&lt;&gt;();
+    <span class="kw">for</span> (<span class="type">String</span> s : strs) {
+        <span class="type">char</span>[] ca = s.<span class="fn">toCharArray</span>();
+        Arrays.<span class="fn">sort</span>(ca);
+        <span class="type">String</span> key = <span class="kw">new</span> <span class="type">String</span>(ca);
+        map.<span class="fn">computeIfAbsent</span>(key, k -> <span class="kw">new</span> ArrayList&lt;&gt;()).<span class="fn">add</span>(s);
+    }
+    <span class="kw">return new</span> ArrayList&lt;&gt;(map.<span class="fn">values</span>());
+}</pre></div>
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">Spiral Matrix <span class="badge badge-orange">Medium</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <div class="code-block"><pre><span class="kw">public</span> List&lt;<span class="type">Integer</span>&gt; <span class="fn">spiralOrder</span>(<span class="type">int</span>[][] matrix) {
+    List&lt;<span class="type">Integer</span>&gt; res = <span class="kw">new</span> ArrayList&lt;&gt;();
+    <span class="type">int</span> top = <span class="num">0</span>, bottom = matrix.<span class="fn">length</span>-<span class="num">1</span>;
+    <span class="type">int</span> left = <span class="num">0</span>, right = matrix[<span class="num">0</span>].<span class="fn">length</span>-<span class="num">1</span>;
+    <span class="kw">while</span> (top &lt;= bottom && left &lt;= right) {
+        <span class="kw">for</span> (<span class="type">int</span> i = left; i &lt;= right; i++) res.<span class="fn">add</span>(matrix[top][i]);
+        top++;
+        <span class="kw">for</span> (<span class="type">int</span> i = top; i &lt;= bottom; i++) res.<span class="fn">add</span>(matrix[i][right]);
+        right--;
+        <span class="kw">if</span> (top &lt;= bottom)
+            <span class="kw">for</span> (<span class="type">int</span> i = right; i &gt;= left; i--) res.<span class="fn">add</span>(matrix[bottom][i]);
+        bottom--;
+        <span class="kw">if</span> (left &lt;= right)
+            <span class="kw">for</span> (<span class="type">int</span> i = bottom; i &gt;= top; i--) res.<span class="fn">add</span>(matrix[i][left]);
+        left++;
+    }
+    <span class="kw">return</span> res;
+}</pre></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== LINKEDLIST ===================== -->
+<div class="tab-content" id="linkedlist">
+  <div class="card">
+    <h2>🔗 What is a LinkedList? <span class="badge badge-blue">Doubly Linked</span></h2>
+    <p>Java's <code>LinkedList</code> is a <strong>doubly-linked list</strong>. Each node has <code>prev</code>, <code>data</code>, and <code>next</code>. Also implements <code>Deque</code> interface. Great for <strong>frequent insert/delete at ends</strong>, bad for random access.</p>
+    <div class="visual">
+      <p style="color:var(--text2);font-size:0.85em;margin-bottom:10px;">Doubly Linked List: null ←→ [10] ←→ [20] ←→ [30] ←→ null</p>
+      <div class="visual-row">
+        <div style="color:var(--text2)">null</div>
+        <span class="arrow">⟵</span>
+        <div class="node-box">10</div>
+        <span class="arrow">⟷</span>
+        <div class="node-box">20</div>
+        <span class="arrow">⟷</span>
+        <div class="node-box">30</div>
+        <span class="arrow">⟶</span>
+        <div style="color:var(--text2)">null</div>
+      </div>
+      <p style="font-size:0.8em;margin-top:10px;color:var(--accent5);">head↑ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ↑tail</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>⚙️ All Operations</h2>
+    <div class="code-block">
+      <span class="code-label">Java</span>
+<pre><span class="cm">// === CREATION ===</span>
+LinkedList&lt;<span class="type">Integer</span>&gt; ll = <span class="kw">new</span> LinkedList&lt;&gt;();
+LinkedList&lt;<span class="type">Integer</span>&gt; ll2 = <span class="kw">new</span> LinkedList&lt;&gt;(Arrays.<span class="fn">asList</span>(<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>));
+
+<span class="cm">// === ADD ===</span>
+ll.<span class="fn">add</span>(<span class="num">10</span>);              <span class="cm">// add to end — O(1)</span>
+ll.<span class="fn">addFirst</span>(<span class="num">5</span>);          <span class="cm">// add to front — O(1)</span>
+ll.<span class="fn">addLast</span>(<span class="num">20</span>);          <span class="cm">// add to end — O(1)</span>
+ll.<span class="fn">add</span>(<span class="num">1</span>, <span class="num">15</span>);           <span class="cm">// insert at index — O(n) to find</span>
+
+<span class="cm">// === ACCESS ===</span>
+ll.<span class="fn">getFirst</span>();            <span class="cm">// O(1)</span>
+ll.<span class="fn">getLast</span>();             <span class="cm">// O(1)</span>
+ll.<span class="fn">get</span>(<span class="num">2</span>);                <span class="cm">// O(n) — must traverse!</span>
+
+<span class="cm">// === REMOVE ===</span>
+ll.<span class="fn">removeFirst</span>();         <span class="cm">// O(1)</span>
+ll.<span class="fn">removeLast</span>();          <span class="cm">// O(1)</span>
+ll.<span class="fn">remove</span>(<span class="num">1</span>);             <span class="cm">// by index — O(n)</span>
+ll.<span class="fn">remove</span>(Integer.<span class="fn">valueOf</span>(<span class="num">10</span>)); <span class="cm">// by value — O(n)</span>
+
+<span class="cm">// === DEQUE operations (use as Stack/Queue) ===</span>
+ll.<span class="fn">push</span>(<span class="num">1</span>);   <span class="cm">// addFirst (stack push)</span>
+ll.<span class="fn">pop</span>();     <span class="cm">// removeFirst (stack pop)</span>
+ll.<span class="fn">offer</span>(<span class="num">1</span>); <span class="cm">// addLast (queue enqueue)</span>
+ll.<span class="fn">poll</span>();    <span class="cm">// removeFirst (queue dequeue)</span>
+ll.<span class="fn">peek</span>();    <span class="cm">// getFirst without remove</span>
+
+<span class="cm">// === SEARCH ===</span>
+ll.<span class="fn">contains</span>(<span class="num">10</span>);        <span class="cm">// O(n)</span>
+ll.<span class="fn">indexOf</span>(<span class="num">10</span>);         <span class="cm">// O(n)</span>
+
+<span class="cm">// === SIZE ===</span>
+ll.<span class="fn">size</span>();
+ll.<span class="fn">isEmpty</span>();</pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>⏱️ Time Complexity</h2>
+    <table class="complexity-table">
+      <tr><th>Operation</th><th>Time</th><th>Notes</th></tr>
+      <tr><td>addFirst / addLast</td><td class="tc-good">O(1)</td><td>Direct pointer update</td></tr>
+      <tr><td>removeFirst / removeLast</td><td class="tc-good">O(1)</td><td>Direct pointer update</td></tr>
+      <tr><td>get(i) / add(i, val)</td><td class="tc-mid">O(n)</td><td>Must traverse to index</td></tr>
+      <tr><td>contains / indexOf</td><td class="tc-mid">O(n)</td><td>Linear search</td></tr>
+    </table>
+    <div class="info-box">
+      <strong>ArrayList vs LinkedList:</strong> Use ArrayList for 99% of cases. LinkedList only wins when you frequently insert/remove at both ends (use as Deque).
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🏆 Top Interview Problems (Custom Linked List)</h2>
+    <div class="info-box tip">Interviews usually test <strong>custom singly-linked list</strong> manipulation, not Java's built-in LinkedList.</div>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">1️⃣ Reverse Linked List <span class="badge badge-green">Easy</span> <span class="badge badge-red">Must Know</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <div class="code-block"><pre><span class="kw">class</span> <span class="cls">ListNode</span> {
+    <span class="type">int</span> val;
+    <span class="cls">ListNode</span> next;
+    <span class="cls">ListNode</span>(<span class="type">int</span> v) { val = v; }
+}
+
+<span class="kw">public</span> <span class="cls">ListNode</span> <span class="fn">reverseList</span>(<span class="cls">ListNode</span> head) {
+    <span class="cls">ListNode</span> prev = <span class="kw">null</span>, curr = head;
+    <span class="kw">while</span> (curr != <span class="kw">null</span>) {
+        <span class="cls">ListNode</span> next = curr.next;  <span class="cm">// save</span>
+        curr.next = prev;          <span class="cm">// reverse</span>
+        prev = curr;               <span class="cm">// advance</span>
+        curr = next;
+    }
+    <span class="kw">return</span> prev;
+}
+<span class="cm">// Time: O(n) | Space: O(1)</span></pre></div>
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">2️⃣ Detect Cycle (Floyd's) <span class="badge badge-green">Easy</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <div class="code-block"><pre><span class="kw">public boolean</span> <span class="fn">hasCycle</span>(<span class="cls">ListNode</span> head) {
+    <span class="cls">ListNode</span> slow = head, fast = head;
+    <span class="kw">while</span> (fast != <span class="kw">null</span> && fast.next != <span class="kw">null</span>) {
+        slow = slow.next;
+        fast = fast.next.next;
+        <span class="kw">if</span> (slow == fast) <span class="kw">return true</span>;
+    }
+    <span class="kw">return false</span>;
+}
+<span class="cm">// Tortoise & Hare — O(n) time, O(1) space</span></pre></div>
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">3️⃣ Merge Two Sorted Lists <span class="badge badge-green">Easy</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <div class="code-block"><pre><span class="kw">public</span> <span class="cls">ListNode</span> <span class="fn">mergeTwoLists</span>(<span class="cls">ListNode</span> l1, <span class="cls">ListNode</span> l2) {
+    <span class="cls">ListNode</span> dummy = <span class="kw">new</span> <span class="cls">ListNode</span>(<span class="num">0</span>);
+    <span class="cls">ListNode</span> curr = dummy;
+    <span class="kw">while</span> (l1 != <span class="kw">null</span> && l2 != <span class="kw">null</span>) {
+        <span class="kw">if</span> (l1.val &lt;= l2.val) {
+            curr.next = l1;
+            l1 = l1.next;
+        } <span class="kw">else</span> {
+            curr.next = l2;
+            l2 = l2.next;
+        }
+        curr = curr.next;
+    }
+    curr.next = (l1 != <span class="kw">null</span>) ? l1 : l2;
+    <span class="kw">return</span> dummy.next;
+}
+<span class="cm">// Dummy head trick — O(n+m) time, O(1) space</span></pre></div>
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">4️⃣ Find Middle of Linked List <span class="badge badge-green">Easy</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <div class="code-block"><pre><span class="kw">public</span> <span class="cls">ListNode</span> <span class="fn">middleNode</span>(<span class="cls">ListNode</span> head) {
+    <span class="cls">ListNode</span> slow = head, fast = head;
+    <span class="kw">while</span> (fast != <span class="kw">null</span> && fast.next != <span class="kw">null</span>) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    <span class="kw">return</span> slow; <span class="cm">// slow is at middle</span>
+}
+<span class="cm">// Fast & slow pointer — O(n) time, O(1) space</span></pre></div>
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">5️⃣ Remove Nth Node From End <span class="badge badge-orange">Medium</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <div class="code-block"><pre><span class="kw">public</span> <span class="cls">ListNode</span> <span class="fn">removeNthFromEnd</span>(<span class="cls">ListNode</span> head, <span class="type">int</span> n) {
+    <span class="cls">ListNode</span> dummy = <span class="kw">new</span> <span class="cls">ListNode</span>(<span class="num">0</span>);
+    dummy.next = head;
+    <span class="cls">ListNode</span> fast = dummy, slow = dummy;
+    <span class="kw">for</span> (<span class="type">int</span> i = <span class="num">0</span>; i &lt;= n; i++) fast = fast.next;
+    <span class="kw">while</span> (fast != <span class="kw">null</span>) {
+        fast = fast.next;
+        slow = slow.next;
+    }
+    slow.next = slow.next.next;
+    <span class="kw">return</span> dummy.next;
+}
+<span class="cm">// Two pointers with gap — O(n) time, O(1) space</span></pre></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== QUEUE ===================== -->
+<div class="tab-content" id="queue">
+  <div class="card">
+    <h2>🚶 What is a Queue? <span class="badge badge-green">FIFO</span></h2>
+    <p><strong>First-In-First-Out</strong>. Like a line at a store — first person in line gets served first. In Java, <code>Queue</code> is an interface; common implementations are <code>LinkedList</code> and <code>ArrayDeque</code>.</p>
+    <div class="visual">
+      <p style="color:var(--text2);font-size:0.85em;margin-bottom:10px;">FIFO: enqueue at back, dequeue from front</p>
+      <div class="visual-row">
+        <div style="color:var(--green);font-size:0.85em;font-weight:700;">OUT ←</div>
+        <div class="cell" style="border-color:var(--orange)">10<span class="idx">front</span></div>
+        <div class="cell" style="border-color:var(--orange)">20<span class="idx"></span></div>
+        <div class="cell" style="border-color:var(--orange)">30<span class="idx"></span></div>
+        <div class="cell" style="border-color:var(--orange)">40<span class="idx">back</span></div>
+        <div style="color:var(--accent2);font-size:0.85em;font-weight:700;">← IN</div>
+      </div>
+    </div>
+    <div class="info-box tip">
+      <strong>💡 Prefer ArrayDeque:</strong> <code>ArrayDeque</code> is faster than <code>LinkedList</code> for queue operations (better cache locality). Use LinkedList only when you need null elements.
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>⚙️ All Operations</h2>
+    <div class="code-block">
+      <span class="code-label">Java</span>
+<pre><span class="cm">// === CREATION ===</span>
+Queue&lt;<span class="type">Integer</span>&gt; queue = <span class="kw">new</span> LinkedList&lt;&gt;();
+Queue&lt;<span class="type">Integer</span>&gt; queue2 = <span class="kw">new</span> ArrayDeque&lt;&gt;(); <span class="cm">// ✓ preferred</span>
+
+<span class="cm">// === ENQUEUE (add to back) ===</span>
+queue.<span class="fn">offer</span>(<span class="num">10</span>);  <span class="cm">// returns false if full (capacity-bounded)</span>
+queue.<span class="fn">add</span>(<span class="num">20</span>);    <span class="cm">// throws exception if full</span>
+
+<span class="cm">// === DEQUEUE (remove from front) ===</span>
+<span class="type">int</span> val = queue.<span class="fn">poll</span>();  <span class="cm">// returns null if empty</span>
+<span class="type">int</span> val2 = queue.<span class="fn">remove</span>(); <span class="cm">// throws exception if empty</span>
+
+<span class="cm">// === PEEK (view front without removing) ===</span>
+<span class="type">int</span> front = queue.<span class="fn">peek</span>(); <span class="cm">// null if empty</span>
+<span class="type">int</span> front2 = queue.<span class="fn">element</span>(); <span class="cm">// throws if empty</span>
+
+<span class="cm">// === SIZE & CHECK ===</span>
+queue.<span class="fn">size</span>();
+queue.<span class="fn">isEmpty</span>();
+queue.<span class="fn">contains</span>(<span class="num">10</span>);
+
+<span class="cm">// === PRIORITY QUEUE (min-heap by default) ===</span>
+PriorityQueue&lt;<span class="type">Integer</span>&gt; minHeap = <span class="kw">new</span> PriorityQueue&lt;&gt;();
+PriorityQueue&lt;<span class="type">Integer</span>&gt; maxHeap = <span class="kw">new</span> PriorityQueue&lt;&gt;(Collections.<span class="fn">reverseOrder</span>());
+
+minHeap.<span class="fn">offer</span>(<span class="num">30</span>);
+minHeap.<span class="fn">offer</span>(<span class="num">10</span>);
+minHeap.<span class="fn">offer</span>(<span class="num">20</span>);
+minHeap.<span class="fn">poll</span>();  <span class="cm">// 10 (smallest first)</span>
+minHeap.<span class="fn">peek</span>();  <span class="cm">// 20</span></pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>⏱️ Time Complexity</h2>
+    <table class="complexity-table">
+      <tr><th>Operation</th><th>Queue/Deque</th><th>PriorityQueue</th></tr>
+      <tr><td>offer / add</td><td class="tc-good">O(1)</td><td class="tc-good">O(log n)</td></tr>
+      <tr><td>poll / remove</td><td class="tc-good">O(1)</td><td class="tc-good">O(log n)</td></tr>
+      <tr><td>peek</td><td class="tc-good">O(1)</td><td class="tc-good">O(1)</td></tr>
+      <tr><td>contains</td><td class="tc-mid">O(n)</td><td class="tc-mid">O(n)</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>🏆 Top Interview Problems</h2>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">1️⃣ Implement Queue using Stacks <span class="badge badge-green">Easy</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <div class="code-block"><pre><span class="kw">class</span> <span class="cls">MyQueue</span> {
+    Stack&lt;<span class="type">Integer</span>&gt; in = <span class="kw">new</span> Stack&lt;&gt;();
+    Stack&lt;<span class="type">Integer</span>&gt; out = <span class="kw">new</span> Stack&lt;&gt;();
+
+    <span class="kw">public void</span> <span class="fn">push</span>(<span class="type">int</span> x) { in.<span class="fn">push</span>(x); }
+
+    <span class="kw">public int</span> <span class="fn">pop</span>() {
+        <span class="kw">if</span> (out.<span class="fn">isEmpty</span>())
+            <span class="kw">while</span> (!in.<span class="fn">isEmpty</span>()) out.<span class="fn">push</span>(in.<span class="fn">pop</span>());
+        <span class="kw">return</span> out.<span class="fn">pop</span>();
+    }
+
+    <span class="kw">public int</span> <span class="fn">peek</span>() {
+        <span class="kw">if</span> (out.<span class="fn">isEmpty</span>())
+            <span class="kw">while</span> (!in.<span class="fn">isEmpty</span>()) out.<span class="fn">push</span>(in.<span class="fn">pop</span>());
+        <span class="kw">return</span> out.<span class="fn">peek</span>();
+    }
+
+    <span class="kw">public boolean</span> <span class="fn">empty</span>() { <span class="kw">return</span> in.<span class="fn">isEmpty</span>() && out.<span class="fn">isEmpty</span>(); }
+}
+<span class="cm">// Amortized O(1) per operation</span></pre></div>
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">2️⃣ BFS — Level Order Traversal <span class="badge badge-orange">Medium</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <div class="code-block"><pre><span class="kw">public</span> List&lt;List&lt;<span class="type">Integer</span>&gt;&gt; <span class="fn">levelOrder</span>(TreeNode root) {
+    List&lt;List&lt;<span class="type">Integer</span>&gt;&gt; res = <span class="kw">new</span> ArrayList&lt;&gt;();
+    <span class="kw">if</span> (root == <span class="kw">null</span>) <span class="kw">return</span> res;
+    Queue&lt;TreeNode&gt; q = <span class="kw">new</span> LinkedList&lt;&gt;();
+    q.<span class="fn">offer</span>(root);
+    <span class="kw">while</span> (!q.<span class="fn">isEmpty</span>()) {
+        <span class="type">int</span> size = q.<span class="fn">size</span>();
+        List&lt;<span class="type">Integer</span>&gt; level = <span class="kw">new</span> ArrayList&lt;&gt;();
+        <span class="kw">for</span> (<span class="type">int</span> i = <span class="num">0</span>; i &lt; size; i++) {
+            TreeNode node = q.<span class="fn">poll</span>();
+            level.<span class="fn">add</span>(node.val);
+            <span class="kw">if</span> (node.left != <span class="kw">null</span>) q.<span class="fn">offer</span>(node.left);
+            <span class="kw">if</span> (node.right != <span class="kw">null</span>) q.<span class="fn">offer</span>(node.right);
+        }
+        res.<span class="fn">add</span>(level);
+    }
+    <span class="kw">return</span> res;
+}
+<span class="cm">// Classic BFS pattern using Queue</span></pre></div>
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">3️⃣ Top K Frequent Elements <span class="badge badge-orange">Medium</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <div class="code-block"><pre><span class="kw">public int</span>[] <span class="fn">topKFrequent</span>(<span class="type">int</span>[] nums, <span class="type">int</span> k) {
+    Map&lt;<span class="type">Integer</span>,<span class="type">Integer</span>&gt; freq = <span class="kw">new</span> HashMap&lt;&gt;();
+    <span class="kw">for</span> (<span class="type">int</span> n : nums) freq.<span class="fn">merge</span>(n, <span class="num">1</span>, Integer::sum);
+    
+    <span class="cm">// Min-heap of size k</span>
+    PriorityQueue&lt;<span class="type">Integer</span>&gt; pq = <span class="kw">new</span> PriorityQueue&lt;&gt;(
+        (a,b) -> freq.<span class="fn">get</span>(a) - freq.<span class="fn">get</span>(b)
+    );
+    <span class="kw">for</span> (<span class="type">int</span> key : freq.<span class="fn">keySet</span>()) {
+        pq.<span class="fn">offer</span>(key);
+        <span class="kw">if</span> (pq.<span class="fn">size</span>() > k) pq.<span class="fn">poll</span>();
+    }
+    <span class="kw">return</span> pq.<span class="fn">stream</span>().<span class="fn">mapToInt</span>(i->i).<span class="fn">toArray</span>();
+}
+<span class="cm">// Time: O(n log k)</span></pre></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== STACK ===================== -->
+<div class="tab-content" id="stack">
+  <div class="card">
+    <h2>📚 What is a Stack? <span class="badge badge-green">LIFO</span></h2>
+    <p><strong>Last-In-First-Out</strong>. Like a stack of plates — you can only add/remove from the top. In Java, prefer <code>Deque</code> (<code>ArrayDeque</code>) over the legacy <code>Stack</code> class.</p>
+    <div class="visual">
+      <p style="color:var(--text2);font-size:0.85em;margin-bottom:10px;">LIFO: push/pop from top only</p>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <div style="color:var(--green);font-size:0.85em;font-weight:700;">↕ push/pop/peek</div>
+        <div class="cell" style="border-color:var(--accent3)">40<span class="idx">top</span></div>
+        <div class="cell" style="border-color:var(--accent3)">30<span class="idx"></span></div>
+        <div class="cell" style="border-color:var(--accent3)">20<span class="idx"></span></div>
+        <div class="cell" style="border-color:var(--accent3)">10<span class="idx">bottom</span></div>
+        <div style="border:2px solid var(--border);width:59px;border-radius:0 0 8px 8px;height:5px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>⚙️ All Operations</h2>
+    <div class="code-block">
+      <span class="code-label">Java</span>
+<pre><span class="cm">// === CREATION (prefer ArrayDeque) ===</span>
+Deque&lt;<span class="type">Integer</span>&gt; stack = <span class="kw">new</span> ArrayDeque&lt;&gt;(); <span class="cm">// ✓ modern</span>
+Stack&lt;<span class="type">Integer</span>&gt; oldStack = <span class="kw">new</span> Stack&lt;&gt;();    <span class="cm">// ✗ legacy</span>
+
+<span class="cm">// === PUSH — O(1) ===</span>
+stack.<span class="fn">push</span>(<span class="num">10</span>);
+stack.<span class="fn">push</span>(<span class="num">20</span>);
+stack.<span class="fn">push</span>(<span class="num">30</span>);
+
+<span class="cm">// === POP — O(1) ===</span>
+<span class="type">int</span> top = stack.<span class="fn">pop</span>();   <span class="cm">// 30 — removes & returns top</span>
+
+<span class="cm">// === PEEK — O(1) ===</span>
+<span class="type">int</span> view = stack.<span class="fn">peek</span>(); <span class="cm">// 20 — view top without removing</span>
+
+<span class="cm">// === SIZE & CHECK ===</span>
+stack.<span class="fn">size</span>();          <span class="cm">// 2</span>
+stack.<span class="fn">isEmpty</span>();       <span class="cm">// false</span>
+
+<span class="cm">// === ITERATE (top to bottom) ===</span>
+<span class="kw">for</span> (<span class="type">int</span> x : stack) {
+    System.out.<span class="fn">print</span>(x + <span class="str">" "</span>); <span class="cm">// 20 10</span>
+}
+
+<span class="cm">// === USING STACK CLASS (legacy but common in interviews) ===</span>
+Stack&lt;<span class="type">Integer</span>&gt; s = <span class="kw">new</span> Stack&lt;&gt;();
+s.<span class="fn">push</span>(<span class="num">1</span>);
+s.<span class="fn">pop</span>();
+s.<span class="fn">peek</span>();
+s.<span class="fn">isEmpty</span>();
+s.<span class="fn">search</span>(<span class="num">1</span>); <span class="cm">// returns 1-based position from top, -1 if not found</span></pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🏆 Top Interview Problems</h2>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">1️⃣ Valid Parentheses <span class="badge badge-green">Easy</span> <span class="badge badge-red">Must Know</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <div class="code-block"><pre><span class="kw">public boolean</span> <span class="fn">isValid</span>(<span class="type">String</span> s) {
+    Deque&lt;<span class="type">Character</span>&gt; stack = <span class="kw">new</span> ArrayDeque&lt;&gt;();
+    <span class="kw">for</span> (<span class="type">char</span> c : s.<span class="fn">toCharArray</span>()) {
+        <span class="kw">if</span> (c == <span class="str">'('</span>) stack.<span class="fn">push</span>(<span class="str">')'</span>);
+        <span class="kw">else if</span> (c == <span class="str">'{'</span>) stack.<span class="fn">push</span>(<span class="str">'}'</span>);
+        <span class="kw">else if</span> (c == <span class="str">'['</span>) stack.<span class="fn">push</span>(<span class="str">']'</span>);
+        <span class="kw">else if</span> (stack.<span class="fn">isEmpty</span>() || stack.<span class="fn">pop</span>() != c)
+            <span class="kw">return false</span>;
+    }
+    <span class="kw">return</span> stack.<span class="fn">isEmpty</span>();
+}
+<span class="cm">// Push expected closing bracket — clean trick!</span></pre></div>
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">2️⃣ Min Stack <span class="badge badge-orange">Medium</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <div class="code-block"><pre><span class="kw">class</span> <span class="cls">MinStack</span> {
+    Deque&lt;<span class="type">Integer</span>&gt; stack = <span class="kw">new</span> ArrayDeque&lt;&gt;();
+    Deque&lt;<span class="type">Integer</span>&gt; minStack = <span class="kw">new</span> ArrayDeque&lt;&gt;();
+
+    <span class="kw">public void</span> <span class="fn">push</span>(<span class="type">int</span> val) {
+        stack.<span class="fn">push</span>(val);
+        <span class="type">int</span> min = minStack.<span class="fn">isEmpty</span>() ? val : Math.<span class="fn">min</span>(val, minStack.<span class="fn">peek</span>());
+        minStack.<span class="fn">push</span>(min);
+    }
+    <span class="kw">public void</span> <span class="fn">pop</span>() { stack.<span class="fn">pop</span>(); minStack.<span class="fn">pop</span>(); }
+    <span class="kw">public int</span> <span class="fn">top</span>() { <span class="kw">return</span> stack.<span class="fn">peek</span>(); }
+    <span class="kw">public int</span> <span class="fn">getMin</span>() { <span class="kw">return</span> minStack.<span class="fn">peek</span>(); }
+}
+<span class="cm">// All operations O(1) — parallel min-tracking stack</span></pre></div>
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">3️⃣ Next Greater Element <span class="badge badge-orange">Medium</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <p class="problem-desc">For each element, find the next element that is greater (monotonic stack pattern).</p>
+        <div class="code-block"><pre><span class="kw">public int</span>[] <span class="fn">nextGreaterElement</span>(<span class="type">int</span>[] nums) {
+    <span class="type">int</span> n = nums.<span class="fn">length</span>;
+    <span class="type">int</span>[] res = <span class="kw">new</span> <span class="type">int</span>[n];
+    Arrays.<span class="fn">fill</span>(res, -<span class="num">1</span>);
+    Deque&lt;<span class="type">Integer</span>&gt; stack = <span class="kw">new</span> ArrayDeque&lt;&gt;(); <span class="cm">// stores indices</span>
+    <span class="kw">for</span> (<span class="type">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="kw">while</span> (!stack.<span class="fn">isEmpty</span>() && nums[stack.<span class="fn">peek</span>()] &lt; nums[i]) {
+            res[stack.<span class="fn">pop</span>()] = nums[i];
+        }
+        stack.<span class="fn">push</span>(i);
+    }
+    <span class="kw">return</span> res;
+}
+<span class="cm">// Monotonic stack — O(n) time, O(n) space</span></pre></div>
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">4️⃣ Evaluate Reverse Polish Notation <span class="badge badge-orange">Medium</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <div class="code-block"><pre><span class="kw">public int</span> <span class="fn">evalRPN</span>(<span class="type">String</span>[] tokens) {
+    Deque&lt;<span class="type">Integer</span>&gt; stack = <span class="kw">new</span> ArrayDeque&lt;&gt;();
+    <span class="kw">for</span> (<span class="type">String</span> t : tokens) {
+        <span class="kw">if</span> (<span class="str">"+-*/"</span>.<span class="fn">contains</span>(t)) {
+            <span class="type">int</span> b = stack.<span class="fn">pop</span>(), a = stack.<span class="fn">pop</span>();
+            <span class="kw">switch</span>(t) {
+                <span class="kw">case</span> <span class="str">"+"</span>: stack.<span class="fn">push</span>(a+b); <span class="kw">break</span>;
+                <span class="kw">case</span> <span class="str">"-"</span>: stack.<span class="fn">push</span>(a-b); <span class="kw">break</span>;
+                <span class="kw">case</span> <span class="str">"*"</span>: stack.<span class="fn">push</span>(a*b); <span class="kw">break</span>;
+                <span class="kw">case</span> <span class="str">"/"</span>: stack.<span class="fn">push</span>(a/b); <span class="kw">break</span>;
+            }
+        } <span class="kw">else</span> {
+            stack.<span class="fn">push</span>(Integer.<span class="fn">parseInt</span>(t));
+        }
+    }
+    <span class="kw">return</span> stack.<span class="fn">pop</span>();
+}</pre></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== HASHMAP ===================== -->
+<div class="tab-content" id="hashmap">
+  <div class="card">
+    <h2>🗺️ What is a HashMap? <span class="badge badge-green">Key-Value Store</span></h2>
+    <p>A <strong>hash table</strong> that stores key-value pairs. Uses <code>hashCode()</code> to compute bucket index, handles collisions via <strong>chaining</strong> (linked list → red-black tree when chain ≥ 8). <strong>No ordering guarantee.</strong></p>
+    <div class="visual">
+      <p style="color:var(--text2);font-size:0.85em;margin-bottom:10px;">Internal: Array of buckets, hash(key) → bucket index</p>
+      <div style="text-align:left;display:inline-block;">
+        <div style="display:flex;align-items:center;gap:10px;margin:4px 0;">
+          <div class="cell" style="width:40px;height:35px;font-size:0.75em;border-color:var(--accent7)">0</div>
+          <span style="color:var(--text2)">→</span>
+          <span style="color:var(--text2);font-size:0.85em;">null</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;margin:4px 0;">
+          <div class="cell" style="width:40px;height:35px;font-size:0.75em;border-color:var(--accent7)">1</div>
+          <span style="color:var(--text2)">→</span>
+          <span style="background:rgba(0,230,118,0.15);padding:3px 10px;border-radius:5px;font-size:0.85em;">"age":25</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;margin:4px 0;">
+          <div class="cell" style="width:40px;height:35px;font-size:0.75em;border-color:var(--accent7)">2</div>
+          <span style="color:var(--text2)">→</span>
+          <span style="background:rgba(108,99,255,0.15);padding:3px 10px;border-radius:5px;font-size:0.85em;">"name":"Alice"</span>
+          <span style="color:var(--text2)">→</span>
+          <span style="background:rgba(255,107,107,0.15);padding:3px 10px;border-radius:5px;font-size:0.85em;">"city":"NY"</span>
+          <span style="color:var(--text2);font-size:0.75em;">(collision chain)</span>
+        </div>
+      </div>
+    </div>
+    <div class="info-box">
+      <strong>How Hashing Works:</strong> <code>index = hash(key) & (n-1)</code> where n is always a power of 2. Load factor 0.75 triggers resize (double capacity). Java 8+ converts chains to trees when length ≥ 8.
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>⚙️ All Operations</h2>
+    <div class="code-block">
+      <span class="code-label">Java</span>
+<pre><span class="cm">// === CREATION ===</span>
+Map&lt;<span class="type">String</span>, <span class="type">Integer</span>&gt; map = <span class="kw">new</span> HashMap&lt;&gt;();
+Map&lt;<span class="type">String</span>, <span class="type">Integer</span>&gt; map2 = Map.<span class="fn">of</span>(<span class="str">"a"</span>,<span class="num">1</span>,<span class="str">"b"</span>,<span class="num">2</span>); <span class="cm">// immutable</span>
+Map&lt;<span class="type">String</span>, <span class="type">Integer</span>&gt; map3 = <span class="kw">new</span> HashMap&lt;&gt;(Map.<span class="fn">of</span>(<span class="str">"a"</span>,<span class="num">1</span>));
+
+<span class="cm">// === PUT — O(1) average ===</span>
+map.<span class="fn">put</span>(<span class="str">"apple"</span>, <span class="num">5</span>);     <span class="cm">// add/update</span>
+map.<span class="fn">put</span>(<span class="str">"banana"</span>, <span class="num">3</span>);
+map.<span class="fn">putIfAbsent</span>(<span class="str">"apple"</span>, <span class="num">10</span>); <span class="cm">// only if key missing</span>
+
+<span class="cm">// === GET — O(1) average ===</span>
+<span class="type">int</span> val = map.<span class="fn">get</span>(<span class="str">"apple"</span>);          <span class="cm">// 5 (null if missing)</span>
+<span class="type">int</span> safe = map.<span class="fn">getOrDefault</span>(<span class="str">"xyz"</span>, <span class="num">0</span>); <span class="cm">// 0 (safe default)</span>
+
+<span class="cm">// === REMOVE — O(1) average ===</span>
+map.<span class="fn">remove</span>(<span class="str">"banana"</span>);      <span class="cm">// remove by key</span>
+map.<span class="fn">remove</span>(<span class="str">"apple"</span>, <span class="num">5</span>);   <span class="cm">// remove only if value matches</span>
+
+<span class="cm">// === CHECK ===</span>
+map.<span class="fn">containsKey</span>(<span class="str">"apple"</span>);   <span class="cm">// true — O(1)</span>
+map.<span class="fn">containsValue</span>(<span class="num">5</span>);       <span class="cm">// true — O(n)!</span>
+map.<span class="fn">size</span>();
+map.<span class="fn">isEmpty</span>();
+
+<span class="cm">// === ITERATE ===</span>
+<span class="kw">for</span> (Map.Entry&lt;<span class="type">String</span>,<span class="type">Integer</span>&gt; e : map.<span class="fn">entrySet</span>()) {
+    e.<span class="fn">getKey</span>(); e.<span class="fn">getValue</span>();
+}
+<span class="kw">for</span> (<span class="type">String</span> key : map.<span class="fn">keySet</span>()) { }
+<span class="kw">for</span> (<span class="type">int</span> val2 : map.<span class="fn">values</span>()) { }
+map.<span class="fn">forEach</span>((k, v) -> System.out.<span class="fn">println</span>(k + <span class="str">":"</span> + v));
+
+<span class="cm">// === POWERFUL METHODS (Java 8+) ===</span>
+map.<span class="fn">merge</span>(<span class="str">"apple"</span>, <span class="num">1</span>, Integer::sum);  <span class="cm">// increment count</span>
+map.<span class="fn">compute</span>(<span class="str">"apple"</span>, (k,v) -> v == <span class="kw">null</span> ? <span class="num">1</span> : v+<span class="num">1</span>);
+map.<span class="fn">computeIfAbsent</span>(<span class="str">"key"</span>, k -> <span class="kw">new</span> ArrayList&lt;&gt;());
+
+<span class="cm">// === FREQUENCY COUNTING PATTERN ===</span>
+<span class="type">int</span>[] nums = {<span class="num">1</span>,<span class="num">2</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">3</span>,<span class="num">3</span>};
+Map&lt;<span class="type">Integer</span>,<span class="type">Integer</span>&gt; freq = <span class="kw">new</span> HashMap&lt;&gt;();
+<span class="kw">for</span> (<span class="type">int</span> n : nums) freq.<span class="fn">merge</span>(n, <span class="num">1</span>, Integer::sum);
+<span class="cm">// {1=1, 2=2, 3=3}</span></pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>⏱️ Time Complexity</h2>
+    <table class="complexity-table">
+      <tr><th>Operation</th><th>Average</th><th>Worst</th></tr>
+      <tr><td>put / get / remove</td><td class="tc-good">O(1)</td><td class="tc-mid">O(n)</td></tr>
+      <tr><td>containsKey</td><td class="tc-good">O(1)</td><td class="tc-mid">O(n)</td></tr>
+      <tr><td>containsValue</td><td class="tc-mid">O(n)</td><td class="tc-mid">O(n)</td></tr>
+      <tr><td>Iterate all</td><td class="tc-mid">O(n + buckets)</td><td>—</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>🏆 Top Interview Problems</h2>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">1️⃣ Two Sum (HashMap approach) <span class="badge badge-green">Easy</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <div class="code-block"><pre><span class="cm">// Already shown in Arrays tab — this IS the HashMap solution</span>
+<span class="cm">// Store complement → index, check before adding</span>
+Map&lt;<span class="type">Integer</span>,<span class="type">Integer</span>&gt; map = <span class="kw">new</span> HashMap&lt;&gt;();
+<span class="kw">for</span> (<span class="type">int</span> i = <span class="num">0</span>; i &lt; nums.<span class="fn">length</span>; i++) {
+    <span class="kw">if</span> (map.<span class="fn">containsKey</span>(target - nums[i]))
+        <span class="kw">return new</span> <span class="type">int</span>[]{map.<span class="fn">get</span>(target - nums[i]), i};
+    map.<span class="fn">put</span>(nums[i], i);
+}</pre></div>
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">2️⃣ Subarray Sum Equals K <span class="badge badge-orange">Medium</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <p class="problem-desc">Count number of subarrays with sum = k. Uses prefix sum + HashMap.</p>
+        <div class="code-block"><pre><span class="kw">public int</span> <span class="fn">subarraySum</span>(<span class="type">int</span>[] nums, <span class="type">int</span> k) {
+    Map&lt;<span class="type">Integer</span>,<span class="type">Integer</span>&gt; prefixCount = <span class="kw">new</span> HashMap&lt;&gt;();
+    prefixCount.<span class="fn">put</span>(<span class="num">0</span>, <span class="num">1</span>); <span class="cm">// base case</span>
+    <span class="type">int</span> sum = <span class="num">0</span>, count = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="type">int</span> n : nums) {
+        sum += n;
+        count += prefixCount.<span class="fn">getOrDefault</span>(sum - k, <span class="num">0</span>);
+        prefixCount.<span class="fn">merge</span>(sum, <span class="num">1</span>, Integer::sum);
+    }
+    <span class="kw">return</span> count;
+}
+<span class="cm">// Prefix sum + HashMap — O(n) time, O(n) space</span></pre></div>
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">3️⃣ Longest Consecutive Sequence <span class="badge badge-orange">Medium</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <div class="code-block"><pre><span class="kw">public int</span> <span class="fn">longestConsecutive</span>(<span class="type">int</span>[] nums) {
+    Set&lt;<span class="type">Integer</span>&gt; set = <span class="kw">new</span> HashSet&lt;&gt;();
+    <span class="kw">for</span> (<span class="type">int</span> n : nums) set.<span class="fn">add</span>(n);
+    <span class="type">int</span> max = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="type">int</span> n : set) {
+        <span class="kw">if</span> (!set.<span class="fn">contains</span>(n - <span class="num">1</span>)) { <span class="cm">// start of sequence</span>
+            <span class="type">int</span> len = <span class="num">1</span>;
+            <span class="kw">while</span> (set.<span class="fn">contains</span>(n + len)) len++;
+            max = Math.<span class="fn">max</span>(max, len);
+        }
+    }
+    <span class="kw">return</span> max;
+}
+<span class="cm">// O(n) — each element visited at most twice</span></pre></div>
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">4️⃣ First Non-Repeating Character <span class="badge badge-green">Easy</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <div class="code-block"><pre><span class="kw">public int</span> <span class="fn">firstUniqChar</span>(<span class="type">String</span> s) {
+    Map&lt;<span class="type">Character</span>,<span class="type">Integer</span>&gt; count = <span class="kw">new</span> HashMap&lt;&gt;();
+    <span class="kw">for</span> (<span class="type">char</span> c : s.<span class="fn">toCharArray</span>())
+        count.<span class="fn">merge</span>(c, <span class="num">1</span>, Integer::sum);
+    <span class="kw">for</span> (<span class="type">int</span> i = <span class="num">0</span>; i &lt; s.<span class="fn">length</span>(); i++)
+        <span class="kw">if</span> (count.<span class="fn">get</span>(s.<span class="fn">charAt</span>(i)) == <span class="num">1</span>) <span class="kw">return</span> i;
+    <span class="kw">return</span> -<span class="num">1</span>;
+}
+<span class="cm">// Two-pass — O(n) time</span></pre></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== LINKEDHASHMAP ===================== -->
+<div class="tab-content" id="linkedhashmap">
+  <div class="card">
+    <h2>🔗🗺️ What is LinkedHashMap? <span class="badge badge-blue">Ordered HashMap</span></h2>
+    <p>A <code>HashMap</code> + <strong>doubly-linked list</strong> maintaining <strong>insertion order</strong> (or access order). Same O(1) operations as HashMap, plus predictable iteration order. <strong>Perfect for LRU Cache!</strong></p>
+    <div class="visual">
+      <p style="color:var(--text2);font-size:0.85em;margin-bottom:10px;">HashMap buckets + linked list for order tracking</p>
+      <div class="visual-row">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+          <div class="cell" style="border-color:var(--accent8);width:80px;font-size:0.7em;">A→1<span class="idx">1st</span></div>
+          <span class="arrow">↓</span>
+          <div class="cell" style="border-color:var(--accent8);width:80px;font-size:0.7em;">B→2<span class="idx">2nd</span></div>
+          <span class="arrow">↓</span>
+          <div class="cell" style="border-color:var(--accent8);width:80px;font-size:0.7em;">C→3<span class="idx">3rd</span></div>
+        </div>
+        <div style="margin-left:30px;color:var(--text2);font-size:0.85em;text-align:left;">
+          <p>✅ Iterates in insertion order</p>
+          <p>✅ O(1) get/put (same as HashMap)</p>
+          <p>✅ Can switch to access-order</p>
+          <p>⚡ Slight memory overhead (prev/next pointers)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>⚙️ All Operations</h2>
+    <div class="code-block">
+      <span class="code-label">Java</span>
+<pre><span class="cm">// === CREATION ===</span>
+<span class="cm">// Insertion-order (default)</span>
+Map&lt;<span class="type">String</span>,<span class="type">Integer</span>&gt; map = <span class="kw">new</span> LinkedHashMap&lt;&gt;();
+
+<span class="cm">// Access-order (LRU mode!)</span>
+Map&lt;<span class="type">String</span>,<span class="type">Integer</span>&gt; accessMap = <span class="kw">new</span> LinkedHashMap&lt;&gt;(<span class="num">16</span>, <span class="num">0.75f</span>, <span class="kw">true</span>);
+<span class="cm">//                                     capacity, loadFactor, accessOrder</span>
+
+<span class="cm">// === ALL HashMap operations work the same ===</span>
+map.<span class="fn">put</span>(<span class="str">"banana"</span>, <span class="num">2</span>);
+map.<span class="fn">put</span>(<span class="str">"apple"</span>, <span class="num">1</span>);
+map.<span class="fn">put</span>(<span class="str">"cherry"</span>, <span class="num">3</span>);
+
+<span class="cm">// Iteration is IN ORDER!</span>
+<span class="kw">for</span> (var e : map.<span class="fn">entrySet</span>())
+    System.out.<span class="fn">println</span>(e);
+<span class="cm">// banana=2, apple=1, cherry=3 (insertion order!)</span>
+
+map.<span class="fn">get</span>(<span class="str">"apple"</span>);       <span class="cm">// O(1)</span>
+map.<span class="fn">containsKey</span>(<span class="str">"x"</span>);  <span class="cm">// O(1)</span>
+map.<span class="fn">remove</span>(<span class="str">"banana"</span>);   <span class="cm">// O(1)</span>
+map.<span class="fn">size</span>();
+map.<span class="fn">isEmpty</span>();
+
+<span class="cm">// === Use as insertion-ordered collector ===</span>
+<span class="cm">// Great when you need "first seen" or "preserve order"</span>
+
+<span class="cm">// === OVERRIDE removeEldestEntry for auto-eviction ===</span>
+<span class="cm">// (This is how you build LRU Cache!)</span></pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>⏱️ HashMap vs LinkedHashMap</h2>
+    <table class="complexity-table">
+      <tr><th>Feature</th><th>HashMap</th><th>LinkedHashMap</th></tr>
+      <tr><td>put / get / remove</td><td class="tc-good">O(1)</td><td class="tc-good">O(1)</td></tr>
+      <tr><td>Iteration order</td><td class="tc-bad">Unpredictable</td><td class="tc-good">Insertion / Access order</td></tr>
+      <tr><td>Memory</td><td class="tc-good">Less</td><td class="tc-mid">More (linked list pointers)</td></tr>
+      <tr><td>Use case</td><td>General purpose</td><td>LRU cache, ordered maps</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>🏆 The Classic Interview Problem: LRU Cache <span class="badge badge-red">Must Know</span></h2>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">LRU Cache — Method 1: LinkedHashMap <span class="badge badge-orange">Medium</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <p class="problem-desc">The elegant 5-line solution using LinkedHashMap's built-in access-order.</p>
+        <div class="code-block"><pre><span class="kw">class</span> <span class="cls">LRUCache</span> <span class="kw">extends</span> LinkedHashMap&lt;<span class="type">Integer</span>,<span class="type">Integer</span>&gt; {
+    <span class="type">int</span> capacity;
+
+    <span class="kw">public</span> <span class="fn">LRUCache</span>(<span class="type">int</span> capacity) {
+        <span class="kw">super</span>(capacity, <span class="num">0.75f</span>, <span class="kw">true</span>); <span class="cm">// access-order = true</span>
+        <span class="kw">this</span>.capacity = capacity;
+    }
+
+    <span class="kw">public int</span> <span class="fn">get</span>(<span class="type">int</span> key) {
+        <span class="kw">return super</span>.<span class="fn">getOrDefault</span>(key, -<span class="num">1</span>);
+    }
+
+    <span class="kw">public void</span> <span class="fn">put</span>(<span class="type">int</span> key, <span class="type">int</span> value) {
+        <span class="kw">super</span>.<span class="fn">put</span>(key, value);
+    }
+
+    <span class="ann">@Override</span>
+    <span class="kw">protected boolean</span> <span class="fn">removeEldestEntry</span>(Map.Entry e) {
+        <span class="kw">return</span> <span class="fn">size</span>() > capacity; <span class="cm">// auto-evict oldest!</span>
+    }
+}
+<span class="cm">// All operations O(1) — the interviewer-impressing answer</span></pre></div>
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-header" onclick="toggleProblem(this)">
+        <span class="problem-title">LRU Cache — Method 2: HashMap + Custom Doubly Linked List <span class="badge badge-red">Hard</span></span>
+        <span class="problem-toggle">+</span>
+      </div>
+      <div class="problem-body">
+        <p class="problem-desc">The from-scratch implementation interviewers often expect.</p>
+        <div class="code-block"><pre><span class="kw">class</span> <span class="cls">LRUCache</span> {
+    <span class="kw">class</span> <span class="cls">Node</span> {
+        <span class="type">int</span> key, val;
+        <span class="cls">Node</span> prev, next;
+        <span class="cls">Node</span>(<span class="type">int</span> k, <span class="type">int</span> v) { key = k; val = v; }
+    }
+
+    Map&lt;<span class="type">Integer</span>, <span class="cls">Node</span>&gt; map = <span class="kw">new</span> HashMap&lt;&gt;();
+    <span class="cls">Node</span> head = <span class="kw">new</span> <span class="cls">Node</span>(<span class="num">0</span>,<span class="num">0</span>), tail = <span class="kw">new</span> <span class="cls">Node</span>(<span class="num">0</span>,<span class="num">0</span>);
+    <span class="type">int</span> cap;
+
+    <span class="kw">public</span> <span class="fn">LRUCache</span>(<span class="type">int</span> capacity) {
+        cap = capacity;
+        head.next = tail;
+        tail.prev = head;
+    }
+
+    <span class="kw">public int</span> <span class="fn">get</span>(<span class="type">int</span> key) {
+        <span class="kw">if</span> (!map.<span class="fn">containsKey</span>(key)) <span class="kw">return</span> -<span class="num">1</span>;
+        <span class="cls">Node</span> node = map.<span class="fn">get</span>(key);
+        <span class="fn">remove</span>(node);
+        <span class="fn">insertToHead</span>(node);
+        <span class="kw">return</span> node.val;
+    }
+
+    <span class="kw">public void</span> <span class="fn">put</span>(<span class="type">int</span> key, <span class="type">int</span> value) {
+        <span class="kw">if</span> (map.<span class="fn">containsKey</span>(key)) <span class="fn">remove</span>(map.<span class="fn">get</span>(key));
+        <span class="cls">Node</span> node = <span class="kw">new</span> <span class="cls">Node</span>(key, value);
+        map.<span class="fn">put</span>(key, node);
+        <span class="fn">insertToHead</span>(node);
+        <span class="kw">if</span> (map.<span class="fn">size</span>() > cap) {
+            <span class="cls">Node</span> lru = tail.prev;
+            <span class="fn">remove</span>(lru);
+            map.<span class="fn">remove</span>(lru.key);
+        }
+    }
+
+    <span class="kw">void</span> <span class="fn">remove</span>(<span class="cls">Node</span> n) {
+        n.prev.next = n.next;
+        n.next.prev = n.prev;
+    }
+
+    <span class="kw">void</span> <span class="fn">insertToHead</span>(<span class="cls">Node</span> n) {
+        n.next = head.next;
+        n.prev = head;
+        head.next.prev = n;
+        head.next = n;
+    }
+}
+<span class="cm">// All operations O(1) — full manual implementation</span></pre></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CHEAT SHEET ===================== -->
+<div class="tab-content" id="cheatsheet">
+  <div class="card">
+    <h2>📝 Master Cheat Sheet — All at a Glance</h2>
+
+    <table class="complexity-table" style="font-size:0.82em;">
+      <tr>
+        <th>Structure</th>
+        <th>Type</th>
+        <th>Access</th>
+        <th>Search</th>
+        <th>Insert</th>
+        <th>Delete</th>
+        <th>Ordered?</th>
+        <th>When to Use</th>
+      </tr>
+      <tr>
+        <td><strong>Array</strong></td>
+        <td>Fixed</td>
+        <td class="tc-good">O(1)</td>
+        <td class="tc-mid">O(n)</td>
+        <td class="tc-mid">O(n)</td>
+        <td class="tc-mid">O(n)</td>
+        <td>Index</td>
+        <td>Known size, fast access</td>
+      </tr>
+      <tr>
+        <td><strong>String</strong></td>
+        <td>Immutable</td>
+        <td class="tc-good">O(1)</td>
+        <td class="tc-mid">O(n)</td>
+        <td class="tc-mid">O(n)*</td>
+        <td class="tc-mid">O(n)*</td>
+        <td>Index</td>
+        <td>Text processing</td>
+      </tr>
+      <tr>
+        <td><strong>ArrayList</strong></td>
+        <td>Dynamic</td>
+        <td class="tc-good">O(1)</td>
+        <td class="tc-mid">O(n)</td>
+        <td class="tc-good">O(1)*</td>
+        <td class="tc-mid">O(n)</td>
+        <td>Index</td>
+        <td>Dynamic, random access</td>
+      </tr>
+      <tr>
+        <td><strong>LinkedList</strong></td>
+        <td>Nodes</td>
+        <td class="tc-mid">O(n)</td>
+        <td class="tc-mid">O(n)</td>
+        <td class="tc-good">O(1)†</td>
+        <td class="tc-good">O(1)†</td>
+        <td>Insert</td>
+        <td>Frequent add/remove ends</td>
+      </tr>
+      <tr>
+        <td><strong>Queue</strong></td>
+        <td>FIFO</td>
+        <td>Front only</td>
+        <td class="tc-mid">O(n)</td>
+        <td class="tc-good">O(1)</td>
+        <td class="tc-good">O(1)</td>
+        <td>FIFO</td>
+        <td>BFS, scheduling</td>
+      </tr>
+      <tr>
+        <td><strong>Stack</strong></td>
+        <td>LIFO</td>
+        <td>Top only</td>
+        <td class="tc-mid">O(n)</td>
+        <td class="tc-good">O(1)</td>
+        <td class="tc-good">O(1)</td>
+        <td>LIFO</td>
+        <td>DFS, parsing, undo</td>
+      </tr>
+      <tr>
+        <td><strong>HashMap</strong></td>
+        <td>Hash</td>
+        <td class="tc-good">O(1)</td>
+        <td class="tc-good">O(1)</td>
+        <td class="tc-good">O(1)</td>
+        <td class="tc-good">O(1)</td>
+        <td>No</td>
+        <td>Lookup, counting, caching</td>
+      </tr>
+      <tr>
+        <td><strong>LinkedHashMap</strong></td>
+        <td>Hash+LL</td>
+        <td class="tc-good">O(1)</td>
+        <td class="tc-good">O(1)</td>
+        <td class="tc-good">O(1)</td>
+        <td class="tc-good">O(1)</td>
+        <td>Yes</td>
+        <td>LRU cache, ordered map</td>
+      </tr>
+    </table>
+    <p style="color:var(--text2);font-size:0.8em;margin-top:8px;">* = amortized &nbsp; † = at known position (ends)</p>
+  </div>
+
+  <div class="card">
+    <h2>🎯 Pattern → Data Structure Mapping</h2>
+    <div class="cheat-grid">
+      <div class="info-box">
+        <strong>🔍 "Find pair/complement"</strong><br>→ HashMap (Two Sum pattern)
+      </div>
+      <div class="info-box">
+        <strong>📊 "Count frequency"</strong><br>→ HashMap with merge/getOrDefault
+      </div>
+      <div class="info-box">
+        <strong>📐 "Sliding window"</strong><br>→ HashMap + two pointers
+      </div>
+      <div class="info-box">
+        <strong>🔄 "Matching brackets"</strong><br>→ Stack
+      </div>
+      <div class="info-box">
+        <strong>📶 "Next greater/smaller"</strong><br>→ Monotonic Stack
+      </div>
+      <div class="info-box">
+        <strong>🌳 "Level-by-level"</strong><br>→ Queue (BFS)
+      </div>
+      <div class="info-box">
+        <strong>🔝 "Top K / Kth largest"</strong><br>→ PriorityQueue (Heap)
+      </div>
+      <div class="info-box">
+        <strong>🔄 "Reverse linked list"</strong><br>→ Three pointers (prev, curr, next)
+      </div>
+      <div class="info-box">
+        <strong>🐢🐇 "Cycle / Middle"</strong><br>→ Fast & Slow pointers
+      </div>
+      <div class="info-box">
+        <strong>📦 "Cache with eviction"</strong><br>→ LinkedHashMap (LRU)
+      </div>
+      <div class="info-box">
+        <strong>🔤 "Anagram / Permutation"</strong><br>→ int[26] frequency array
+      </div>
+      <div class="info-box">
+        <strong>➕ "Subarray sum = K"</strong><br>→ Prefix sum + HashMap
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>⚡ Quick Code Snippets</h2>
+    <div class="cheat-grid">
+      <div class="code-block">
+        <span class="code-label">Sort</span>
+<pre>Arrays.<span class="fn">sort</span>(arr);              <span class="cm">// primitive</span>
+Arrays.<span class="fn">sort</span>(arr, (a,b)->b-a); <span class="cm">// wrapper desc</span>
+Collections.<span class="fn">sort</span>(list);
+list.<span class="fn">sort</span>(Comparator.<span class="fn">naturalOrder</span>());</pre>
+      </div>
+      <div class="code-block">
+        <span class="code-label">Convert</span>
+<pre><span class="cm">// Array ↔ List</span>
+List&lt;Integer&gt; l = <span class="kw">new</span> ArrayList&lt;&gt;(
+    Arrays.<span class="fn">asList</span>(<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>));
+Integer[] a = l.<span class="fn">toArray</span>(<span class="kw">new</span> Integer[<span class="num">0</span>]);
+<span class="cm">// String ↔ char[]</span>
+<span class="type">char</span>[] c = s.<span class="fn">toCharArray</span>();
+<span class="type">String</span> s = <span class="kw">new</span> String(c);</pre>
+      </div>
+      <div class="code-block">
+        <span class="code-label">Min/Max</span>
+<pre>Collections.<span class="fn">min</span>(list);
+Collections.<span class="fn">max</span>(list);
+Arrays.<span class="fn">stream</span>(arr).<span class="fn">min</span>();
+Arrays.<span class="fn">stream</span>(arr).<span class="fn">max</span>();
+Math.<span class="fn">min</span>(a, b);
+Math.<span class="fn">max</span>(a, b);</pre>
+      </div>
+      <div class="code-block">
+        <span class="code-label">Init Tricks</span>
+<pre><span class="cm">// Fill array</span>
+Arrays.<span class="fn">fill</span>(arr, -<span class="num">1</span>);
+<span class="cm">// 2D fill</span>
+<span class="kw">for</span>(<span class="type">int</span>[] row : grid) 
+    Arrays.<span class="fn">fill</span>(row, -<span class="num">1</span>);
+<span class="cm">// Freq array for lowercase</span>
+<span class="type">int</span>[] freq = <span class="kw">new</span> <span class="type">int</span>[<span class="num">26</span>];
+freq[ch - <span class="str">'a'</span>]++;</pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Tab switching
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  // Problem toggle
+  function toggleProblem(header) {
+    const body = header.nextElementSibling;
+    const toggle = header.querySelector('.problem-toggle');
+    body.classList.toggle('open');
+    toggle.textContent = body.classList.contains('open') ? '−' : '+';
+  }
+</script>
+
+</body>
+</html>

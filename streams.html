@@ -1,0 +1,1792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Java Streams API – Complete Interview Guide</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0f1117;--surface:#1a1d27;--card:#222536;--border:#2e3248;--accent:#6c63ff;
+--accent2:#00d4aa;--text:#e2e4f0;--dim:#8b8fa3;--keyword:#c678dd;--string:#98c379;
+--type:#e5c07b;--method:#61afef;--number:#d19a66;--comment:#5c6370;--danger:#e06c75;
+--success:#98c379;--warn:#e5c07b;--info:#61afef}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:linear-gradient(135deg,#1a1040 0%,#2d1b69 50%,#1a3a5c 100%);padding:32px 24px 20px;text-align:center;border-bottom:2px solid var(--accent)}
+header h1{font-size:2.2em;background:linear-gradient(90deg,#6c63ff,#00d4aa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
+header p{color:var(--dim);font-size:1.05em}
+.search-box{margin-top:16px;display:flex;justify-content:center}
+#search{width:min(500px,90%);padding:10px 18px;border-radius:25px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:.95em;outline:none;transition:.3s}
+#search:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(108,99,255,.2)}
+nav.tabs{display:flex;gap:4px;padding:10px 16px;background:var(--surface);overflow-x:auto;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;scrollbar-width:thin}
+nav.tabs::-webkit-scrollbar{height:4px}
+nav.tabs::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.tab{padding:10px 18px;border:none;background:transparent;color:var(--dim);cursor:pointer;border-radius:8px;font-size:.9em;white-space:nowrap;transition:.25s;font-weight:500}
+.tab:hover{background:var(--card);color:var(--text)}
+.tab.active{background:var(--accent);color:#fff}
+main{max-width:1100px;margin:0 auto;padding:24px 16px 60px}
+.tab-content{display:none;animation:fadeIn .35s ease}
+.tab-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:18px;transition:.2s}
+.card:hover{border-color:var(--accent);box-shadow:0 4px 20px rgba(108,99,255,.08)}
+.card h3{color:var(--accent2);margin-bottom:8px;font-size:1.15em;display:flex;align-items:center;gap:8px}
+.card h3 .badge{font-size:.7em;padding:2px 8px;border-radius:10px;font-weight:600}
+.badge-inter{background:rgba(108,99,255,.2);color:var(--accent)}
+.badge-term{background:rgba(0,212,170,.2);color:var(--accent2)}
+.badge-create{background:rgba(225,192,105,.2);color:var(--type)}
+.card p,.card li{color:var(--dim);line-height:1.7;font-size:.92em}
+.card ul{padding-left:20px;margin-top:6px}
+.card li{margin-bottom:4px}
+pre{background:#181b25;border:1px solid var(--border);border-radius:8px;padding:16px;overflow-x:auto;margin:12px 0;font-size:.85em;line-height:1.65;scrollbar-width:thin}
+code{font-family:'JetBrains Mono','Fira Code','Cascadia Code',Consolas,monospace}
+.kw{color:var(--keyword)}.str{color:var(--string)}.tp{color:var(--type)}.mt{color:var(--method)}
+.nm{color:var(--number)}.cm{color:var(--comment);font-style:italic}.an{color:var(--danger)}
+.section-title{font-size:1.5em;color:var(--text);margin:30px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:10px}
+.section-title:first-child{margin-top:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.mini-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px}
+.mini-card h4{color:var(--method);margin-bottom:6px;font-size:1em}
+.mini-card p{color:var(--dim);font-size:.85em;line-height:1.5}
+.diagram{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;margin:16px 0;text-align:center;overflow-x:auto}
+.pipe{display:inline-flex;align-items:center;gap:0;flex-wrap:wrap;justify-content:center}
+.pipe-item{padding:10px 18px;border-radius:8px;font-weight:600;font-size:.85em;white-space:nowrap}
+.pipe-arrow{color:var(--accent);font-size:1.4em;margin:0 4px}
+.pipe-source{background:rgba(225,192,105,.15);color:var(--type);border:1px solid rgba(225,192,105,.3)}
+.pipe-inter{background:rgba(108,99,255,.15);color:var(--accent);border:1px solid rgba(108,99,255,.3)}
+.pipe-terminal{background:rgba(0,212,170,.15);color:var(--accent2);border:1px solid rgba(0,212,170,.3)}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.88em}
+th{background:var(--surface);color:var(--accent2);padding:12px;text-align:left;border-bottom:2px solid var(--border);position:sticky;top:52px}
+td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--dim)}
+tr:hover td{background:rgba(108,99,255,.04)}
+td code{background:var(--surface);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--method)}
+.accordion{margin-bottom:8px}
+.acc-header{width:100%;padding:14px 18px;background:var(--card);border:1px solid var(--border);border-radius:10px;color:var(--text);cursor:pointer;text-align:left;font-size:.93em;display:flex;justify-content:space-between;align-items:center;transition:.2s;font-weight:500}
+.acc-header:hover{border-color:var(--accent);background:#262940}
+.acc-header.open{border-radius:10px 10px 0 0;border-color:var(--accent);background:#262940}
+.acc-header .num{color:var(--accent);font-weight:700;margin-right:10px;min-width:28px}
+.acc-header .diff{font-size:.75em;padding:2px 8px;border-radius:8px;font-weight:600}
+.diff-easy{background:rgba(152,195,57,.15);color:var(--success)}
+.diff-med{background:rgba(229,192,105,.15);color:var(--warn)}
+.diff-hard{background:rgba(224,108,117,.15);color:var(--danger)}
+.acc-body{display:none;padding:18px;background:var(--surface);border:1px solid var(--accent);border-top:none;border-radius:0 0 10px 10px}
+.acc-body.open{display:block;animation:fadeIn .3s}
+.tag{display:inline-block;font-size:.72em;padding:2px 8px;border-radius:6px;margin:2px;background:rgba(108,99,255,.12);color:var(--accent)}
+.compare-table td:first-child{color:var(--method);font-weight:600}
+.highlight-box{padding:16px;border-radius:8px;margin:12px 0;font-size:.9em;line-height:1.6}
+.highlight-box.tip{background:rgba(0,212,170,.08);border-left:3px solid var(--accent2)}
+.highlight-box.warn{background:rgba(229,192,105,.08);border-left:3px solid var(--warn)}
+.highlight-box.info{background:rgba(97,175,239,.08);border-left:3px solid var(--info)}
+.cat-filter{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.cat-btn{padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--dim);cursor:pointer;font-size:.82em;transition:.2s}
+.cat-btn:hover,.cat-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.counter{background:var(--surface);padding:14px 20px;border-radius:10px;margin-bottom:18px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.counter-item{text-align:center}
+.counter-item .val{font-size:1.6em;font-weight:700;color:var(--accent)}
+.counter-item .lbl{font-size:.78em;color:var(--dim)}
+@media(max-width:700px){header h1{font-size:1.5em}.grid,.grid-3{grid-template-columns:1fr}nav.tabs{gap:2px}.tab{padding:8px 12px;font-size:.8em}main{padding:16px 10px}}
+</style>
+</head>
+<body>
+
+<header>
+<h1>☕ Java Streams API</h1>
+<p>Complete Interview Preparation Guide — All Operations, 50 Problems, Cheat Sheet</p>
+<div class="search-box"><input type="text" id="search" placeholder="🔍  Search operations, methods, problems..."></div>
+</header>
+
+<nav class="tabs" id="tabNav">
+<button class="tab active" data-tab="fundamentals">🏗️ Fundamentals</button>
+<button class="tab" data-tab="creation">🔨 Creation</button>
+<button class="tab" data-tab="intermediate">🔄 Intermediate Ops</button>
+<button class="tab" data-tab="terminal">🎯 Terminal Ops</button>
+<button class="tab" data-tab="collectors">📦 Collectors</button>
+<button class="tab" data-tab="advanced">⚡ Advanced</button>
+<button class="tab" data-tab="problems">💡 Top 50 Problems</button>
+<button class="tab" data-tab="cheatsheet">📋 Cheat Sheet</button>
+</nav>
+
+<main>
+
+<!-- ==================== FUNDAMENTALS ==================== -->
+<div class="tab-content active" id="fundamentals">
+<h2 class="section-title">🏗️ What is a Stream?</h2>
+<div class="card">
+<h3>Definition</h3>
+<p>A <strong>Stream</strong> is a sequence of elements supporting sequential and parallel aggregate operations. It is <strong>NOT</strong> a data structure — it doesn't store elements. It conveys elements from a source through a pipeline of operations.</p>
+<div class="highlight-box tip">💡 Think of it like an assembly line: items flow through, get transformed, filtered, and collected — but the line itself doesn't store anything.</div>
+</div>
+
+<h2 class="section-title">⚙️ Stream Pipeline</h2>
+<div class="diagram">
+<div class="pipe">
+<span class="pipe-item pipe-source">Source<br><small>Collection / Array / Generator</small></span>
+<span class="pipe-arrow">→</span>
+<span class="pipe-item pipe-inter">Intermediate Op 1<br><small>filter()</small></span>
+<span class="pipe-arrow">→</span>
+<span class="pipe-item pipe-inter">Intermediate Op 2<br><small>map()</small></span>
+<span class="pipe-arrow">→</span>
+<span class="pipe-item pipe-inter">Intermediate Op N<br><small>sorted()</small></span>
+<span class="pipe-arrow">→</span>
+<span class="pipe-item pipe-terminal">Terminal Op<br><small>collect() / reduce()</small></span>
+</div>
+</div>
+
+<div class="grid">
+<div class="card">
+<h3>🔑 Key Characteristics</h3>
+<ul>
+<li><strong>No Storage</strong> — Streams don't store elements</li>
+<li><strong>Functional</strong> — Operations produce results, don't modify source</li>
+<li><strong>Lazy</strong> — Intermediate ops are only executed when a terminal op is invoked</li>
+<li><strong>Single Use</strong> — A stream can be consumed only once</li>
+<li><strong>Possibly Unbounded</strong> — Streams can be infinite (e.g. Stream.generate)</li>
+<li><strong>Short-circuiting</strong> — Some ops don't need to process all elements (findFirst, limit, anyMatch)</li>
+</ul>
+</div>
+<div class="card">
+<h3>🔄 Lazy Evaluation — How it works</h3>
+<pre><code class="java">List&lt;String&gt; names = List.of("Alice","Bob","Charlie","Dave");
+
+// Nothing happens here — lazy!
+Stream&lt;String&gt; stream = names.stream()
+    .filter(n -> {
+        System.out.println("filtering: " + n);
+        return n.length() > 3;
+    })
+    .map(String::toUpperCase);
+
+// NOW the pipeline executes
+List&lt;String&gt; result = stream.collect(Collectors.toList());
+// filtering: Alice  → passes → mapped to ALICE
+// filtering: Bob    → rejected
+// filtering: Charlie → passes → mapped to CHARLIE
+// filtering: Dave   → passes → mapped to DAVE</code></pre>
+<div class="highlight-box info">ℹ️ Each element travels through the ENTIRE pipeline before the next element starts. This is called <strong>loop fusion</strong>.</div>
+</div>
+</div>
+
+<h2 class="section-title">⚖️ Stream vs Collection</h2>
+<div class="card">
+<table class="compare-table">
+<tr><th>Feature</th><th>Collection</th><th>Stream</th></tr>
+<tr><td>Storage</td><td>Stores all elements in memory</td><td>No storage; computes on demand</td></tr>
+<tr><td>Consumption</td><td>Can iterate multiple times</td><td>Can be consumed only ONCE</td></tr>
+<tr><td>Modification</td><td>Can add/remove elements</td><td>Cannot modify source</td></tr>
+<tr><td>Evaluation</td><td>Eagerly populated</td><td>Lazily computed</td></tr>
+<tr><td>Size</td><td>Finite</td><td>Can be infinite</td></tr>
+<tr><td>External/Internal</td><td>External iteration (you control loop)</td><td>Internal iteration (stream controls)</td></tr>
+</table>
+</div>
+
+<h2 class="section-title">🧱 Stream Types</h2>
+<div class="grid-3">
+<div class="mini-card"><h4>Stream&lt;T&gt;</h4><p>Object streams — works with any reference type</p></div>
+<div class="mini-card"><h4>IntStream</h4><p>Primitive int stream — avoids boxing, has sum(), average()</p></div>
+<div class="mini-card"><h4>LongStream</h4><p>Primitive long stream — same benefits as IntStream</p></div>
+<div class="mini-card"><h4>DoubleStream</h4><p>Primitive double stream — for floating-point operations</p></div>
+</div>
+
+<div class="card" style="margin-top:18px">
+<h3>⚠️ Single-Use Rule</h3>
+<pre><code class="java">Stream&lt;String&gt; s = List.of("a","b").stream();
+s.forEach(System.out::println); // OK
+s.forEach(System.out::println); // IllegalStateException!
+// "stream has already been operated upon or closed"</code></pre>
+</div>
+</div>
+
+<!-- ==================== CREATION ==================== -->
+<div class="tab-content" id="creation">
+<h2 class="section-title">🔨 Ways to Create Streams</h2>
+
+<div class="card">
+<h3>1. From Collection <span class="badge badge-create">Most Common</span></h3>
+<pre><code class="java">List&lt;String&gt; list = List.of("a", "b", "c");
+Stream&lt;String&gt; s1 = list.stream();           // sequential
+Stream&lt;String&gt; s2 = list.parallelStream();    // parallel
+
+Set&lt;Integer&gt; set = Set.of(1, 2, 3);
+Stream&lt;Integer&gt; s3 = set.stream();</code></pre>
+</div>
+
+<div class="card">
+<h3>2. From Array</h3>
+<pre><code class="java">String[] arr = {"x", "y", "z"};
+Stream&lt;String&gt; s1 = Arrays.stream(arr);
+Stream&lt;String&gt; s2 = Arrays.stream(arr, 0, 2); // partial: [x, y]
+
+int[] nums = {1, 2, 3, 4, 5};
+IntStream s3 = Arrays.stream(nums);</code></pre>
+</div>
+
+<div class="card">
+<h3>3. Stream.of()</h3>
+<pre><code class="java">Stream&lt;String&gt; s1 = Stream.of("a", "b", "c");
+Stream&lt;Integer&gt; s2 = Stream.of(1, 2, 3);
+Stream&lt;int[]&gt; s3 = Stream.of(new int[]{1,2}); // ⚠️ stream of ONE int array!</code></pre>
+</div>
+
+<div class="card">
+<h3>4. Stream.empty()</h3>
+<pre><code class="java">Stream&lt;String&gt; empty = Stream.empty(); // useful for conditional returns</code></pre>
+</div>
+
+<div class="card">
+<h3>5. Stream.iterate() — Infinite/Finite Sequences</h3>
+<pre><code class="java">// Infinite (must use limit())
+Stream&lt;Integer&gt; evens = Stream.iterate(0, n -> n + 2);
+evens.limit(5).forEach(System.out::println); // 0, 2, 4, 6, 8
+
+// Finite (Java 9+) — with predicate (like a for-loop)
+Stream&lt;Integer&gt; s = Stream.iterate(1, n -> n &lt;= 100, n -> n * 2);
+// 1, 2, 4, 8, 16, 32, 64</code></pre>
+</div>
+
+<div class="card">
+<h3>6. Stream.generate() — Infinite Supplier</h3>
+<pre><code class="java">Stream&lt;Double&gt; randoms = Stream.generate(Math::random);
+randoms.limit(5).forEach(System.out::println);
+
+Stream&lt;String&gt; hellos = Stream.generate(() -> "Hello");
+// Hello, Hello, Hello, ...</code></pre>
+</div>
+
+<div class="card">
+<h3>7. Primitive Ranges</h3>
+<pre><code class="java">IntStream.range(1, 5)        // 1, 2, 3, 4 (exclusive end)
+IntStream.rangeClosed(1, 5)  // 1, 2, 3, 4, 5 (inclusive end)
+LongStream.range(1L, 10L)   // 1L to 9L
+
+IntStream.range(0, 10)
+    .filter(n -> n % 2 == 0)
+    .forEach(System.out::println); // 0, 2, 4, 6, 8</code></pre>
+</div>
+
+<div class="card">
+<h3>8. From String</h3>
+<pre><code class="java">IntStream chars = "Hello".chars(); // IntStream of char values
+chars.mapToObj(c -> (char) c).forEach(System.out::print); // Hello
+
+Stream&lt;String&gt; words = Pattern.compile("\\s+").splitAsStream("Hello World Java");
+// "Hello", "World", "Java"</code></pre>
+</div>
+
+<div class="card">
+<h3>9. From File</h3>
+<pre><code class="java">// Each line becomes an element (auto-closeable)
+try (Stream&lt;String&gt; lines = Files.lines(Path.of("data.txt"))) {
+    lines.filter(l -> !l.isEmpty())
+         .map(String::trim)
+         .forEach(System.out::println);
+}</code></pre>
+</div>
+
+<div class="card">
+<h3>10. Stream.builder()</h3>
+<pre><code class="java">Stream&lt;String&gt; s = Stream.&lt;String&gt;builder()
+    .add("a").add("b").add("c")
+    .build();</code></pre>
+</div>
+
+<div class="card">
+<h3>11. Stream.concat()</h3>
+<pre><code class="java">Stream&lt;String&gt; s1 = Stream.of("a", "b");
+Stream&lt;String&gt; s2 = Stream.of("c", "d");
+Stream&lt;String&gt; merged = Stream.concat(s1, s2); // a, b, c, d</code></pre>
+</div>
+
+<div class="card">
+<h3>12. Stream.ofNullable() — Java 9+</h3>
+<pre><code class="java">String val = null;
+Stream&lt;String&gt; s = Stream.ofNullable(val); // empty stream (count = 0)
+
+val = "hello";
+Stream&lt;String&gt; s2 = Stream.ofNullable(val); // stream of 1 element</code></pre>
+</div>
+
+<div class="card">
+<h3>13. Random Streams</h3>
+<pre><code class="java">new Random().ints(5, 1, 100)      // 5 random ints in [1, 100)
+new Random().doubles(3)            // 3 random doubles
+new Random().longs(10, 0, 1000)   // 10 random longs in [0, 1000)</code></pre>
+</div>
+
+<div class="card">
+<h3>14. From Map</h3>
+<pre><code class="java">Map&lt;String, Integer&gt; map = Map.of("a", 1, "b", 2, "c", 3);
+Stream&lt;Map.Entry&lt;String, Integer&gt;&gt; entries = map.entrySet().stream();
+Stream&lt;String&gt; keys = map.keySet().stream();
+Stream&lt;Integer&gt; values = map.values().stream();</code></pre>
+</div>
+</div>
+
+<!-- ==================== INTERMEDIATE OPERATIONS ==================== -->
+<div class="tab-content" id="intermediate">
+<h2 class="section-title">🔄 Intermediate Operations</h2>
+<div class="highlight-box info">ℹ️ Intermediate operations return a new Stream and are <strong>lazy</strong> — they don't execute until a terminal operation is invoked. They can be chained.</div>
+
+<div class="card">
+<h3>filter(Predicate&lt;T&gt;) <span class="badge badge-inter">Stateless</span></h3>
+<p>Keeps elements matching the predicate.</p>
+<pre><code class="java">List&lt;Integer&gt; nums = List.of(1, 2, 3, 4, 5, 6, 7, 8);
+
+// Even numbers
+nums.stream().filter(n -> n % 2 == 0)  // [2, 4, 6, 8]
+
+// Multiple conditions
+nums.stream().filter(n -> n > 2 && n < 7) // [3, 4, 5, 6]
+
+// With method reference
+List&lt;String&gt; names = List.of("", "Alice", "", "Bob");
+names.stream().filter(Predicate.not(String::isEmpty)) // [Alice, Bob]</code></pre>
+</div>
+
+<div class="card">
+<h3>map(Function&lt;T, R&gt;) <span class="badge badge-inter">Stateless</span></h3>
+<p>Transforms each element to another type/value.</p>
+<pre><code class="java">// String -> Integer (length)
+List.of("hi", "hello", "hey").stream()
+    .map(String::length)        // [2, 5, 3]
+
+// Object field extraction
+employees.stream()
+    .map(Employee::getName)     // Stream&lt;String&gt; of names
+
+// Chained transformations
+List.of("  hello  ", "  world  ").stream()
+    .map(String::trim)
+    .map(String::toUpperCase)   // [HELLO, WORLD]</code></pre>
+</div>
+
+<div class="card">
+<h3>flatMap(Function&lt;T, Stream&lt;R&gt;&gt;) <span class="badge badge-inter">Stateless</span></h3>
+<p>Flattens nested structures. Each element → Stream → merged into one Stream.</p>
+<pre><code class="java">// Flatten list of lists
+List&lt;List&lt;Integer&gt;&gt; nested = List.of(
+    List.of(1, 2), List.of(3, 4), List.of(5)
+);
+nested.stream()
+    .flatMap(Collection::stream) // [1, 2, 3, 4, 5]
+
+// Split sentences into words
+List&lt;String&gt; sentences = List.of("Hello World", "Java Streams");
+sentences.stream()
+    .flatMap(s -> Arrays.stream(s.split(" ")))
+    // [Hello, World, Java, Streams]
+
+// Optional values — remove empties
+Stream&lt;Optional&lt;String&gt;&gt; opts = Stream.of(
+    Optional.of("a"), Optional.empty(), Optional.of("b")
+);
+opts.flatMap(Optional::stream) // [a, b]  (Java 9+)</code></pre>
+<div class="highlight-box tip">💡 Rule of thumb: Use <code>map()</code> for 1-to-1, <code>flatMap()</code> for 1-to-many.</div>
+</div>
+
+<div class="card">
+<h3>sorted() / sorted(Comparator&lt;T&gt;) <span class="badge badge-inter">Stateful</span></h3>
+<p>Sorts elements. Without args uses natural order (Comparable).</p>
+<pre><code class="java">// Natural order
+Stream.of(3, 1, 4, 1, 5).sorted()          // [1, 1, 3, 4, 5]
+
+// Reverse order
+Stream.of(3, 1, 4).sorted(Comparator.reverseOrder()) // [4, 3, 1]
+
+// By property
+employees.stream()
+    .sorted(Comparator.comparing(Employee::getSalary))         // ascending
+    .sorted(Comparator.comparing(Employee::getSalary).reversed()) // descending
+
+// Multiple criteria
+employees.stream()
+    .sorted(Comparator.comparing(Employee::getDept)
+                       .thenComparing(Employee::getName)
+                       .thenComparing(Employee::getSalary).reversed())</code></pre>
+</div>
+
+<div class="card">
+<h3>distinct() <span class="badge badge-inter">Stateful</span></h3>
+<p>Removes duplicates (uses equals() and hashCode()).</p>
+<pre><code class="java">Stream.of(1, 2, 2, 3, 3, 3).distinct()  // [1, 2, 3]
+
+List.of("a", "b", "a", "c").stream()
+    .distinct()                           // [a, b, c]</code></pre>
+</div>
+
+<div class="card">
+<h3>peek(Consumer&lt;T&gt;) <span class="badge badge-inter">Stateless</span></h3>
+<p>Performs an action on each element without modifying the stream. Mainly for debugging.</p>
+<pre><code class="java">List.of(1, 2, 3).stream()
+    .filter(n -> n > 1)
+    .peek(n -> System.out.println("After filter: " + n))
+    .map(n -> n * 10)
+    .peek(n -> System.out.println("After map: " + n))
+    .collect(Collectors.toList());
+// After filter: 2 → After map: 20
+// After filter: 3 → After map: 30</code></pre>
+<div class="highlight-box warn">⚠️ Don't use peek() for side effects in production. It's meant for debugging only.</div>
+</div>
+
+<div class="card">
+<h3>limit(long n) <span class="badge badge-inter">Short-circuit</span></h3>
+<p>Truncates stream to at most n elements.</p>
+<pre><code class="java">Stream.of(1, 2, 3, 4, 5).limit(3)  // [1, 2, 3]
+
+// Essential for infinite streams
+Stream.iterate(1, n -> n + 1)
+    .limit(10)
+    .collect(Collectors.toList());  // [1..10]</code></pre>
+</div>
+
+<div class="card">
+<h3>skip(long n) <span class="badge badge-inter">Stateful</span></h3>
+<p>Skips the first n elements.</p>
+<pre><code class="java">Stream.of(1, 2, 3, 4, 5).skip(2)       // [3, 4, 5]
+
+// Pagination: page 3, size 10
+items.stream().skip(20).limit(10)       // items 21-30</code></pre>
+</div>
+
+<div class="card">
+<h3>mapToInt / mapToLong / mapToDouble <span class="badge badge-inter">Stateless</span></h3>
+<p>Maps to primitive streams for performance + specialized operations.</p>
+<pre><code class="java">List&lt;String&gt; words = List.of("hi", "hello", "hey");
+
+IntStream lengths = words.stream().mapToInt(String::length);
+int sum = lengths.sum();              // 10
+OptionalDouble avg = words.stream().mapToInt(String::length).average(); // 3.33
+
+// Convert back: boxed()
+Stream&lt;Integer&gt; boxed = IntStream.range(1, 5).boxed();</code></pre>
+</div>
+
+<div class="card">
+<h3>takeWhile(Predicate) — Java 9+ <span class="badge badge-inter">Short-circuit</span></h3>
+<p>Takes elements while predicate is true, stops at first false.</p>
+<pre><code class="java">Stream.of(2, 4, 6, 7, 8, 10)
+    .takeWhile(n -> n % 2 == 0)  // [2, 4, 6] — stops at 7</code></pre>
+</div>
+
+<div class="card">
+<h3>dropWhile(Predicate) — Java 9+ <span class="badge badge-inter">Stateful</span></h3>
+<p>Drops elements while predicate is true, keeps the rest.</p>
+<pre><code class="java">Stream.of(2, 4, 6, 7, 8, 10)
+    .dropWhile(n -> n % 2 == 0)  // [7, 8, 10] — drops until 7</code></pre>
+</div>
+
+<div class="card">
+<h3>mapMulti(BiConsumer) — Java 16+</h3>
+<p>Imperative alternative to flatMap — push elements into a consumer.</p>
+<pre><code class="java">Stream.of(1, 2, 3)
+    .&lt;Integer&gt;mapMulti((num, consumer) -> {
+        consumer.accept(num);
+        consumer.accept(num * 10);
+    })
+    // [1, 10, 2, 20, 3, 30]</code></pre>
+</div>
+</div>
+
+<!-- ==================== TERMINAL OPERATIONS ==================== -->
+<div class="tab-content" id="terminal">
+<h2 class="section-title">🎯 Terminal Operations</h2>
+<div class="highlight-box info">ℹ️ Terminal operations <strong>trigger pipeline execution</strong> and produce a result or side-effect. After a terminal operation, the stream is consumed and cannot be reused.</div>
+
+<div class="card">
+<h3>collect(Collector) <span class="badge badge-term">Most Used</span></h3>
+<p>Mutable reduction — accumulates elements into a container.</p>
+<pre><code class="java">// To List
+List&lt;String&gt; list = stream.collect(Collectors.toList());
+
+// To Set
+Set&lt;String&gt; set = stream.collect(Collectors.toSet());
+
+// To Map
+Map&lt;Integer, String&gt; map = employees.stream()
+    .collect(Collectors.toMap(Employee::getId, Employee::getName));
+
+// Java 16+: simpler toList()
+List&lt;String&gt; list = stream.toList(); // returns unmodifiable list</code></pre>
+</div>
+
+<div class="card">
+<h3>forEach(Consumer&lt;T&gt;)</h3>
+<p>Performs an action on each element. Does NOT guarantee order in parallel streams.</p>
+<pre><code class="java">List.of("a", "b", "c").stream()
+    .forEach(System.out::println);  // a, b, c
+
+// forEachOrdered — guarantees encounter order even in parallel
+list.parallelStream()
+    .forEachOrdered(System.out::println);</code></pre>
+<div class="highlight-box warn">⚠️ forEach is a terminal operation. Don't confuse with peek() (intermediate).</div>
+</div>
+
+<div class="card">
+<h3>reduce() — Immutable Reduction <span class="badge badge-term">Key for Interviews</span></h3>
+<p>Combines all elements into a single result using a binary operator.</p>
+<pre><code class="java">// Form 1: reduce(BinaryOperator) → Optional
+Optional&lt;Integer&gt; sum = List.of(1, 2, 3, 4).stream()
+    .reduce((a, b) -> a + b);             // Optional[10]
+
+// Form 2: reduce(identity, BinaryOperator) → T
+int sum = List.of(1, 2, 3, 4).stream()
+    .reduce(0, Integer::sum);              // 10
+
+// Form 3: reduce(identity, accumulator, combiner) — for parallel
+int sum = List.of(1, 2, 3).parallelStream()
+    .reduce(0, Integer::sum, Integer::sum);
+
+// Examples
+int product = IntStream.rangeClosed(1, 5)
+    .reduce(1, (a, b) -> a * b);           // 120 (5!)
+
+String concat = List.of("a", "b", "c").stream()
+    .reduce("", String::concat);            // "abc"
+
+int max = List.of(3, 7, 2, 9).stream()
+    .reduce(Integer.MIN_VALUE, Integer::max); // 9</code></pre>
+</div>
+
+<div class="card">
+<h3>count()</h3>
+<pre><code class="java">long count = List.of(1, 2, 3, 4, 5).stream()
+    .filter(n -> n > 3)
+    .count();  // 2</code></pre>
+</div>
+
+<div class="card">
+<h3>min(Comparator) / max(Comparator)</h3>
+<pre><code class="java">Optional&lt;Integer&gt; min = List.of(3, 1, 4).stream()
+    .min(Comparator.naturalOrder());  // Optional[1]
+
+Optional&lt;Integer&gt; max = List.of(3, 1, 4).stream()
+    .max(Comparator.naturalOrder());  // Optional[4]
+
+// With objects
+Optional&lt;Employee&gt; highestPaid = employees.stream()
+    .max(Comparator.comparing(Employee::getSalary));
+
+// Primitive streams have parameterless min()/max()
+OptionalInt min = IntStream.of(5, 2, 8).min(); // 2</code></pre>
+</div>
+
+<div class="card">
+<h3>findFirst() / findAny()</h3>
+<pre><code class="java">// findFirst — always returns the first element in encounter order
+Optional&lt;Integer&gt; first = List.of(3, 1, 4).stream()
+    .filter(n -> n > 2)
+    .findFirst();  // Optional[3]
+
+// findAny — may return any matching element (faster in parallel)
+Optional&lt;Integer&gt; any = List.of(3, 1, 4).parallelStream()
+    .filter(n -> n > 2)
+    .findAny();    // Optional[3] or Optional[4] — non-deterministic</code></pre>
+<div class="highlight-box tip">💡 Both are <strong>short-circuiting</strong> — they stop processing once a result is found.</div>
+</div>
+
+<div class="card">
+<h3>anyMatch / allMatch / noneMatch</h3>
+<pre><code class="java">List&lt;Integer&gt; nums = List.of(1, 2, 3, 4, 5);
+
+boolean hasEven = nums.stream().anyMatch(n -> n % 2 == 0);   // true
+boolean allPos  = nums.stream().allMatch(n -> n > 0);         // true
+boolean noNegs  = nums.stream().noneMatch(n -> n &lt; 0);        // true
+
+// Short-circuiting: stops as soon as answer is determined
+List.of(1, 2, 3, 4, 5).stream()
+    .anyMatch(n -> {
+        System.out.println("checking " + n);
+        return n == 2;
+    });
+// checking 1
+// checking 2  ← stops here, returns true</code></pre>
+</div>
+
+<div class="card">
+<h3>toArray()</h3>
+<pre><code class="java">Object[] arr1 = Stream.of("a", "b", "c").toArray();
+
+// With type
+String[] arr2 = Stream.of("a", "b", "c").toArray(String[]::new);
+
+int[] arr3 = IntStream.of(1, 2, 3).toArray();</code></pre>
+</div>
+
+<div class="card">
+<h3>toList() — Java 16+</h3>
+<pre><code class="java">// Returns an UNMODIFIABLE list
+List&lt;String&gt; list = Stream.of("a", "b", "c").toList();
+// list.add("d"); // UnsupportedOperationException!</code></pre>
+</div>
+
+<div class="card">
+<h3>Primitive Stream Terminal Ops</h3>
+<pre><code class="java">IntStream nums = IntStream.of(2, 4, 6, 8, 10);
+
+int sum = nums.sum();                        // 30
+OptionalDouble avg = IntStream.of(2,4,6).average();  // 4.0
+OptionalInt max = IntStream.of(2,4,6).max();          // 6
+OptionalInt min = IntStream.of(2,4,6).min();          // 2
+long count = IntStream.of(2,4,6).count();             // 3
+
+// Summary statistics — all at once!
+IntSummaryStatistics stats = IntStream.of(2, 4, 6, 8).summaryStatistics();
+stats.getSum();     // 20
+stats.getAverage(); // 5.0
+stats.getMax();     // 8
+stats.getMin();     // 2
+stats.getCount();   // 4</code></pre>
+</div>
+</div>
+
+<!-- ==================== COLLECTORS ==================== -->
+<div class="tab-content" id="collectors">
+<h2 class="section-title">📦 Collectors (java.util.stream.Collectors)</h2>
+<div class="highlight-box info">ℹ️ Collectors are used with <code>stream.collect()</code> to accumulate elements into collections, strings, statistics, or grouped structures.</div>
+
+<div class="card">
+<h3>toList() / toSet() / toCollection()</h3>
+<pre><code class="java">List&lt;String&gt; list = stream.collect(Collectors.toList());       // ArrayList
+Set&lt;String&gt; set = stream.collect(Collectors.toSet());           // HashSet
+
+// Specific collection type
+TreeSet&lt;String&gt; ts = stream.collect(Collectors.toCollection(TreeSet::new));
+LinkedList&lt;String&gt; ll = stream.collect(Collectors.toCollection(LinkedList::new));
+
+// Unmodifiable (Java 10+)
+List&lt;String&gt; ulist = stream.collect(Collectors.toUnmodifiableList());
+Set&lt;String&gt; uset = stream.collect(Collectors.toUnmodifiableSet());</code></pre>
+</div>
+
+<div class="card">
+<h3>toMap() <span class="badge badge-term">Interview Favorite</span></h3>
+<pre><code class="java">// Basic: toMap(keyMapper, valueMapper)
+Map&lt;Integer, String&gt; map = employees.stream()
+    .collect(Collectors.toMap(Employee::getId, Employee::getName));
+
+// Handle duplicate keys — merge function
+Map&lt;String, Integer&gt; map = items.stream()
+    .collect(Collectors.toMap(
+        Item::getName,
+        Item::getQuantity,
+        Integer::sum        // merge: sum quantities for duplicate names
+    ));
+
+// Specify map type
+TreeMap&lt;String, Integer&gt; sorted = items.stream()
+    .collect(Collectors.toMap(
+        Item::getName, Item::getQuantity, Integer::sum, TreeMap::new
+    ));</code></pre>
+<div class="highlight-box warn">⚠️ Without merge function, duplicate keys throw IllegalStateException!</div>
+</div>
+
+<div class="card">
+<h3>groupingBy() <span class="badge badge-term">Very Important</span></h3>
+<pre><code class="java">// Simple grouping → Map&lt;K, List&lt;T&gt;&gt;
+Map&lt;String, List&lt;Employee&gt;&gt; byDept = employees.stream()
+    .collect(Collectors.groupingBy(Employee::getDepartment));
+
+// Group + downstream collector
+Map&lt;String, Long&gt; countByDept = employees.stream()
+    .collect(Collectors.groupingBy(Employee::getDepartment, Collectors.counting()));
+
+Map&lt;String, Double&gt; avgSalaryByDept = employees.stream()
+    .collect(Collectors.groupingBy(
+        Employee::getDepartment,
+        Collectors.averagingDouble(Employee::getSalary)
+    ));
+
+// Group + map names
+Map&lt;String, List&lt;String&gt;&gt; namesByDept = employees.stream()
+    .collect(Collectors.groupingBy(
+        Employee::getDepartment,
+        Collectors.mapping(Employee::getName, Collectors.toList())
+    ));
+
+// Multi-level grouping
+Map&lt;String, Map&lt;String, List&lt;Employee&gt;&gt;&gt; byDeptThenCity = employees.stream()
+    .collect(Collectors.groupingBy(
+        Employee::getDepartment,
+        Collectors.groupingBy(Employee::getCity)
+    ));</code></pre>
+</div>
+
+<div class="card">
+<h3>partitioningBy()</h3>
+<p>Special groupingBy with boolean key — splits into two groups.</p>
+<pre><code class="java">Map&lt;Boolean, List&lt;Integer&gt;&gt; evenOdd = List.of(1,2,3,4,5).stream()
+    .collect(Collectors.partitioningBy(n -> n % 2 == 0));
+// {false=[1, 3, 5], true=[2, 4]}
+
+Map&lt;Boolean, Long&gt; counts = nums.stream()
+    .collect(Collectors.partitioningBy(n -> n > 50, Collectors.counting()));</code></pre>
+</div>
+
+<div class="card">
+<h3>joining()</h3>
+<pre><code class="java">String csv = List.of("a", "b", "c").stream()
+    .collect(Collectors.joining());                   // "abc"
+
+String csv2 = List.of("a", "b", "c").stream()
+    .collect(Collectors.joining(", "));                // "a, b, c"
+
+String csv3 = List.of("a", "b", "c").stream()
+    .collect(Collectors.joining(", ", "[", "]"));      // "[a, b, c]"</code></pre>
+</div>
+
+<div class="card">
+<h3>counting() / summingInt() / averagingInt()</h3>
+<pre><code class="java">long count = stream.collect(Collectors.counting());
+
+int totalSalary = employees.stream()
+    .collect(Collectors.summingInt(Employee::getSalary));
+
+double avgSalary = employees.stream()
+    .collect(Collectors.averagingDouble(Employee::getSalary));</code></pre>
+</div>
+
+<div class="card">
+<h3>summarizingInt() / summarizingDouble()</h3>
+<pre><code class="java">IntSummaryStatistics stats = employees.stream()
+    .collect(Collectors.summarizingInt(Employee::getSalary));
+// stats → {count=5, sum=350000, min=50000, average=70000.0, max=90000}</code></pre>
+</div>
+
+<div class="card">
+<h3>maxBy() / minBy()</h3>
+<pre><code class="java">Optional&lt;Employee&gt; highest = employees.stream()
+    .collect(Collectors.maxBy(Comparator.comparing(Employee::getSalary)));
+
+Optional&lt;Employee&gt; lowest = employees.stream()
+    .collect(Collectors.minBy(Comparator.comparing(Employee::getSalary)));</code></pre>
+</div>
+
+<div class="card">
+<h3>mapping() / flatMapping() / filtering() — Downstream adapters</h3>
+<pre><code class="java">// mapping — transform before collecting downstream
+Map&lt;String, Set&lt;String&gt;&gt; namesByDept = employees.stream()
+    .collect(Collectors.groupingBy(
+        Employee::getDept,
+        Collectors.mapping(Employee::getName, Collectors.toSet())
+    ));
+
+// flatMapping (Java 9+) — flatten then collect
+Map&lt;String, Set&lt;String&gt;&gt; skillsByDept = employees.stream()
+    .collect(Collectors.groupingBy(
+        Employee::getDept,
+        Collectors.flatMapping(e -> e.getSkills().stream(), Collectors.toSet())
+    ));
+
+// filtering (Java 9+) — filter within groups
+Map&lt;String, List&lt;Employee&gt;&gt; highPaidByDept = employees.stream()
+    .collect(Collectors.groupingBy(
+        Employee::getDept,
+        Collectors.filtering(e -> e.getSalary() > 80000, Collectors.toList())
+    ));</code></pre>
+</div>
+
+<div class="card">
+<h3>reducing()</h3>
+<pre><code class="java">Optional&lt;Integer&gt; sum = nums.stream()
+    .collect(Collectors.reducing(Integer::sum));
+
+int sum2 = nums.stream()
+    .collect(Collectors.reducing(0, Integer::sum));
+
+// With mapper
+int totalLength = words.stream()
+    .collect(Collectors.reducing(0, String::length, Integer::sum));</code></pre>
+</div>
+
+<div class="card">
+<h3>collectingAndThen()</h3>
+<p>Apply a finishing transformation after collecting.</p>
+<pre><code class="java">// Collect to unmodifiable list
+List&lt;String&gt; umod = stream.collect(
+    Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList)
+);
+
+// Collect and get size
+int size = stream.collect(
+    Collectors.collectingAndThen(Collectors.toList(), List::size)
+);</code></pre>
+</div>
+
+<div class="card">
+<h3>teeing() — Java 12+ <span class="badge badge-term">Powerful</span></h3>
+<p>Applies TWO collectors simultaneously and merges results.</p>
+<pre><code class="java">// Find min and max at the same time
+var result = List.of(1, 5, 3, 9, 2).stream()
+    .collect(Collectors.teeing(
+        Collectors.minBy(Comparator.naturalOrder()),
+        Collectors.maxBy(Comparator.naturalOrder()),
+        (min, max) -> "Min=" + min.get() + ", Max=" + max.get()
+    ));
+// "Min=1, Max=9"
+
+// Average and count together
+var stats = nums.stream()
+    .collect(Collectors.teeing(
+        Collectors.averagingInt(n -> n),
+        Collectors.counting(),
+        (avg, cnt) -> Map.of("avg", avg, "count", cnt)
+    ));</code></pre>
+</div>
+</div>
+
+<!-- ==================== ADVANCED ==================== -->
+<div class="tab-content" id="advanced">
+<h2 class="section-title">⚡ Advanced Topics</h2>
+
+<div class="card">
+<h3>🔀 Parallel Streams</h3>
+<pre><code class="java">// Create parallel stream
+List&lt;Integer&gt; nums = List.of(1, 2, 3, 4, 5);
+nums.parallelStream()          // from collection
+nums.stream().parallel()       // convert sequential to parallel
+
+// Check if parallel
+stream.isParallel()            // true/false
+
+// Convert back to sequential
+stream.parallel().sequential()
+
+// Parallel reduce — combiner needed
+int sum = nums.parallelStream()
+    .reduce(0, Integer::sum, Integer::sum);
+
+// Thread-safe collection with parallel
+List&lt;String&gt; results = names.parallelStream()
+    .filter(n -> n.length() > 3)
+    .collect(Collectors.toList()); // Collectors are thread-safe</code></pre>
+<div class="highlight-box warn">⚠️ <strong>When to use Parallel Streams:</strong>
+<ul style="margin-top:8px">
+<li>✅ Large datasets (10,000+ elements)</li>
+<li>✅ CPU-intensive operations (no I/O)</li>
+<li>✅ Stateless, independent operations</li>
+<li>❌ Small datasets (overhead > benefit)</li>
+<li>❌ Ordered operations (findFirst is slower)</li>
+<li>❌ Shared mutable state</li>
+<li>❌ I/O operations (blocking wastes threads)</li>
+</ul>
+</div>
+</div>
+
+<div class="card">
+<h3>♾️ Infinite Streams</h3>
+<pre><code class="java">// Fibonacci sequence
+Stream.iterate(new long[]{0, 1}, f -> new long[]{f[1], f[0] + f[1]})
+    .limit(10)
+    .map(f -> f[0])
+    .forEach(System.out::println); // 0, 1, 1, 2, 3, 5, 8, 13, 21, 34
+
+// Prime number generator
+IntStream.iterate(2, n -> n + 1)
+    .filter(n -> IntStream.rangeClosed(2, (int)Math.sqrt(n))
+                          .allMatch(i -> n % i != 0))
+    .limit(20)
+    .forEach(System.out::println);</code></pre>
+</div>
+
+<div class="card">
+<h3>🔗 Optional + Streams</h3>
+<pre><code class="java">// Optional.stream() — Java 9+
+Optional&lt;String&gt; opt = Optional.of("hello");
+Stream&lt;String&gt; s = opt.stream(); // stream of 1 element
+
+// Filter list of Optionals
+List&lt;Optional&lt;String&gt;&gt; opts = List.of(
+    Optional.of("a"), Optional.empty(), Optional.of("b")
+);
+List&lt;String&gt; values = opts.stream()
+    .flatMap(Optional::stream)
+    .collect(Collectors.toList()); // [a, b]
+
+// Or with filter + map
+List&lt;String&gt; values2 = opts.stream()
+    .filter(Optional::isPresent)
+    .map(Optional::get)
+    .collect(Collectors.toList()); // [a, b]
+
+// Optional in stream pipeline
+Optional&lt;Employee&gt; emp = employees.stream()
+    .filter(e -> e.getSalary() > 100000)
+    .findFirst();
+String name = emp.map(Employee::getName).orElse("Not found");</code></pre>
+</div>
+
+<div class="card">
+<h3>🏗️ Custom Collector</h3>
+<pre><code class="java">// Collector.of(supplier, accumulator, combiner, finisher, characteristics)
+
+// Custom: collect to comma-separated string
+Collector&lt;String, StringJoiner, String&gt; myJoiner = Collector.of(
+    () -> new StringJoiner(", "),      // supplier
+    StringJoiner::add,                  // accumulator
+    StringJoiner::merge,                // combiner (for parallel)
+    StringJoiner::toString              // finisher
+);
+String result = Stream.of("a","b","c").collect(myJoiner); // "a, b, c"
+
+// Custom: collect to ImmutableList (Guava)
+Collector&lt;Object, ImmutableList.Builder&lt;Object&gt;, ImmutableList&lt;Object&gt;&gt; toImmutable =
+    Collector.of(
+        ImmutableList::builder,
+        ImmutableList.Builder::add,
+        (b1, b2) -> b1.addAll(b2.build()),
+        ImmutableList.Builder::build
+    );</code></pre>
+</div>
+
+<div class="card">
+<h3>🔢 Primitive Stream Conversions</h3>
+<pre><code class="java">// Object stream → Primitive stream
+IntStream ints = Stream.of("a","bb","ccc").mapToInt(String::length);
+DoubleStream doubles = Stream.of(1,2,3).mapToDouble(Integer::doubleValue);
+
+// Primitive stream → Object stream
+Stream&lt;Integer&gt; boxed = IntStream.of(1,2,3).boxed();
+Stream&lt;Integer&gt; mapped = IntStream.of(1,2,3).mapToObj(n -> n * 10);
+
+// Between primitive streams
+DoubleStream d = IntStream.of(1,2,3).asDoubleStream();
+LongStream l = IntStream.of(1,2,3).asLongStream();</code></pre>
+</div>
+
+<div class="card">
+<h3>🚫 Common Pitfalls</h3>
+<pre><code class="java">// 1. Stream reuse — WRONG
+Stream&lt;String&gt; s = list.stream().filter(x -> x.length() > 2);
+s.count();
+s.forEach(System.out::println); // IllegalStateException!
+
+// 2. Modifying source during stream — WRONG
+List&lt;String&gt; list = new ArrayList&lt;&gt;(List.of("a","b","c"));
+list.stream().forEach(list::remove); // ConcurrentModificationException!
+
+// 3. Side effects in intermediate ops — BAD PRACTICE
+List&lt;String&gt; results = new ArrayList&lt;&gt;();
+stream.filter(x -> {
+    results.add(x); // ❌ Don't do this!
+    return true;
+});
+
+// 4. Infinite stream without limit — HANGS
+Stream.iterate(0, n -> n + 1).forEach(System.out::println); // never stops
+
+// 5. Boxing overhead — use primitive streams
+// ❌ Slow
+int sum = list.stream().map(s -> s.length()).reduce(0, Integer::sum);
+// ✅ Fast
+int sum = list.stream().mapToInt(String::length).sum();</code></pre>
+</div>
+
+<div class="card">
+<h3>⚡ Performance Tips</h3>
+<ul>
+<li>Use primitive streams (<code>IntStream</code>, etc.) to avoid boxing</li>
+<li>Put <code>filter()</code> before <code>map()</code> to reduce transformations</li>
+<li>Use <code>findFirst()</code>/<code>anyMatch()</code> for short-circuit when possible</li>
+<li>Parallel streams: use only for CPU-intensive work on large datasets</li>
+<li>Prefer <code>toList()</code> (Java 16+) over <code>collect(Collectors.toList())</code></li>
+<li><code>Stream.toArray()</code> is faster than collecting to list if you need an array</li>
+<li>Avoid <code>sorted()</code> in large parallel streams (synchronization barrier)</li>
+</ul>
+</div>
+</div>
+
+<!-- ==================== TOP 50 PROBLEMS ==================== -->
+<div class="tab-content" id="problems">
+<h2 class="section-title">💡 Top 50 Stream Problems for Interviews</h2>
+
+<div class="counter">
+<div class="counter-item"><div class="val">50</div><div class="lbl">Total Problems</div></div>
+<div class="counter-item"><div class="val" style="color:var(--success)">18</div><div class="lbl">Easy</div></div>
+<div class="counter-item"><div class="val" style="color:var(--warn)">22</div><div class="lbl">Medium</div></div>
+<div class="counter-item"><div class="val" style="color:var(--danger)">10</div><div class="lbl">Hard</div></div>
+</div>
+
+<div class="cat-filter">
+<button class="cat-btn active" data-cat="all">All (50)</button>
+<button class="cat-btn" data-cat="basics">Basics</button>
+<button class="cat-btn" data-cat="string">String</button>
+<button class="cat-btn" data-cat="collection">Collection</button>
+<button class="cat-btn" data-cat="employee">Object/Employee</button>
+<button class="cat-btn" data-cat="number">Number</button>
+<button class="cat-btn" data-cat="advanced-prob">Advanced</button>
+</div>
+
+<div id="problemList">
+
+<div class="accordion" data-cat="basics">
+<button class="acc-header"><span><span class="num">1</span>Filter even numbers from a list</span><span class="diff diff-easy">Easy</span></button>
+<div class="acc-body"><pre><code class="java">List&lt;Integer&gt; nums = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+List&lt;Integer&gt; evens = nums.stream()
+    .filter(n -> n % 2 == 0)
+    .collect(Collectors.toList());
+// [2, 4, 6, 8, 10]</code></pre></div></div>
+
+<div class="accordion" data-cat="basics">
+<button class="acc-header"><span><span class="num">2</span>Find sum of all elements</span><span class="diff diff-easy">Easy</span></button>
+<div class="acc-body"><pre><code class="java">int sum = List.of(1, 2, 3, 4, 5).stream()
+    .mapToInt(Integer::intValue)
+    .sum();  // 15
+
+// Alternative with reduce
+int sum2 = List.of(1, 2, 3, 4, 5).stream()
+    .reduce(0, Integer::sum);  // 15</code></pre></div></div>
+
+<div class="accordion" data-cat="basics">
+<button class="acc-header"><span><span class="num">3</span>Find max and min element</span><span class="diff diff-easy">Easy</span></button>
+<div class="acc-body"><pre><code class="java">List&lt;Integer&gt; nums = List.of(3, 7, 2, 9, 4);
+
+int max = nums.stream().mapToInt(i -> i).max().orElse(0);  // 9
+int min = nums.stream().mapToInt(i -> i).min().orElse(0);  // 2
+
+// Using reduce
+int max2 = nums.stream().reduce(Integer::max).orElse(0);   // 9</code></pre></div></div>
+
+<div class="accordion" data-cat="string">
+<button class="acc-header"><span><span class="num">4</span>Convert list of strings to uppercase</span><span class="diff diff-easy">Easy</span></button>
+<div class="acc-body"><pre><code class="java">List&lt;String&gt; upper = List.of("hello", "world", "java").stream()
+    .map(String::toUpperCase)
+    .collect(Collectors.toList());
+// [HELLO, WORLD, JAVA]</code></pre></div></div>
+
+<div class="accordion" data-cat="string">
+<button class="acc-header"><span><span class="num">5</span>Count strings starting with a specific letter</span><span class="diff diff-easy">Easy</span></button>
+<div class="acc-body"><pre><code class="java">long count = List.of("Alice", "Bob", "Anna", "Charlie", "Adam").stream()
+    .filter(s -> s.startsWith("A"))
+    .count();  // 3</code></pre></div></div>
+
+<div class="accordion" data-cat="basics">
+<button class="acc-header"><span><span class="num">6</span>Find first element greater than a value</span><span class="diff diff-easy">Easy</span></button>
+<div class="acc-body"><pre><code class="java">Optional&lt;Integer&gt; first = List.of(1, 5, 3, 8, 2, 9).stream()
+    .filter(n -> n > 4)
+    .findFirst();  // Optional[5]</code></pre></div></div>
+
+<div class="accordion" data-cat="basics">
+<button class="acc-header"><span><span class="num">7</span>Check if all elements are positive</span><span class="diff diff-easy">Easy</span></button>
+<div class="acc-body"><pre><code class="java">boolean allPositive = List.of(1, 2, 3, 4).stream()
+    .allMatch(n -> n > 0);  // true
+
+boolean anyNegative = List.of(1, -2, 3).stream()
+    .anyMatch(n -> n &lt; 0);  // true
+
+boolean noneNegative = List.of(1, 2, 3).stream()
+    .noneMatch(n -> n &lt; 0); // true</code></pre></div></div>
+
+<div class="accordion" data-cat="basics">
+<button class="acc-header"><span><span class="num">8</span>Remove duplicates from a list</span><span class="diff diff-easy">Easy</span></button>
+<div class="acc-body"><pre><code class="java">List&lt;Integer&gt; unique = List.of(1, 2, 2, 3, 3, 3, 4).stream()
+    .distinct()
+    .collect(Collectors.toList());
+// [1, 2, 3, 4]</code></pre></div></div>
+
+<div class="accordion" data-cat="string">
+<button class="acc-header"><span><span class="num">9</span>Sort strings by length</span><span class="diff diff-easy">Easy</span></button>
+<div class="acc-body"><pre><code class="java">List&lt;String&gt; sorted = List.of("banana", "apple", "kiwi", "fig").stream()
+    .sorted(Comparator.comparingInt(String::length))
+    .collect(Collectors.toList());
+// [fig, kiwi, apple, banana]</code></pre></div></div>
+
+<div class="accordion" data-cat="number">
+<button class="acc-header"><span><span class="num">10</span>Square each number and collect</span><span class="diff diff-easy">Easy</span></button>
+<div class="acc-body"><pre><code class="java">List&lt;Integer&gt; squares = List.of(1, 2, 3, 4, 5).stream()
+    .map(n -> n * n)
+    .collect(Collectors.toList());
+// [1, 4, 9, 16, 25]</code></pre></div></div>
+
+<div class="accordion" data-cat="collection">
+<button class="acc-header"><span><span class="num">11</span>Flatten a list of lists</span><span class="diff diff-med">Medium</span></button>
+<div class="acc-body"><pre><code class="java">List&lt;List&lt;Integer&gt;&gt; nested = List.of(
+    List.of(1, 2, 3), List.of(4, 5), List.of(6, 7, 8)
+);
+
+List&lt;Integer&gt; flat = nested.stream()
+    .flatMap(Collection::stream)
+    .collect(Collectors.toList());
+// [1, 2, 3, 4, 5, 6, 7, 8]</code></pre></div></div>
+
+<div class="accordion" data-cat="employee">
+<button class="acc-header"><span><span class="num">12</span>Find average salary of employees</span><span class="diff diff-easy">Easy</span></button>
+<div class="acc-body"><pre><code class="java">double avg = employees.stream()
+    .mapToDouble(Employee::getSalary)
+    .average()
+    .orElse(0.0);</code></pre></div></div>
+
+<div class="accordion" data-cat="employee">
+<button class="acc-header"><span><span class="num">13</span>Group employees by department</span><span class="diff diff-med">Medium</span></button>
+<div class="acc-body"><pre><code class="java">Map&lt;String, List&lt;Employee&gt;&gt; byDept = employees.stream()
+    .collect(Collectors.groupingBy(Employee::getDepartment));
+
+// Count per department
+Map&lt;String, Long&gt; countByDept = employees.stream()
+    .collect(Collectors.groupingBy(Employee::getDepartment, Collectors.counting()));</code></pre></div></div>
+
+<div class="accordion" data-cat="basics">
+<button class="acc-header"><span><span class="num">14</span>Partition students into pass/fail</span><span class="diff diff-easy">Easy</span></button>
+<div class="acc-body"><pre><code class="java">Map&lt;Boolean, List&lt;Student&gt;&gt; result = students.stream()
+    .collect(Collectors.partitioningBy(s -> s.getMarks() >= 40));
+// {true=[passed students], false=[failed students]}</code></pre></div></div>
+
+<div class="accordion" data-cat="string">
+<button class="acc-header"><span><span class="num">15</span>Join strings with delimiter, prefix, suffix</span><span class="diff diff-easy">Easy</span></button>
+<div class="acc-body"><pre><code class="java">String result = List.of("Java", "Python", "Go").stream()
+    .collect(Collectors.joining(" | ", "Languages: [", "]"));
+// "Languages: [Java | Python | Go]"</code></pre></div></div>
+
+<div class="accordion" data-cat="number">
+<button class="acc-header"><span><span class="num">16</span>Find second largest number</span><span class="diff diff-med">Medium</span></button>
+<div class="acc-body"><pre><code class="java">int secondMax = List.of(5, 3, 9, 1, 7, 9).stream()
+    .distinct()
+    .sorted(Comparator.reverseOrder())
+    .skip(1)
+    .findFirst()
+    .orElseThrow();  // 7
+
+// Alternative using limit
+int secondMax2 = List.of(5, 3, 9, 1, 7).stream()
+    .sorted(Comparator.reverseOrder())
+    .distinct()
+    .limit(2)
+    .reduce((a, b) -> b)
+    .orElseThrow();  // 7</code></pre></div></div>
+
+<div class="accordion" data-cat="collection">
+<button class="acc-header"><span><span class="num">17</span>Convert list to map (id → name)</span><span class="diff diff-med">Medium</span></button>
+<div class="acc-body"><pre><code class="java">Map&lt;Integer, String&gt; idToName = employees.stream()
+    .collect(Collectors.toMap(
+        Employee::getId,
+        Employee::getName
+    ));
+
+// Handle duplicates
+Map&lt;Integer, String&gt; safe = employees.stream()
+    .collect(Collectors.toMap(
+        Employee::getId,
+        Employee::getName,
+        (existing, replacement) -> existing  // keep first
+    ));</code></pre></div></div>
+
+<div class="accordion" data-cat="collection">
+<button class="acc-header"><span><span class="num">18</span>Find duplicate elements in a list</span><span class="diff diff-med">Medium</span></button>
+<div class="acc-body"><pre><code class="java">List&lt;Integer&gt; nums = List.of(1, 2, 3, 2, 4, 3, 5);
+
+// Method 1: Using frequency map
+Set&lt;Integer&gt; duplicates = nums.stream()
+    .collect(Collectors.groupingBy(n -> n, Collectors.counting()))
+    .entrySet().stream()
+    .filter(e -> e.getValue() > 1)
+    .map(Map.Entry::getKey)
+    .collect(Collectors.toSet());  // [2, 3]
+
+// Method 2: Using Set.add() returns false for duplicates
+Set&lt;Integer&gt; seen = new HashSet&lt;&gt;();
+Set&lt;Integer&gt; dups = nums.stream()
+    .filter(n -> !seen.add(n))
+    .collect(Collectors.toSet());  // [2, 3]</code></pre></div></div>
+
+<div class="accordion" data-cat="collection">
+<button class="acc-header"><span><span class="num">19</span>Find common elements between two lists</span><span class="diff diff-med">Medium</span></button>
+<div class="acc-body"><pre><code class="java">List&lt;Integer&gt; list1 = List.of(1, 2, 3, 4, 5);
+List&lt;Integer&gt; list2 = List.of(3, 4, 5, 6, 7);
+
+List&lt;Integer&gt; common = list1.stream()
+    .filter(list2::contains)
+    .collect(Collectors.toList());  // [3, 4, 5]
+
+// More efficient with Set
+Set&lt;Integer&gt; set2 = new HashSet&lt;&gt;(list2);
+List&lt;Integer&gt; common2 = list1.stream()
+    .filter(set2::contains)
+    .collect(Collectors.toList());  // [3, 4, 5]</code></pre></div></div>
+
+<div class="accordion" data-cat="collection">
+<button class="acc-header"><span><span class="num">20</span>Merge and sort two lists</span><span class="diff diff-easy">Easy</span></button>
+<div class="acc-body"><pre><code class="java">List&lt;Integer&gt; merged = Stream.concat(
+        List.of(3, 1, 4).stream(),
+        List.of(2, 5, 0).stream()
+    )
+    .sorted()
+    .collect(Collectors.toList());
+// [0, 1, 2, 3, 4, 5]</code></pre></div></div>
+
+<div class="accordion" data-cat="string">
+<button class="acc-header"><span><span class="num">21</span>Find the longest string</span><span class="diff diff-easy">Easy</span></button>
+<div class="acc-body"><pre><code class="java">String longest = List.of("cat", "elephant", "dog", "giraffe").stream()
+    .max(Comparator.comparingInt(String::length))
+    .orElse("");  // "elephant"</code></pre></div></div>
+
+<div class="accordion" data-cat="string">
+<button class="acc-header"><span><span class="num">22</span>Count character occurrences in a string</span><span class="diff diff-med">Medium</span></button>
+<div class="acc-body"><pre><code class="java">String str = "programming";
+
+Map&lt;Character, Long&gt; freq = str.chars()
+    .mapToObj(c -> (char) c)
+    .collect(Collectors.groupingBy(c -> c, Collectors.counting()));
+// {p=1, r=2, o=1, g=2, a=1, m=2, i=1, n=1}</code></pre></div></div>
+
+<div class="accordion" data-cat="string">
+<button class="acc-header"><span><span class="num">23</span>First non-repeated character in a string</span><span class="diff diff-med">Medium</span></button>
+<div class="acc-body"><pre><code class="java">String str = "aabbcdde";
+
+Character result = str.chars()
+    .mapToObj(c -> (char) c)
+    .collect(Collectors.groupingBy(c -> c, LinkedHashMap::new, Collectors.counting()))
+    .entrySet().stream()
+    .filter(e -> e.getValue() == 1)
+    .map(Map.Entry::getKey)
+    .findFirst()
+    .orElse(null);  // 'c'</code></pre></div></div>
+
+<div class="accordion" data-cat="string">
+<button class="acc-header"><span><span class="num">24</span>Check if string is palindrome using streams</span><span class="diff diff-med">Medium</span></button>
+<div class="acc-body"><pre><code class="java">String str = "racecar";
+
+boolean isPalindrome = IntStream.range(0, str.length() / 2)
+    .allMatch(i -> str.charAt(i) == str.charAt(str.length() - 1 - i));
+// true</code></pre></div></div>
+
+<div class="accordion" data-cat="string">
+<button class="acc-header"><span><span class="num">25</span>Group anagrams together</span><span class="diff diff-hard">Hard</span></button>
+<div class="acc-body"><pre><code class="java">List&lt;String&gt; words = List.of("eat","tea","tan","ate","nat","bat");
+
+Map&lt;String, List&lt;String&gt;&gt; anagrams = words.stream()
+    .collect(Collectors.groupingBy(w -> {
+        char[] chars = w.toCharArray();
+        Arrays.sort(chars);
+        return new String(chars);
+    }));
+// {abt=[bat], aet=[eat, tea, ate], ant=[tan, nat]}</code></pre></div></div>
+
+<div class="accordion" data-cat="collection">
+<button class="acc-header"><span><span class="num">26</span>Sort a map by values</span><span class="diff diff-med">Medium</span></button>
+<div class="acc-body"><pre><code class="java">Map&lt;String, Integer&gt; map = Map.of("c", 3, "a", 1, "b", 2);
+
+LinkedHashMap&lt;String, Integer&gt; sorted = map.entrySet().stream()
+    .sorted(Map.Entry.comparingByValue())
+    .collect(Collectors.toMap(
+        Map.Entry::getKey,
+        Map.Entry::getValue,
+        (e1, e2) -> e1,
+        LinkedHashMap::new
+    ));
+// {a=1, b=2, c=3}</code></pre></div></div>
+
+<div class="accordion" data-cat="collection">
+<button class="acc-header"><span><span class="num">27</span>Find the most frequent element</span><span class="diff diff-med">Medium</span></button>
+<div class="acc-body"><pre><code class="java">List&lt;String&gt; items = List.of("a","b","a","c","a","b","d");
+
+String mostFrequent = items.stream()
+    .collect(Collectors.groupingBy(e -> e, Collectors.counting()))
+    .entrySet().stream()
+    .max(Map.Entry.comparingByValue())
+    .map(Map.Entry::getKey)
+    .orElse(null);  // "a"</code></pre></div></div>
+
+<div class="accordion" data-cat="collection">
+<button class="acc-header"><span><span class="num">28</span>Invert a map (swap keys and values)</span><span class="diff diff-med">Medium</span></button>
+<div class="acc-body"><pre><code class="java">Map&lt;String, Integer&gt; original = Map.of("a", 1, "b", 2, "c", 3);
+
+Map&lt;Integer, String&gt; inverted = original.entrySet().stream()
+    .collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
+// {1=a, 2=b, 3=c}</code></pre></div></div>
+
+<div class="accordion" data-cat="collection">
+<button class="acc-header"><span><span class="num">29</span>Flatten a map of lists to a single list</span><span class="diff diff-med">Medium</span></button>
+<div class="acc-body"><pre><code class="java">Map&lt;String, List&lt;String&gt;&gt; map = Map.of(
+    "fruits", List.of("apple", "banana"),
+    "vegs",   List.of("carrot", "pea")
+);
+
+List&lt;String&gt; all = map.values().stream()
+    .flatMap(Collection::stream)
+    .collect(Collectors.toList());
+// [apple, banana, carrot, pea]</code></pre></div></div>
+
+<div class="accordion" data-cat="basics">
+<button class="acc-header"><span><span class="num">30</span>Create frequency map from a list</span><span class="diff diff-easy">Easy</span></button>
+<div class="acc-body"><pre><code class="java">List&lt;String&gt; items = List.of("a", "b", "a", "c", "b", "a");
+
+Map&lt;String, Long&gt; freq = items.stream()
+    .collect(Collectors.groupingBy(e -> e, Collectors.counting()));
+// {a=3, b=2, c=1}</code></pre></div></div>
+
+<div class="accordion" data-cat="employee">
+<button class="acc-header"><span><span class="num">31</span>Highest paid employee in each department</span><span class="diff diff-med">Medium</span></button>
+<div class="acc-body"><pre><code class="java">Map&lt;String, Optional&lt;Employee&gt;&gt; highestPaid = employees.stream()
+    .collect(Collectors.groupingBy(
+        Employee::getDepartment,
+        Collectors.maxBy(Comparator.comparing(Employee::getSalary))
+    ));
+
+// Without Optional wrapper — using collectingAndThen
+Map&lt;String, Employee&gt; highestPaid2 = employees.stream()
+    .collect(Collectors.groupingBy(
+        Employee::getDepartment,
+        Collectors.collectingAndThen(
+            Collectors.maxBy(Comparator.comparing(Employee::getSalary)),
+            Optional::get
+        )
+    ));</code></pre></div></div>
+
+<div class="accordion" data-cat="employee">
+<button class="acc-header"><span><span class="num">32</span>Employees earning above average</span><span class="diff diff-med">Medium</span></button>
+<div class="acc-body"><pre><code class="java">double avgSalary = employees.stream()
+    .mapToDouble(Employee::getSalary)
+    .average()
+    .orElse(0);
+
+List&lt;String&gt; aboveAvg = employees.stream()
+    .filter(e -> e.getSalary() > avgSalary)
+    .map(Employee::getName)
+    .collect(Collectors.toList());</code></pre></div></div>
+
+<div class="accordion" data-cat="employee">
+<button class="acc-header"><span><span class="num">33</span>Department with most employees</span><span class="diff diff-med">Medium</span></button>
+<div class="acc-body"><pre><code class="java">String largestDept = employees.stream()
+    .collect(Collectors.groupingBy(Employee::getDepartment, Collectors.counting()))
+    .entrySet().stream()
+    .max(Map.Entry.comparingByValue())
+    .map(Map.Entry::getKey)
+    .orElse("N/A");</code></pre></div></div>
+
+<div class="accordion" data-cat="employee">
+<button class="acc-header"><span><span class="num">34</span>Sort employees by salary then name</span><span class="diff diff-med">Medium</span></button>
+<div class="acc-body"><pre><code class="java">List&lt;Employee&gt; sorted = employees.stream()
+    .sorted(Comparator.comparing(Employee::getSalary).reversed()
+                       .thenComparing(Employee::getName))
+    .collect(Collectors.toList());</code></pre></div></div>
+
+<div class="accordion" data-cat="employee">
+<button class="acc-header"><span><span class="num">35</span>Total salary per department</span><span class="diff diff-med">Medium</span></button>
+<div class="acc-body"><pre><code class="java">Map&lt;String, Double&gt; totalByDept = employees.stream()
+    .collect(Collectors.groupingBy(
+        Employee::getDepartment,
+        Collectors.summingDouble(Employee::getSalary)
+    ));</code></pre></div></div>
+
+<div class="accordion" data-cat="employee">
+<button class="acc-header"><span><span class="num">36</span>Top 3 highest paid employees</span><span class="diff diff-easy">Easy</span></button>
+<div class="acc-body"><pre><code class="java">List&lt;Employee&gt; top3 = employees.stream()
+    .sorted(Comparator.comparing(Employee::getSalary).reversed())
+    .limit(3)
+    .collect(Collectors.toList());</code></pre></div></div>
+
+<div class="accordion" data-cat="employee">
+<button class="acc-header"><span><span class="num">37</span>Department-wise salary statistics</span><span class="diff diff-hard">Hard</span></button>
+<div class="acc-body"><pre><code class="java">Map&lt;String, DoubleSummaryStatistics&gt; stats = employees.stream()
+    .collect(Collectors.groupingBy(
+        Employee::getDepartment,
+        Collectors.summarizingDouble(Employee::getSalary)
+    ));
+// Each entry has: count, sum, min, max, average</code></pre></div></div>
+
+<div class="accordion" data-cat="number">
+<button class="acc-header"><span><span class="num">38</span>Find prime numbers in a range</span><span class="diff diff-med">Medium</span></button>
+<div class="acc-body"><pre><code class="java">List&lt;Integer&gt; primes = IntStream.rangeClosed(2, 100)
+    .filter(n -> IntStream.rangeClosed(2, (int) Math.sqrt(n))
+                          .allMatch(i -> n % i != 0))
+    .boxed()
+    .collect(Collectors.toList());
+// [2, 3, 5, 7, 11, 13, ...]</code></pre></div></div>
+
+<div class="accordion" data-cat="number">
+<button class="acc-header"><span><span class="num">39</span>Generate Fibonacci sequence</span><span class="diff diff-hard">Hard</span></button>
+<div class="acc-body"><pre><code class="java">List&lt;Long&gt; fib = Stream.iterate(new long[]{0, 1}, f -> new long[]{f[1], f[0] + f[1]})
+    .limit(15)
+    .map(f -> f[0])
+    .collect(Collectors.toList());
+// [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377]</code></pre></div></div>
+
+<div class="accordion" data-cat="number">
+<button class="acc-header"><span><span class="num">40</span>Sum of digits of a number</span><span class="diff diff-easy">Easy</span></button>
+<div class="acc-body"><pre><code class="java">int number = 12345;
+
+int digitSum = String.valueOf(number).chars()
+    .map(c -> c - '0')
+    .sum();  // 15</code></pre></div></div>
+
+<div class="accordion" data-cat="number">
+<button class="acc-header"><span><span class="num">41</span>Find all pairs that sum to a target</span><span class="diff diff-hard">Hard</span></button>
+<div class="acc-body"><pre><code class="java">List&lt;Integer&gt; nums = List.of(1, 2, 3, 4, 5, 6);
+int target = 7;
+
+List&lt;int[]&gt; pairs = IntStream.range(0, nums.size())
+    .boxed()
+    .flatMap(i -> IntStream.range(i + 1, nums.size())
+        .filter(j -> nums.get(i) + nums.get(j) == target)
+        .mapToObj(j -> new int[]{nums.get(i), nums.get(j)})
+    )
+    .collect(Collectors.toList());
+// [[1,6], [2,5], [3,4]]</code></pre></div></div>
+
+<div class="accordion" data-cat="number">
+<button class="acc-header"><span><span class="num">42</span>Calculate factorial using streams</span><span class="diff diff-med">Medium</span></button>
+<div class="acc-body"><pre><code class="java">long factorial = LongStream.rangeClosed(1, 10)
+    .reduce(1, (a, b) -> a * b);  // 3628800
+
+// Using BigInteger for large numbers
+BigInteger bigFact = IntStream.rangeClosed(1, 50)
+    .mapToObj(BigInteger::valueOf)
+    .reduce(BigInteger.ONE, BigInteger::multiply);</code></pre></div></div>
+
+<div class="accordion" data-cat="number">
+<button class="acc-header"><span><span class="num">43</span>Find Kth largest element</span><span class="diff diff-med">Medium</span></button>
+<div class="acc-body"><pre><code class="java">int k = 3;
+int kthLargest = List.of(5, 3, 9, 1, 7, 4).stream()
+    .sorted(Comparator.reverseOrder())
+    .skip(k - 1)
+    .findFirst()
+    .orElseThrow();  // 5 (3rd largest)</code></pre></div></div>
+
+<div class="accordion" data-cat="advanced-prob">
+<button class="acc-header"><span><span class="num">44</span>Custom collector: concatenate with transform</span><span class="diff diff-hard">Hard</span></button>
+<div class="acc-body"><pre><code class="java">// Custom collector that joins strings as "WORD(length)"
+Collector&lt;String, StringBuilder, String&gt; custom = Collector.of(
+    StringBuilder::new,
+    (sb, s) -> {
+        if (sb.length() > 0) sb.append(", ");
+        sb.append(s.toUpperCase()).append("(").append(s.length()).append(")");
+    },
+    (sb1, sb2) -> { sb1.append(", ").append(sb2); return sb1; },
+    StringBuilder::toString
+);
+
+String result = Stream.of("hello", "world", "java").collect(custom);
+// "HELLO(5), WORLD(5), JAVA(4)"</code></pre></div></div>
+
+<div class="accordion" data-cat="advanced-prob">
+<button class="acc-header"><span><span class="num">45</span>Word frequency counter from paragraph</span><span class="diff diff-med">Medium</span></button>
+<div class="acc-body"><pre><code class="java">String text = "the quick brown fox jumps over the lazy dog the fox";
+
+Map&lt;String, Long&gt; wordFreq = Arrays.stream(text.toLowerCase().split("\\s+"))
+    .collect(Collectors.groupingBy(w -> w, Collectors.counting()));
+// {the=3, quick=1, brown=1, fox=2, jumps=1, over=1, lazy=1, dog=1}</code></pre></div></div>
+
+<div class="accordion" data-cat="advanced-prob">
+<button class="acc-header"><span><span class="num">46</span>Top K frequent words</span><span class="diff diff-hard">Hard</span></button>
+<div class="acc-body"><pre><code class="java">String text = "apple banana apple cherry banana apple";
+int k = 2;
+
+List&lt;String&gt; topK = Arrays.stream(text.split("\\s+"))
+    .collect(Collectors.groupingBy(w -> w, Collectors.counting()))
+    .entrySet().stream()
+    .sorted(Map.Entry.&lt;String, Long&gt;comparingByValue().reversed())
+    .limit(k)
+    .map(Map.Entry::getKey)
+    .collect(Collectors.toList());
+// [apple, banana]</code></pre></div></div>
+
+<div class="accordion" data-cat="advanced-prob">
+<button class="acc-header"><span><span class="num">47</span>Sum of even numbers' squares</span><span class="diff diff-med">Medium</span></button>
+<div class="acc-body"><pre><code class="java">int result = List.of(1, 2, 3, 4, 5, 6).stream()
+    .filter(n -> n % 2 == 0)
+    .mapToInt(n -> n * n)
+    .sum();  // 4 + 16 + 36 = 56</code></pre></div></div>
+
+<div class="accordion" data-cat="advanced-prob">
+<button class="acc-header"><span><span class="num">48</span>Matrix transpose using streams</span><span class="diff diff-hard">Hard</span></button>
+<div class="acc-body"><pre><code class="java">int[][] matrix = {{1,2,3},{4,5,6},{7,8,9}};
+
+int[][] transposed = IntStream.range(0, matrix[0].length)
+    .mapToObj(col -> IntStream.range(0, matrix.length)
+        .map(row -> matrix[row][col])
+        .toArray())
+    .toArray(int[][]::new);
+// {{1,4,7},{2,5,8},{3,6,9}}</code></pre></div></div>
+
+<div class="accordion" data-cat="advanced-prob">
+<button class="acc-header"><span><span class="num">49</span>Reverse a string using streams</span><span class="diff diff-med">Medium</span></button>
+<div class="acc-body"><pre><code class="java">String str = "Hello World";
+
+String reversed = new StringBuilder(str).reverse().toString(); // simple way
+
+// Using streams
+String reversed2 = str.chars()
+    .mapToObj(c -> String.valueOf((char) c))
+    .reduce("", (a, b) -> b + a);
+// "dlroW olleH"
+
+// Or collect to list and reverse
+String reversed3 = IntStream.range(0, str.length())
+    .mapToObj(i -> String.valueOf(str.charAt(str.length() - 1 - i)))
+    .collect(Collectors.joining());
+// "dlroW olleH"</code></pre></div></div>
+
+<div class="accordion" data-cat="advanced-prob">
+<button class="acc-header"><span><span class="num">50</span>Map-Reduce: process transactions</span><span class="diff diff-hard">Hard</span></button>
+<div class="acc-body"><pre><code class="java">record Transaction(String type, String category, double amount) {}
+
+List&lt;Transaction&gt; txns = List.of(
+    new Transaction("CREDIT", "salary",  5000),
+    new Transaction("DEBIT",  "food",    200),
+    new Transaction("DEBIT",  "rent",    1500),
+    new Transaction("CREDIT", "bonus",   1000),
+    new Transaction("DEBIT",  "food",    300)
+);
+
+// Total spending per category (DEBIT only)
+Map&lt;String, Double&gt; spendByCategory = txns.stream()
+    .filter(t -> t.type().equals("DEBIT"))
+    .collect(Collectors.groupingBy(
+        Transaction::category,
+        Collectors.summingDouble(Transaction::amount)
+    ));
+// {food=500.0, rent=1500.0}
+
+// Net balance
+double balance = txns.stream()
+    .mapToDouble(t -> t.type().equals("CREDIT") ? t.amount() : -t.amount())
+    .sum();  // 4000.0
+
+// Summary using teeing (Java 12+)
+var summary = txns.stream()
+    .collect(Collectors.teeing(
+        Collectors.filtering(t -> t.type().equals("CREDIT"),
+            Collectors.summingDouble(Transaction::amount)),
+        Collectors.filtering(t -> t.type().equals("DEBIT"),
+            Collectors.summingDouble(Transaction::amount)),
+        (credits, debits) -> Map.of(
+            "totalCredits", credits,
+            "totalDebits", debits,
+            "balance", credits - debits
+        )
+    ));</code></pre></div></div>
+
+</div><!-- end problemList -->
+</div>
+
+<!-- ==================== CHEAT SHEET ==================== -->
+<div class="tab-content" id="cheatsheet">
+<h2 class="section-title">📋 Quick Reference Cheat Sheet</h2>
+
+<div class="card">
+<h3>🔨 Stream Creation</h3>
+<table>
+<tr><th>Method</th><th>Returns</th><th>Example</th></tr>
+<tr><td><code>collection.stream()</code></td><td>Stream&lt;T&gt;</td><td><code>list.stream()</code></td></tr>
+<tr><td><code>collection.parallelStream()</code></td><td>Stream&lt;T&gt;</td><td><code>list.parallelStream()</code></td></tr>
+<tr><td><code>Arrays.stream(arr)</code></td><td>Stream&lt;T&gt; / IntStream</td><td><code>Arrays.stream(new int[]{1,2})</code></td></tr>
+<tr><td><code>Stream.of(values)</code></td><td>Stream&lt;T&gt;</td><td><code>Stream.of("a","b")</code></td></tr>
+<tr><td><code>Stream.empty()</code></td><td>Stream&lt;T&gt;</td><td><code>Stream.empty()</code></td></tr>
+<tr><td><code>Stream.iterate(seed, f)</code></td><td>Stream&lt;T&gt; (infinite)</td><td><code>Stream.iterate(0, n→n+2)</code></td></tr>
+<tr><td><code>Stream.generate(supplier)</code></td><td>Stream&lt;T&gt; (infinite)</td><td><code>Stream.generate(Math::random)</code></td></tr>
+<tr><td><code>IntStream.range(s, e)</code></td><td>IntStream</td><td><code>IntStream.range(1, 10)</code></td></tr>
+<tr><td><code>IntStream.rangeClosed(s, e)</code></td><td>IntStream</td><td><code>IntStream.rangeClosed(1, 10)</code></td></tr>
+<tr><td><code>Files.lines(path)</code></td><td>Stream&lt;String&gt;</td><td><code>Files.lines(Path.of("f.txt"))</code></td></tr>
+<tr><td><code>Stream.concat(s1, s2)</code></td><td>Stream&lt;T&gt;</td><td><code>Stream.concat(s1, s2)</code></td></tr>
+<tr><td><code>Stream.ofNullable(val)</code></td><td>Stream&lt;T&gt; (0 or 1)</td><td><code>Stream.ofNullable(null)</code></td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>🔄 Intermediate Operations (return Stream — lazy)</h3>
+<table>
+<tr><th>Method</th><th>Purpose</th><th>Type</th></tr>
+<tr><td><code>filter(Predicate)</code></td><td>Keep matching elements</td><td>Stateless</td></tr>
+<tr><td><code>map(Function)</code></td><td>Transform each element 1→1</td><td>Stateless</td></tr>
+<tr><td><code>flatMap(Function)</code></td><td>Transform & flatten 1→N</td><td>Stateless</td></tr>
+<tr><td><code>sorted()</code></td><td>Natural order sort</td><td>Stateful</td></tr>
+<tr><td><code>sorted(Comparator)</code></td><td>Custom sort</td><td>Stateful</td></tr>
+<tr><td><code>distinct()</code></td><td>Remove duplicates</td><td>Stateful</td></tr>
+<tr><td><code>peek(Consumer)</code></td><td>Debug/observe elements</td><td>Stateless</td></tr>
+<tr><td><code>limit(n)</code></td><td>Take first n elements</td><td>Short-circuit</td></tr>
+<tr><td><code>skip(n)</code></td><td>Skip first n elements</td><td>Stateful</td></tr>
+<tr><td><code>mapToInt/Long/Double</code></td><td>Map to primitive stream</td><td>Stateless</td></tr>
+<tr><td><code>takeWhile(Predicate)</code></td><td>Take while true (Java 9)</td><td>Short-circuit</td></tr>
+<tr><td><code>dropWhile(Predicate)</code></td><td>Drop while true (Java 9)</td><td>Stateful</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>🎯 Terminal Operations (trigger execution — eager)</h3>
+<table>
+<tr><th>Method</th><th>Returns</th><th>Purpose</th></tr>
+<tr><td><code>collect(Collector)</code></td><td>R</td><td>Mutable reduction to container</td></tr>
+<tr><td><code>toList()</code></td><td>List&lt;T&gt;</td><td>Unmodifiable list (Java 16+)</td></tr>
+<tr><td><code>forEach(Consumer)</code></td><td>void</td><td>Perform action on each</td></tr>
+<tr><td><code>forEachOrdered(Consumer)</code></td><td>void</td><td>Ordered forEach (parallel safe)</td></tr>
+<tr><td><code>reduce(identity, op)</code></td><td>T</td><td>Combine to single value</td></tr>
+<tr><td><code>reduce(op)</code></td><td>Optional&lt;T&gt;</td><td>Combine without identity</td></tr>
+<tr><td><code>count()</code></td><td>long</td><td>Count elements</td></tr>
+<tr><td><code>min(Comparator)</code></td><td>Optional&lt;T&gt;</td><td>Find minimum</td></tr>
+<tr><td><code>max(Comparator)</code></td><td>Optional&lt;T&gt;</td><td>Find maximum</td></tr>
+<tr><td><code>findFirst()</code></td><td>Optional&lt;T&gt;</td><td>First element (deterministic)</td></tr>
+<tr><td><code>findAny()</code></td><td>Optional&lt;T&gt;</td><td>Any element (parallel-friendly)</td></tr>
+<tr><td><code>anyMatch(Predicate)</code></td><td>boolean</td><td>Any element matches?</td></tr>
+<tr><td><code>allMatch(Predicate)</code></td><td>boolean</td><td>All elements match?</td></tr>
+<tr><td><code>noneMatch(Predicate)</code></td><td>boolean</td><td>No elements match?</td></tr>
+<tr><td><code>toArray()</code></td><td>Object[] / T[]</td><td>Collect to array</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>📦 Collectors Quick Reference</h3>
+<table>
+<tr><th>Collector</th><th>Result Type</th></tr>
+<tr><td><code>toList()</code></td><td>List&lt;T&gt;</td></tr>
+<tr><td><code>toSet()</code></td><td>Set&lt;T&gt;</td></tr>
+<tr><td><code>toMap(keyFn, valFn)</code></td><td>Map&lt;K,V&gt;</td></tr>
+<tr><td><code>toMap(keyFn, valFn, merge)</code></td><td>Map&lt;K,V&gt; (handles dups)</td></tr>
+<tr><td><code>toCollection(supplier)</code></td><td>C extends Collection&lt;T&gt;</td></tr>
+<tr><td><code>toUnmodifiableList()</code></td><td>Unmodifiable List&lt;T&gt;</td></tr>
+<tr><td><code>groupingBy(classifier)</code></td><td>Map&lt;K, List&lt;T&gt;&gt;</td></tr>
+<tr><td><code>groupingBy(cls, downstream)</code></td><td>Map&lt;K, D&gt;</td></tr>
+<tr><td><code>partitioningBy(predicate)</code></td><td>Map&lt;Boolean, List&lt;T&gt;&gt;</td></tr>
+<tr><td><code>joining(delim)</code></td><td>String</td></tr>
+<tr><td><code>counting()</code></td><td>Long</td></tr>
+<tr><td><code>summingInt(fn)</code></td><td>Integer</td></tr>
+<tr><td><code>averagingInt(fn)</code></td><td>Double</td></tr>
+<tr><td><code>summarizingInt(fn)</code></td><td>IntSummaryStatistics</td></tr>
+<tr><td><code>maxBy(comparator)</code></td><td>Optional&lt;T&gt;</td></tr>
+<tr><td><code>minBy(comparator)</code></td><td>Optional&lt;T&gt;</td></tr>
+<tr><td><code>mapping(fn, downstream)</code></td><td>Downstream result</td></tr>
+<tr><td><code>filtering(pred, downstream)</code></td><td>Downstream result</td></tr>
+<tr><td><code>flatMapping(fn, downstream)</code></td><td>Downstream result</td></tr>
+<tr><td><code>reducing(op)</code></td><td>Optional&lt;T&gt;</td></tr>
+<tr><td><code>collectingAndThen(c, finisher)</code></td><td>Finisher result</td></tr>
+<tr><td><code>teeing(c1, c2, merger)</code></td><td>Merger result</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>🧩 Common Patterns</h3>
+<pre><code class="java">// PATTERN 1: Filter → Map → Collect
+list.stream().filter(predicate).map(transform).collect(toList());
+
+// PATTERN 2: GroupBy with downstream
+stream.collect(groupingBy(classifier, counting()));
+
+// PATTERN 3: FlatMap to flatten
+nestedList.stream().flatMap(Collection::stream).collect(toList());
+
+// PATTERN 4: Reduce to aggregate
+stream.reduce(identity, accumulator);
+
+// PATTERN 5: toMap with merge
+stream.collect(toMap(keyFn, valFn, mergeFn));
+
+// PATTERN 6: sorted + limit for Top-K
+stream.sorted(comparator.reversed()).limit(k).collect(toList());
+
+// PATTERN 7: Distinct + Count
+stream.distinct().count();
+
+// PATTERN 8: Statistics
+stream.mapToInt(fn).summaryStatistics();
+
+// PATTERN 9: Partition into two groups
+stream.collect(partitioningBy(predicate));
+
+// PATTERN 10: Chain comparators
+stream.sorted(comparing(fn1).thenComparing(fn2).reversed());</code></pre>
+</div>
+
+<div class="card">
+<h3>⚡ Method References Cheat Sheet</h3>
+<table>
+<tr><th>Type</th><th>Syntax</th><th>Lambda Equivalent</th></tr>
+<tr><td>Static method</td><td><code>Integer::parseInt</code></td><td><code>s → Integer.parseInt(s)</code></td></tr>
+<tr><td>Instance method (bound)</td><td><code>System.out::println</code></td><td><code>x → System.out.println(x)</code></td></tr>
+<tr><td>Instance method (unbound)</td><td><code>String::length</code></td><td><code>s → s.length()</code></td></tr>
+<tr><td>Constructor</td><td><code>ArrayList::new</code></td><td><code>() → new ArrayList()</code></td></tr>
+<tr><td>Array constructor</td><td><code>String[]::new</code></td><td><code>n → new String[n]</code></td></tr>
+</table>
+</div>
+</div>
+
+</main>
+
+<script>
+// Tab switching
+document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab).classList.add('active');
+    });
+});
+
+// Accordion
+document.querySelectorAll('.acc-header').forEach(header => {
+    header.addEventListener('click', () => {
+        const body = header.nextElementSibling;
+        const isOpen = header.classList.contains('open');
+        // Close all in same problem list (optional: remove for multi-open)
+        // document.querySelectorAll('.acc-header').forEach(h => { h.classList.remove('open'); h.nextElementSibling.classList.remove('open'); });
+        header.classList.toggle('open', !isOpen);
+        body.classList.toggle('open', !isOpen);
+    });
+});
+
+// Category filter for problems
+document.querySelectorAll('.cat-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const cat = btn.dataset.cat;
+        document.querySelectorAll('.accordion').forEach(acc => {
+            acc.style.display = (cat === 'all' || acc.dataset.cat === cat) ? 'block' : 'none';
+        });
+    });
+});
+
+// Search
+document.getElementById('search').addEventListener('input', function() {
+    const q = this.value.toLowerCase();
+    if (!q) {
+        document.querySelectorAll('.card, .accordion').forEach(el => el.style.display = '');
+        return;
+    }
+    // Search across all tabs — show the tab with results
+    let found = false;
+    document.querySelectorAll('.tab-content').forEach(tc => {
+        let hasMatch = false;
+        tc.querySelectorAll('.card, .accordion').forEach(el => {
+            const text = el.textContent.toLowerCase();
+            const match = text.includes(q);
+            el.style.display = match ? '' : 'none';
+            if (match) hasMatch = true;
+        });
+        if (hasMatch && !found) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelector(`[data-tab="${tc.id}"]`).classList.add('active');
+            tc.classList.add('active');
+            found = true;
+        }
+    });
+});
+
+// Simple syntax highlighting
+document.querySelectorAll('code.java').forEach(block => {
+    let html = block.innerHTML;
+    // Protect strings first
+    const strings = [];
+    html = html.replace(/"(?:[^"\\]|\\.)*"/g, m => { strings.push(m); return `__STR${strings.length-1}__`; });
+    // Protect comments
+    const comments = [];
+    html = html.replace(/\/\/.*/g, m => { comments.push(m); return `__CMT${comments.length-1}__`; });
+    // Keywords
+    const kws = 'abstract|assert|boolean|break|byte|case|catch|char|class|const|continue|default|do|double|else|enum|extends|final|finally|float|for|goto|if|implements|import|instanceof|int|interface|long|native|new|package|private|protected|public|return|short|static|strictfp|super|switch|synchronized|this|throw|throws|transient|try|void|volatile|while|var|record|sealed|permits|yield|true|false|null'.split('|');
+    kws.forEach(k => {
+        html = html.replace(new RegExp(`\\b(${k})\\b`, 'g'), '<span class="kw">$1</span>');
+    });
+    // Types (PascalCase words)
+    html = html.replace(/\b([A-Z][a-zA-Z0-9]*)\b/g, '<span class="tp">$1</span>');
+    // Numbers
+    html = html.replace(/\b(\d+\.?\d*[dDfFlL]?)\b/g, '<span class="nm">$1</span>');
+    // Annotations
+    html = html.replace(/@\w+/g, '<span class="an">$&</span>');
+    // Restore comments with highlighting
+    comments.forEach((c, i) => { html = html.replace(`__CMT${i}__`, `<span class="cm">${c}</span>`); });
+    // Restore strings with highlighting
+    strings.forEach((s, i) => { html = html.replace(`__STR${i}__`, `<span class="str">${s}</span>`); });
+    block.innerHTML = html;
+});
+</script>
+</body>
+</html>
