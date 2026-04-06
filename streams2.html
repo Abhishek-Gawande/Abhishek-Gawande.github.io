@@ -1,0 +1,2971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>100 Java Streams Problems – Complete Interview Mastery</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--bg:#0a0d14;--surface:#12151f;--card:#1a1f2e;--border:#2a3042;--accent:#7c6aff;
+            --accent2:#00e5b8;--text:#e8eaf4;--dim:#8892a8;--keyword:#d479ff;--string:#7ec699;
+            --type:#f0c674;--method:#6bb3f9;--number:#e5a05a;--comment:#5a6580;--danger:#f06878;
+            --success:#7ec699;--warn:#f0c674;--info:#6bb3f9}
+        body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+        
+        header{background:linear-gradient(135deg,#1a1045 0%,#2a1a6a 40%,#1a3a5a 100%);padding:40px 24px 28px;text-align:center;border-bottom:3px solid var(--accent);position:relative;overflow:hidden}
+        header::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%237c6aff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+        header h1{font-size:2.5em;background:linear-gradient(90deg,#7c6aff,#00e5b8,#7c6aff);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shine 3s linear infinite;margin-bottom:8px;position:relative}
+        @keyframes shine{to{background-position:200% center}}
+        header p{color:var(--dim);font-size:1.1em;position:relative}
+        .header-badge{display:inline-block;background:linear-gradient(135deg,var(--accent),var(--accent2));padding:6px 16px;border-radius:20px;font-size:.85em;color:#fff;margin-top:12px;font-weight:600}
+        
+        .search-box{margin-top:20px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap;position:relative}
+        #search{width:min(550px,90%);padding:14px 24px;border-radius:30px;border:2px solid var(--border);background:var(--surface);color:var(--text);font-size:1em;outline:none;transition:.3s}
+        #search:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(124,106,255,.2)}
+        #search::placeholder{color:var(--dim)}
+        
+        nav.tabs{display:flex;gap:6px;padding:12px 16px;background:var(--surface);overflow-x:auto;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;scrollbar-width:thin}
+        nav.tabs::-webkit-scrollbar{height:5px}
+        nav.tabs::-webkit-scrollbar-thumb{background:var(--border);border-radius:5px}
+        .tab{padding:12px 20px;border:none;background:transparent;color:var(--dim);cursor:pointer;border-radius:10px;font-size:.9em;white-space:nowrap;transition:.25s;font-weight:600;position:relative}
+        .tab:hover{background:var(--card);color:var(--text)}
+        .tab.active{background:linear-gradient(135deg,var(--accent),#5a4ad4);color:#fff;box-shadow:0 4px 15px rgba(124,106,255,.3)}
+        .tab .count{font-size:.7em;background:rgba(255,255,255,.2);padding:2px 6px;border-radius:10px;margin-left:6px}
+        
+        main{max-width:1200px;margin:0 auto;padding:30px 20px 80px}
+        .tab-content{display:none;animation:fadeIn .4s ease}
+        .tab-content.active{display:block}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+        
+        .section-title{font-size:1.6em;color:var(--text);margin:35px 0 20px;padding-bottom:12px;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:12px}
+        .section-title:first-child{margin-top:0}
+        .section-title .icon{font-size:1.2em}
+        
+        .stats-bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin-bottom:30px}
+        .stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center;transition:.3s}
+        .stat-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+        .stat-card .value{font-size:2.2em;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .stat-card .label{font-size:.85em;color:var(--dim);margin-top:4px}
+        
+        .cat-filter{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px;padding:16px;background:var(--surface);border-radius:12px;border:1px solid var(--border)}
+        .cat-btn{padding:8px 18px;border-radius:25px;border:2px solid var(--border);background:transparent;color:var(--dim);cursor:pointer;font-size:.85em;transition:.25s;font-weight:500}
+        .cat-btn:hover{border-color:var(--accent);color:var(--accent)}
+        .cat-btn.active{background:linear-gradient(135deg,var(--accent),#5a4ad4);color:#fff;border-color:transparent;box-shadow:0 4px 15px rgba(124,106,255,.3)}
+        
+        .accordion{margin-bottom:12px}
+        .acc-header{width:100%;padding:18px 22px;background:var(--card);border:2px solid var(--border);border-radius:12px;color:var(--text);cursor:pointer;text-align:left;font-size:.95em;display:flex;justify-content:space-between;align-items:center;transition:.25s;font-weight:500;gap:12px}
+        .acc-header:hover{border-color:var(--accent);background:#1f2538;transform:translateX(4px)}
+        .acc-header.open{border-radius:12px 12px 0 0;border-color:var(--accent);background:#1f2538}
+        .acc-header .left{display:flex;align-items:center;gap:12px;flex:1}
+        .acc-header .num{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:700;min-width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:.85em}
+        .acc-header .title{flex:1}
+        .acc-header .tags{display:flex;gap:6px;flex-wrap:wrap}
+        .acc-header .diff{font-size:.75em;padding:4px 12px;border-radius:20px;font-weight:600}
+        .diff-med{background:rgba(240,198,116,.15);color:var(--warn)}
+        .diff-hard{background:rgba(240,104,120,.15);color:var(--danger)}
+        .acc-header .arrow{transition:.3s;color:var(--dim)}
+        .acc-header.open .arrow{transform:rotate(180deg);color:var(--accent)}
+        
+        .acc-body{display:none;padding:24px;background:var(--surface);border:2px solid var(--accent);border-top:none;border-radius:0 0 12px 12px}
+        .acc-body.open{display:block;animation:slideDown .3s ease}
+        @keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+        
+        .tag{display:inline-block;font-size:.72em;padding:4px 10px;border-radius:6px;margin:2px;background:rgba(124,106,255,.12);color:var(--accent);font-weight:500}
+        .tag.pattern{background:rgba(0,229,184,.12);color:var(--accent2)}
+        
+        pre{background:#0d1017;border:1px solid var(--border);border-radius:10px;padding:20px;overflow-x:auto;margin:16px 0;font-size:.88em;line-height:1.7;scrollbar-width:thin}
+        code{font-family:'JetBrains Mono','Fira Code','Cascadia Code',Consolas,monospace}
+        .kw{color:var(--keyword)}.str{color:var(--string)}.tp{color:var(--type)}.mt{color:var(--method)}
+        .nm{color:var(--number)}.cm{color:var(--comment);font-style:italic}.an{color:var(--danger)}
+        
+        .solution-note{background:rgba(124,106,255,.08);border-left:4px solid var(--accent);padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0;font-size:.9em}
+        .solution-note strong{color:var(--accent)}
+        .solution-note.tip{background:rgba(0,229,184,.08);border-color:var(--accent2)}
+        .solution-note.tip strong{color:var(--accent2)}
+        .solution-note.warn{background:rgba(240,198,116,.08);border-color:var(--warn)}
+        .solution-note.warn strong{color:var(--warn)}
+        
+        .complexity{display:inline-flex;gap:16px;margin-top:12px;font-size:.85em}
+        .complexity span{color:var(--dim)}
+        .complexity strong{color:var(--accent2)}
+        
+        .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:20px}
+        .card h3{color:var(--accent2);margin-bottom:10px;font-size:1.15em}
+        .card p,.card li{color:var(--dim);line-height:1.7;font-size:.92em}
+        .card ul{padding-left:22px;margin-top:8px}
+        .card li{margin-bottom:6px}
+        
+        .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+        
+        .pattern-card{background:linear-gradient(135deg,var(--card),#1f2538);border:1px solid var(--border);border-radius:12px;padding:20px;transition:.3s}
+        .pattern-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,0,0,.3)}
+        .pattern-card h4{color:var(--method);margin-bottom:8px;font-size:1em;display:flex;align-items:center;gap:8px}
+        .pattern-card p{color:var(--dim);font-size:.85em;line-height:1.6}
+        .pattern-card code{background:var(--surface);padding:3px 8px;border-radius:5px;font-size:.85em}
+        
+        table{width:100%;border-collapse:collapse;margin:16px 0;font-size:.88em}
+        th{background:var(--surface);color:var(--accent2);padding:14px;text-align:left;border-bottom:2px solid var(--border)}
+        td{padding:12px 14px;border-bottom:1px solid var(--border);color:var(--dim)}
+        tr:hover td{background:rgba(124,106,255,.04)}
+        td code{background:var(--surface);padding:3px 8px;border-radius:5px;font-size:.9em;color:var(--method)}
+        
+        .progress-ring{position:relative;width:100px;height:100px;margin:0 auto}
+        .progress-ring svg{transform:rotate(-90deg)}
+        .progress-ring circle{fill:none;stroke-width:8}
+        .progress-ring .bg{stroke:var(--border)}
+        .progress-ring .progress{stroke:url(#gradient);stroke-linecap:round;transition:stroke-dashoffset .5s}
+        .progress-ring .text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:1.4em;font-weight:700}
+        
+        @media(max-width:768px){
+            header h1{font-size:1.8em}
+            .stats-bar{grid-template-columns:repeat(2,1fr)}
+            nav.tabs{gap:4px}
+            .tab{padding:10px 14px;font-size:.82em}
+            main{padding:20px 12px}
+            .acc-header{padding:14px 16px;flex-direction:column;align-items:flex-start}
+            .acc-header .tags{margin-top:10px}
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>🚀 100 Java Streams Problems</h1>
+    <p>Master Every Interview Pattern — From First Principles to Advanced Techniques</p>
+    <span class="header-badge">📚 70 Medium • 30 Hard • All Patterns Covered</span>
+    <div class="search-box">
+        <input type="text" id="search" placeholder="🔍 Search problems by name, pattern, or keyword...">
+    </div>
+</header>
+
+<nav class="tabs" id="tabNav">
+    <button class="tab active" data-tab="overview">📊 Overview</button>
+    <button class="tab" data-tab="fundamentals">🏗️ Core Patterns<span class="count">15</span></button>
+    <button class="tab" data-tab="collections">📦 Collections<span class="count">15</span></button>
+    <button class="tab" data-tab="strings">🔤 Strings<span class="count">15</span></button>
+    <button class="tab" data-tab="objects">👥 Objects<span class="count">18</span></button>
+    <button class="tab" data-tab="numbers">🔢 Math & Numbers<span class="count">12</span></button>
+    <button class="tab" data-tab="advanced">⚡ Advanced<span class="count">15</span></button>
+    <button class="tab" data-tab="realworld">🌍 Real World<span class="count">10</span></button>
+</nav>
+
+<main>
+
+<!-- ==================== OVERVIEW ==================== -->
+<div class="tab-content active" id="overview">
+    <h2 class="section-title"><span class="icon">📊</span> Problem Statistics</h2>
+    
+    <div class="stats-bar">
+        <div class="stat-card">
+            <div class="value">100</div>
+            <div class="label">Total Problems</div>
+        </div>
+        <div class="stat-card">
+            <div class="value" style="background:linear-gradient(135deg,var(--warn),#e5a040);-webkit-background-clip:text">70</div>
+            <div class="label">Medium Level</div>
+        </div>
+        <div class="stat-card">
+            <div class="value" style="background:linear-gradient(135deg,var(--danger),#d44060);-webkit-background-clip:text">30</div>
+            <div class="label">Hard Level</div>
+        </div>
+        <div class="stat-card">
+            <div class="value">12</div>
+            <div class="label">Patterns</div>
+        </div>
+        <div class="stat-card">
+            <div class="value">7</div>
+            <div class="label">Categories</div>
+        </div>
+    </div>
+
+    <h2 class="section-title"><span class="icon">🎯</span> Core Patterns Covered</h2>
+    <div class="grid">
+        <div class="pattern-card">
+            <h4>🔄 Filter-Map-Collect</h4>
+            <p>The fundamental pattern: <code>filter()</code> → <code>map()</code> → <code>collect()</code>. Foundation for 80% of stream operations.</p>
+        </div>
+        <div class="pattern-card">
+            <h4>📊 GroupingBy</h4>
+            <p>Partition data into groups using <code>Collectors.groupingBy()</code> with downstream collectors.</p>
+        </div>
+        <div class="pattern-card">
+            <h4>🔗 FlatMap</h4>
+            <p>Flatten nested structures: List of Lists, Optional chains, one-to-many transformations.</p>
+        </div>
+        <div class="pattern-card">
+            <h4>➕ Reduce</h4>
+            <p>Aggregate elements into single value using <code>reduce()</code> — sum, product, concatenation.</p>
+        </div>
+        <div class="pattern-card">
+            <h4>📈 Sorting & Comparators</h4>
+            <p>Multi-level sorting with <code>sorted()</code>, <code>Comparator.comparing()</code>, <code>thenComparing()</code>.</p>
+        </div>
+        <div class="pattern-card">
+            <h4>🎲 Partitioning</h4>
+            <p>Split into two groups using <code>partitioningBy()</code> — pass/fail, even/odd patterns.</p>
+        </div>
+        <div class="pattern-card">
+            <h4>🔢 Primitive Streams</h4>
+            <p><code>IntStream</code>, <code>LongStream</code>, <code>DoubleStream</code> for performance and specialized operations.</p>
+        </div>
+        <div class="pattern-card">
+            <h4>📊 Statistics</h4>
+            <p><code>summaryStatistics()</code>, <code>averaging</code>, <code>counting</code>, <code>summing</code> collectors.</p>
+        </div>
+        <div class="pattern-card">
+            <h4>🔍 Finding Elements</h4>
+            <p><code>findFirst()</code>, <code>findAny()</code>, <code>anyMatch()</code>, <code>allMatch()</code> for searches.</p>
+        </div>
+        <div class="pattern-card">
+            <h4>🗺️ toMap Patterns</h4>
+            <p>Convert streams to maps with <code>toMap()</code>, handling duplicates, custom map types.</p>
+        </div>
+        <div class="pattern-card">
+            <h4>⚡ Short-Circuit</h4>
+            <p><code>limit()</code>, <code>takeWhile()</code>, early termination with matching operations.</p>
+        </div>
+        <div class="pattern-card">
+            <h4>🔧 Custom Collectors</h4>
+            <p>Build custom collectors with <code>Collector.of()</code> for specialized aggregations.</p>
+        </div>
+    </div>
+
+    <h2 class="section-title"><span class="icon">📋</span> How to Use This Guide</h2>
+    <div class="card">
+        <h3>💡 Study Strategy</h3>
+        <ul>
+            <li><strong>First Pass:</strong> Try each problem yourself for 10-15 minutes before viewing solution</li>
+            <li><strong>Pattern Recognition:</strong> After solving, identify which core pattern(s) the problem uses</li>
+            <li><strong>Build Complexity:</strong> Start with a category, solve all Medium, then all Hard</li>
+            <li><strong>Time Yourself:</strong> Aim for 5-10 min for Medium, 15-20 min for Hard in interviews</li>
+            <li><strong>Edge Cases:</strong> Consider empty inputs, single elements, nulls, duplicates</li>
+        </ul>
+    </div>
+</div>
+
+<!-- ==================== CORE PATTERNS (1-15) ==================== -->
+<div class="tab-content" id="fundamentals">
+    <h2 class="section-title"><span class="icon">🏗️</span> Core Stream Patterns (1-15)</h2>
+    
+    <div class="cat-filter">
+        <button class="cat-btn active" data-cat="all">All (15)</button>
+        <button class="cat-btn" data-cat="filter">Filter</button>
+        <button class="cat-btn" data-cat="map">Map</button>
+        <button class="cat-btn" data-cat="reduce">Reduce</button>
+        <button class="cat-btn" data-cat="collect">Collect</button>
+    </div>
+
+    <div class="problem-list">
+        
+<!-- Problem 1 -->
+<div class="accordion" data-cat="filter reduce">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">1</span>
+        <span class="title">Find sum of squares of odd numbers greater than 5</span>
+    </span>
+    <span class="tags">
+        <span class="tag">filter</span>
+        <span class="tag">map</span>
+        <span class="tag pattern">reduce</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Filter → Map → Reduce. Chain multiple filters, transform, then aggregate.
+</div>
+<pre><code class="java">List<Integer> numbers = List.of(1, 2, 3, 5, 7, 8, 9, 11, 12, 15);
+
+int result = numbers.stream()
+    .filter(n -> n % 2 != 0)      // Keep odd numbers
+    .filter(n -> n > 5)           // Keep > 5
+    .mapToInt(n -> n * n)         // Square each
+    .sum();                       // Sum all
+// Result: 49 + 81 + 121 + 225 = 476
+
+// Alternative with reduce
+int result2 = numbers.stream()
+    .filter(n -> n % 2 != 0 && n > 5)
+    .map(n -> n * n)
+    .reduce(0, Integer::sum);</code></pre>
+<div class="complexity">
+    <span>Time: <strong>O(n)</strong></span>
+    <span>Space: <strong>O(1)</strong></span>
+</div>
+</div>
+</div>
+
+<!-- Problem 2 -->
+<div class="accordion" data-cat="reduce">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">2</span>
+        <span class="title">Find product of all elements using reduce</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">reduce</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Reduce with identity. Use 1 as identity for multiplication (neutral element).
+</div>
+<pre><code class="java">List<Integer> numbers = List.of(2, 3, 4, 5);
+
+// With identity - returns int
+int product = numbers.stream()
+    .reduce(1, (a, b) -> a * b);
+// 2 * 3 * 4 * 5 = 120
+
+// Without identity - returns Optional (handles empty list)
+Optional<Integer> productOpt = numbers.stream()
+    .reduce((a, b) -> a * b);
+
+// Using method reference for clarity
+int product2 = numbers.stream()
+    .reduce(1, Math::multiplyExact);
+
+// Handle potential overflow with BigInteger
+BigInteger bigProduct = numbers.stream()
+    .map(BigInteger::valueOf)
+    .reduce(BigInteger.ONE, BigInteger::multiply);</code></pre>
+<div class="solution-note tip">
+<strong>💡 Tip:</strong> Always consider overflow. For large products, use BigInteger or check bounds.
+</div>
+</div>
+</div>
+
+<!-- Problem 3 -->
+<div class="accordion" data-cat="filter collect">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">3</span>
+        <span class="title">Find all elements greater than the average</span>
+    </span>
+    <span class="tags">
+        <span class="tag">statistics</span>
+        <span class="tag pattern">two-pass</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Two-pass processing. Calculate aggregate first, then filter based on it.
+</div>
+<pre><code class="java">List<Integer> numbers = List.of(1, 5, 8, 12, 3, 9, 15, 2);
+
+// Step 1: Calculate average
+double avg = numbers.stream()
+    .mapToInt(Integer::intValue)
+    .average()
+    .orElse(0.0);
+// avg = 6.875
+
+// Step 2: Filter elements above average
+List<Integer> aboveAvg = numbers.stream()
+    .filter(n -> n > avg)
+    .collect(Collectors.toList());
+// [8, 12, 9, 15]
+
+// One-liner using teeing (Java 12+)
+var result = numbers.stream()
+    .collect(Collectors.teeing(
+        Collectors.averagingInt(n -> n),
+        Collectors.toList(),
+        (average, list) -> list.stream()
+            .filter(n -> n > average)
+            .collect(Collectors.toList())
+    ));</code></pre>
+<div class="solution-note warn">
+<strong>⚠️ Note:</strong> Streams can only be consumed once. Two-pass requires either the original collection or teeing.
+</div>
+</div>
+</div>
+
+<!-- Problem 4 -->
+<div class="accordion" data-cat="filter collect">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">4</span>
+        <span class="title">Find elements appearing exactly twice</span>
+    </span>
+    <span class="tags">
+        <span class="tag">groupingBy</span>
+        <span class="tag pattern">frequency</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Frequency map → Filter by count. Use groupingBy with counting downstream.
+</div>
+<pre><code class="java">List<Integer> numbers = List.of(1, 2, 3, 2, 4, 3, 5, 3, 1);
+
+Set<Integer> appearsTwice = numbers.stream()
+    .collect(Collectors.groupingBy(
+        n -> n,                           // Group by the number itself
+        Collectors.counting()             // Count occurrences
+    ))
+    .entrySet().stream()
+    .filter(e -> e.getValue() == 2)       // Keep only count == 2
+    .map(Map.Entry::getKey)
+    .collect(Collectors.toSet());
+// [1, 2] - both appear exactly twice
+
+// Generic solution for "exactly N times"
+public static <T> Set<T> findElementsAppearingNTimes(List<T> list, long n) {
+    return list.stream()
+        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+        .entrySet().stream()
+        .filter(e -> e.getValue() == n)
+        .map(Map.Entry::getKey)
+        .collect(Collectors.toSet());
+}</code></pre>
+</div>
+</div>
+
+<!-- Problem 5 -->
+<div class="accordion" data-cat="filter">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">5</span>
+        <span class="title">Find first N elements satisfying a condition</span>
+    </span>
+    <span class="tags">
+        <span class="tag">filter</span>
+        <span class="tag">limit</span>
+        <span class="tag pattern">short-circuit</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Filter → Limit. Short-circuit evaluation stops processing once N elements found.
+</div>
+<pre><code class="java">List<Integer> numbers = List.of(1, 3, 5, 8, 10, 12, 15, 18, 20, 25);
+
+// Find first 3 even numbers
+List<Integer> firstThreeEvens = numbers.stream()
+    .filter(n -> n % 2 == 0)
+    .limit(3)
+    .collect(Collectors.toList());
+// [8, 10, 12]
+
+// Find first 5 numbers divisible by 3
+List<Integer> divisibleBy3 = numbers.stream()
+    .filter(n -> n % 3 == 0)
+    .limit(5)
+    .collect(Collectors.toList());
+// [3, 15, 18]
+
+// With peek to demonstrate lazy evaluation
+List<Integer> result = numbers.stream()
+    .peek(n -> System.out.println("Processing: " + n))
+    .filter(n -> n > 10)
+    .limit(2)
+    .collect(Collectors.toList());
+// Only processes: 1, 3, 5, 8, 10, 12, 15 then stops!
+// Returns: [12, 15]</code></pre>
+<div class="solution-note tip">
+<strong>💡 Performance:</strong> limit() is short-circuiting — it stops upstream operations once satisfied.
+</div>
+</div>
+</div>
+
+<!-- Problem 6 -->
+<div class="accordion" data-cat="reduce">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">6</span>
+        <span class="title">Find maximum using reduce (without max())</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">reduce</span>
+        <span class="tag">comparison</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Reduce for aggregation. Demonstrates reduce is a general-purpose combiner.
+</div>
+<pre><code class="java">List<Integer> numbers = List.of(5, 2, 9, 1, 7, 3);
+
+// Using reduce with BinaryOperator
+Optional<Integer> max = numbers.stream()
+    .reduce((a, b) -> a > b ? a : b);
+// Optional[9]
+
+// Using reduce with identity (for non-empty guarantee)
+int maxWithDefault = numbers.stream()
+    .reduce(Integer.MIN_VALUE, (a, b) -> a > b ? a : b);
+// 9
+
+// Using method reference
+Optional<Integer> max2 = numbers.stream()
+    .reduce(Integer::max);
+
+// Find min using same pattern
+Optional<Integer> min = numbers.stream()
+    .reduce(Integer::min);
+
+// Find max by absolute value
+Optional<Integer> maxByAbs = numbers.stream()
+    .reduce((a, b) -> Math.abs(a) > Math.abs(b) ? a : b);
+
+// Find both max and min in single pass using reduce
+int[] minMax = numbers.stream()
+    .reduce(
+        new int[]{Integer.MAX_VALUE, Integer.MIN_VALUE},
+        (acc, n) -> new int[]{Math.min(acc[0], n), Math.max(acc[1], n)},
+        (a, b) -> new int[]{Math.min(a[0], b[0]), Math.max(a[1], b[1])}
+    );
+// [1, 9]</code></pre>
+</div>
+</div>
+
+<!-- Problem 7 -->
+<div class="accordion" data-cat="map collect">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">7</span>
+        <span class="title">Transform and collect to specific collection types</span>
+    </span>
+    <span class="tags">
+        <span class="tag">toCollection</span>
+        <span class="tag pattern">collectors</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Use Collectors.toCollection() with constructor reference for specific types.
+</div>
+<pre><code class="java">List<String> names = List.of("Charlie", "Alice", "Bob", "David", "Alice");
+
+// To TreeSet (sorted, no duplicates)
+TreeSet<String> sortedUnique = names.stream()
+    .collect(Collectors.toCollection(TreeSet::new));
+// [Alice, Bob, Charlie, David]
+
+// To LinkedList
+LinkedList<String> linkedList = names.stream()
+    .map(String::toUpperCase)
+    .collect(Collectors.toCollection(LinkedList::new));
+
+// To ArrayDeque
+ArrayDeque<String> deque = names.stream()
+    .filter(n -> n.length() > 3)
+    .collect(Collectors.toCollection(ArrayDeque::new));
+
+// To LinkedHashSet (preserves insertion order, no duplicates)
+LinkedHashSet<String> orderedSet = names.stream()
+    .collect(Collectors.toCollection(LinkedHashSet::new));
+// [Charlie, Alice, Bob, David]
+
+// To ConcurrentSkipListSet (thread-safe, sorted)
+ConcurrentSkipListSet<String> concurrentSet = names.stream()
+    .collect(Collectors.toCollection(ConcurrentSkipListSet::new));
+
+// To PriorityQueue with custom comparator
+PriorityQueue<String> pq = names.stream()
+    .collect(Collectors.toCollection(
+        () -> new PriorityQueue<>(Comparator.comparing(String::length))
+    ));</code></pre>
+</div>
+</div>
+
+<!-- Problem 8 -->
+<div class="accordion" data-cat="reduce">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">8</span>
+        <span class="title">Concatenate strings with reduce vs joining</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">reduce</span>
+        <span class="tag">joining</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Compare reduce() vs Collectors.joining() for string concatenation.
+</div>
+<pre><code class="java">List<String> words = List.of("Java", "Streams", "Are", "Powerful");
+
+// Using reduce - simple but creates many intermediate strings
+String concat1 = words.stream()
+    .reduce("", (a, b) -> a + " " + b).trim();
+// "Java Streams Are Powerful"
+
+// Using reduce with StringBuilder (more efficient)
+String concat2 = words.stream()
+    .reduce(new StringBuilder(), 
+        (sb, s) -> sb.length() == 0 ? sb.append(s) : sb.append(" ").append(s),
+        StringBuilder::append)
+    .toString();
+
+// Using Collectors.joining - BEST approach
+String concat3 = words.stream()
+    .collect(Collectors.joining(" "));
+// "Java Streams Are Powerful"
+
+// With prefix and suffix
+String formatted = words.stream()
+    .collect(Collectors.joining(", ", "[", "]"));
+// "[Java, Streams, Are, Powerful]"
+
+// Complex: join with transformation
+String upper = words.stream()
+    .map(String::toUpperCase)
+    .collect(Collectors.joining(" | "));
+// "JAVA | STREAMS | ARE | POWERFUL"</code></pre>
+<div class="solution-note tip">
+<strong>💡 Best Practice:</strong> Always use Collectors.joining() for strings. It uses StringBuilder internally and is optimized.
+</div>
+</div>
+</div>
+
+<!-- Problem 9 -->
+<div class="accordion" data-cat="collect">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">9</span>
+        <span class="title">Partition list by multiple criteria</span>
+    </span>
+    <span class="tags">
+        <span class="tag">partitioningBy</span>
+        <span class="tag pattern">grouping</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> partitioningBy creates exactly two groups (true/false). For more groups, use groupingBy.
+</div>
+<pre><code class="java">List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+// Simple partition: even/odd
+Map<Boolean, List<Integer>> evenOdd = numbers.stream()
+    .collect(Collectors.partitioningBy(n -> n % 2 == 0));
+// {false=[1,3,5,7,9], true=[2,4,6,8,10]}
+
+// Partition with downstream collector - count each partition
+Map<Boolean, Long> counts = numbers.stream()
+    .collect(Collectors.partitioningBy(
+        n -> n > 5,
+        Collectors.counting()
+    ));
+// {false=5, true=5}
+
+// Partition with sum
+Map<Boolean, Integer> sums = numbers.stream()
+    .collect(Collectors.partitioningBy(
+        n -> n % 2 == 0,
+        Collectors.summingInt(n -> n)
+    ));
+// {false=25, true=30}
+
+// Multi-level: partition then group
+// First split by even/odd, then by >5
+Map<Boolean, Map<Boolean, List<Integer>>> nested = numbers.stream()
+    .collect(Collectors.partitioningBy(
+        n -> n % 2 == 0,
+        Collectors.partitioningBy(n -> n > 5)
+    ));
+// {false={false=[1,3,5], true=[7,9]}, true={false=[2,4], true=[6,8,10]}}</code></pre>
+</div>
+</div>
+
+<!-- Problem 10 -->
+<div class="accordion" data-cat="collect">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">10</span>
+        <span class="title">Group by computed key with custom downstream</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">groupingBy</span>
+        <span class="tag">downstream</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> groupingBy(classifier, downstream) - group then apply collector to each group.
+</div>
+<pre><code class="java">List<String> words = List.of("apple", "banana", "apricot", "cherry", "avocado", "blueberry");
+
+// Group by first letter, collect names
+Map<Character, List<String>> byFirstLetter = words.stream()
+    .collect(Collectors.groupingBy(w -> w.charAt(0)));
+// {a=[apple, apricot, avocado], b=[banana, blueberry], c=[cherry]}
+
+// Group by length, count each group
+Map<Integer, Long> byLengthCount = words.stream()
+    .collect(Collectors.groupingBy(String::length, Collectors.counting()));
+// {5=1, 6=2, 7=2, 9=1}
+
+// Group by first letter, join with comma
+Map<Character, String> byFirstLetterJoined = words.stream()
+    .collect(Collectors.groupingBy(
+        w -> w.charAt(0),
+        Collectors.joining(", ")
+    ));
+// {a=apple, apricot, avocado, b=banana, blueberry, c=cherry}
+
+// Group by first letter, find longest in each group
+Map<Character, Optional<String>> longestByLetter = words.stream()
+    .collect(Collectors.groupingBy(
+        w -> w.charAt(0),
+        Collectors.maxBy(Comparator.comparingInt(String::length))
+    ));
+// {a=Optional[avocado], b=Optional[blueberry], c=Optional[cherry]}
+
+// Group by length range
+Map<String, List<String>> byLengthRange = words.stream()
+    .collect(Collectors.groupingBy(w -> {
+        int len = w.length();
+        if (len <= 5) return "short";
+        if (len <= 7) return "medium";
+        return "long";
+    }));</code></pre>
+</div>
+</div>
+
+<!-- Problem 11 -->
+<div class="accordion" data-cat="filter">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">11</span>
+        <span class="title">Find distinct elements by property (distinct by key)</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">distinctBy</span>
+        <span class="tag">filter</span>
+        <span class="diff diff-hard">Hard</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> distinct() uses equals(). For custom property, use stateful filter with Set.
+</div>
+<pre><code class="java">record Person(String name, String city) {}
+
+List<Person> people = List.of(
+    new Person("Alice", "NYC"),
+    new Person("Bob", "LA"),
+    new Person("Charlie", "NYC"),
+    new Person("David", "LA"),
+    new Person("Eve", "Chicago")
+);
+
+// Distinct by city - keep first person from each city
+// Helper method
+public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+    Set<Object> seen = ConcurrentHashMap.newKeySet();
+    return t -> seen.add(keyExtractor.apply(t));
+}
+
+List<Person> distinctByCity = people.stream()
+    .filter(distinctByKey(Person::city))
+    .collect(Collectors.toList());
+// [Alice(NYC), Bob(LA), Eve(Chicago)]
+
+// Alternative using toMap (keeps last)
+Collection<Person> distinctByCity2 = people.stream()
+    .collect(Collectors.toMap(
+        Person::city,
+        Function.identity(),
+        (existing, replacement) -> existing  // Keep first
+    ))
+    .values();
+
+// Using groupingBy to get first of each group
+List<Person> distinctByCity3 = people.stream()
+    .collect(Collectors.groupingBy(Person::city))
+    .values().stream()
+    .map(list -> list.get(0))
+    .collect(Collectors.toList());</code></pre>
+<div class="solution-note warn">
+<strong>⚠️ Thread Safety:</strong> For parallel streams, use ConcurrentHashMap.newKeySet() in distinctByKey.
+</div>
+</div>
+</div>
+
+<!-- Problem 12 -->
+<div class="accordion" data-cat="reduce">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">12</span>
+        <span class="title">Implement moving/sliding window statistics</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">sliding-window</span>
+        <span class="tag">IntStream</span>
+        <span class="diff diff-hard">Hard</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Use IntStream.range to create windows, then process each window.
+</div>
+<pre><code class="java">List<Integer> numbers = List.of(1, 3, 5, 7, 9, 11, 13, 15);
+int windowSize = 3;
+
+// Moving average
+List<Double> movingAverages = IntStream.rangeClosed(0, numbers.size() - windowSize)
+    .mapToObj(i -> numbers.subList(i, i + windowSize))
+    .map(window -> window.stream()
+        .mapToInt(Integer::intValue)
+        .average()
+        .orElse(0))
+    .collect(Collectors.toList());
+// [3.0, 5.0, 7.0, 9.0, 11.0, 13.0]
+
+// Moving sum
+List<Integer> movingSums = IntStream.rangeClosed(0, numbers.size() - windowSize)
+    .map(i -> numbers.subList(i, i + windowSize).stream()
+        .mapToInt(Integer::intValue)
+        .sum())
+    .boxed()
+    .collect(Collectors.toList());
+// [9, 15, 21, 27, 33, 39]
+
+// Moving max
+List<Integer> movingMax = IntStream.rangeClosed(0, numbers.size() - windowSize)
+    .mapToObj(i -> numbers.subList(i, i + windowSize).stream()
+        .max(Integer::compare)
+        .orElse(0))
+    .collect(Collectors.toList());
+// [5, 7, 9, 11, 13, 15]
+
+// All statistics for each window
+List<IntSummaryStatistics> windowStats = IntStream.rangeClosed(0, numbers.size() - windowSize)
+    .mapToObj(i -> numbers.subList(i, i + windowSize).stream()
+        .mapToInt(Integer::intValue)
+        .summaryStatistics())
+    .collect(Collectors.toList());</code></pre>
+</div>
+</div>
+
+<!-- Problem 13 -->
+<div class="accordion" data-cat="map">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">13</span>
+        <span class="title">Indexed stream operations (access index in map)</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">indexed</span>
+        <span class="tag">IntStream</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Streams don't have built-in indices. Use IntStream.range() to iterate by index.
+</div>
+<pre><code class="java">List<String> names = List.of("Alice", "Bob", "Charlie", "David");
+
+// Add index to each element
+List<String> indexed = IntStream.range(0, names.size())
+    .mapToObj(i -> i + ": " + names.get(i))
+    .collect(Collectors.toList());
+// ["0: Alice", "1: Bob", "2: Charlie", "3: David"]
+
+// Filter by index (keep even indices)
+List<String> evenIndices = IntStream.range(0, names.size())
+    .filter(i -> i % 2 == 0)
+    .mapToObj(names::get)
+    .collect(Collectors.toList());
+// ["Alice", "Charlie"]
+
+// Create index-value pairs
+record IndexedValue<T>(int index, T value) {}
+
+List<IndexedValue<String>> pairs = IntStream.range(0, names.size())
+    .mapToObj(i -> new IndexedValue<>(i, names.get(i)))
+    .collect(Collectors.toList());
+
+// Find index of first match
+OptionalInt firstIndex = IntStream.range(0, names.size())
+    .filter(i -> names.get(i).startsWith("C"))
+    .findFirst();
+// OptionalInt[2]
+
+// Zip two lists together
+List<String> list1 = List.of("a", "b", "c");
+List<Integer> list2 = List.of(1, 2, 3);
+
+List<String> zipped = IntStream.range(0, Math.min(list1.size(), list2.size()))
+    .mapToObj(i -> list1.get(i) + list2.get(i))
+    .collect(Collectors.toList());
+// ["a1", "b2", "c3"]</code></pre>
+</div>
+</div>
+
+<!-- Problem 14 -->
+<div class="accordion" data-cat="collect">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">14</span>
+        <span class="title">Collect to map with collision handling</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">toMap</span>
+        <span class="tag">merge</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> toMap(keyMapper, valueMapper, mergeFunction) handles duplicate keys.
+</div>
+<pre><code class="java">record Product(String category, String name, double price) {}
+
+List<Product> products = List.of(
+    new Product("Electronics", "Phone", 800),
+    new Product("Electronics", "Laptop", 1200),
+    new Product("Clothing", "Shirt", 50),
+    new Product("Electronics", "Tablet", 400),
+    new Product("Clothing", "Pants", 70)
+);
+
+// Sum prices by category
+Map<String, Double> totalByCategory = products.stream()
+    .collect(Collectors.toMap(
+        Product::category,
+        Product::price,
+        Double::sum  // Merge function: sum prices for same category
+    ));
+// {Electronics=2400.0, Clothing=120.0}
+
+// Keep most expensive product per category
+Map<String, Product> mostExpensive = products.stream()
+    .collect(Collectors.toMap(
+        Product::category,
+        Function.identity(),
+        (p1, p2) -> p1.price() > p2.price() ? p1 : p2
+    ));
+
+// Count by category using toMap
+Map<String, Integer> countByCategory = products.stream()
+    .collect(Collectors.toMap(
+        Product::category,
+        p -> 1,
+        Integer::sum
+    ));
+// {Electronics=3, Clothing=2}
+
+// Collect names by category (comma-separated)
+Map<String, String> namesByCategory = products.stream()
+    .collect(Collectors.toMap(
+        Product::category,
+        Product::name,
+        (n1, n2) -> n1 + ", " + n2
+    ));
+// {Electronics=Phone, Laptop, Tablet, Clothing=Shirt, Pants}
+
+// Collect to specific map type (TreeMap)
+TreeMap<String, Double> sorted = products.stream()
+    .collect(Collectors.toMap(
+        Product::category,
+        Product::price,
+        Double::sum,
+        TreeMap::new
+    ));</code></pre>
+</div>
+</div>
+
+<!-- Problem 15 -->
+<div class="accordion" data-cat="reduce collect">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">15</span>
+        <span class="title">Use teeing collector for simultaneous operations</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">teeing</span>
+        <span class="tag">Java 12+</span>
+        <span class="diff diff-hard">Hard</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> teeing() applies two collectors simultaneously and merges results. Single-pass efficiency.
+</div>
+<pre><code class="java">List<Integer> numbers = List.of(3, 8, 1, 9, 5, 2, 7, 4, 6);
+
+// Find min and max in single pass
+record MinMax(int min, int max) {}
+
+MinMax minMax = numbers.stream()
+    .collect(Collectors.teeing(
+        Collectors.minBy(Integer::compare),
+        Collectors.maxBy(Integer::compare),
+        (min, max) -> new MinMax(min.orElse(0), max.orElse(0))
+    ));
+// MinMax[min=1, max=9]
+
+// Calculate average and count together
+record Stats(double average, long count) {}
+
+Stats stats = numbers.stream()
+    .collect(Collectors.teeing(
+        Collectors.averagingInt(n -> n),
+        Collectors.counting(),
+        Stats::new
+    ));
+// Stats[average=5.0, count=9]
+
+// Sum and product together
+record SumProduct(int sum, long product) {}
+
+SumProduct sp = numbers.stream()
+    .collect(Collectors.teeing(
+        Collectors.summingInt(n -> n),
+        Collectors.reducing(1L, Long::valueOf, (a, b) -> a * b),
+        SumProduct::new
+    ));
+
+// First and last element
+record FirstLast<T>(T first, T last) {}
+
+FirstLast<Integer> fl = numbers.stream()
+    .collect(Collectors.teeing(
+        Collectors.reducing((a, b) -> a),  // Keep first
+        Collectors.reducing((a, b) -> b),  // Keep last
+        (f, l) -> new FirstLast<>(f.orElse(null), l.orElse(null))
+    ));
+// FirstLast[first=3, last=6]
+
+// Separate evens and odds
+record EvenOdd(List<Integer> evens, List<Integer> odds) {}
+
+EvenOdd eo = numbers.stream()
+    .collect(Collectors.teeing(
+        Collectors.filtering(n -> n % 2 == 0, Collectors.toList()),
+        Collectors.filtering(n -> n % 2 != 0, Collectors.toList()),
+        EvenOdd::new
+    ));</code></pre>
+</div>
+</div>
+
+    </div><!-- end problem-list -->
+</div>
+
+<!-- ==================== COLLECTIONS (16-30) ==================== -->
+<div class="tab-content" id="collections">
+    <h2 class="section-title"><span class="icon">📦</span> Collection Operations (16-30)</h2>
+    
+    <div class="cat-filter">
+        <button class="cat-btn active" data-cat="all">All (15)</button>
+        <button class="cat-btn" data-cat="list">Lists</button>
+        <button class="cat-btn" data-cat="map">Maps</button>
+        <button class="cat-btn" data-cat="set">Sets</button>
+        <button class="cat-btn" data-cat="flatten">FlatMap</button>
+    </div>
+
+    <div class="problem-list">
+
+<!-- Problem 16 -->
+<div class="accordion" data-cat="flatten">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">16</span>
+        <span class="title">Flatten deeply nested structure (3+ levels)</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">flatMap</span>
+        <span class="tag">recursive</span>
+        <span class="diff diff-hard">Hard</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Multiple flatMap operations or recursive approach for arbitrary depth.
+</div>
+<pre><code class="java">// 3-level nested: List<List<List<Integer>>>
+List<List<List<Integer>>> deepNested = List.of(
+    List.of(List.of(1, 2), List.of(3, 4)),
+    List.of(List.of(5, 6), List.of(7, 8)),
+    List.of(List.of(9, 10))
+);
+
+// Flatten to single list
+List<Integer> flat = deepNested.stream()
+    .flatMap(Collection::stream)      // Stream<List<Integer>>
+    .flatMap(Collection::stream)      // Stream<Integer>
+    .collect(Collectors.toList());
+// [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+// Generic recursive flatten for arbitrary depth
+@SuppressWarnings("unchecked")
+public static Stream<Object> flatten(Object obj) {
+    if (obj instanceof Collection<?> coll) {
+        return coll.stream().flatMap(e -> flatten(e));
+    }
+    return Stream.of(obj);
+}
+
+// Usage
+List<Object> arbitrary = List.of(1, List.of(2, List.of(3, 4)), 5);
+List<Object> flattened = flatten(arbitrary)
+    .collect(Collectors.toList());
+// [1, 2, 3, 4, 5]
+
+// Flatten Map values that are lists
+Map<String, List<Integer>> map = Map.of(
+    "a", List.of(1, 2, 3),
+    "b", List.of(4, 5),
+    "c", List.of(6)
+);
+
+List<Integer> allValues = map.values().stream()
+    .flatMap(Collection::stream)
+    .collect(Collectors.toList());
+// [1, 2, 3, 4, 5, 6]</code></pre>
+</div>
+</div>
+
+<!-- Problem 17 -->
+<div class="accordion" data-cat="list">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">17</span>
+        <span class="title">Find elements in list A but not in list B</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">difference</span>
+        <span class="tag">filter</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Set difference using filter + contains. Convert to Set for O(1) lookup.
+</div>
+<pre><code class="java">List<Integer> listA = List.of(1, 2, 3, 4, 5, 6, 7);
+List<Integer> listB = List.of(3, 4, 5, 8, 9);
+
+// A - B (elements in A but not in B)
+Set<Integer> setB = new HashSet<>(listB);  // For O(1) lookup
+List<Integer> difference = listA.stream()
+    .filter(n -> !setB.contains(n))
+    .collect(Collectors.toList());
+// [1, 2, 6, 7]
+
+// Symmetric difference (in A or B but not both)
+Set<Integer> setA = new HashSet<>(listA);
+List<Integer> symmetric = Stream.concat(
+    listA.stream().filter(n -> !setB.contains(n)),
+    listB.stream().filter(n -> !setA.contains(n))
+).collect(Collectors.toList());
+// [1, 2, 6, 7, 8, 9]
+
+// Intersection (in both)
+List<Integer> intersection = listA.stream()
+    .filter(setB::contains)
+    .collect(Collectors.toList());
+// [3, 4, 5]
+
+// Union (in either)
+Set<Integer> union = Stream.concat(listA.stream(), listB.stream())
+    .collect(Collectors.toSet());
+// [1, 2, 3, 4, 5, 6, 7, 8, 9]</code></pre>
+</div>
+</div>
+
+<!-- Problem 18 -->
+<div class="accordion" data-cat="list">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">18</span>
+        <span class="title">Remove consecutive duplicates from list</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">stateful-filter</span>
+        <span class="tag">indexed</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Compare with previous element. Use indexed stream or stateful predicate.
+</div>
+<pre><code class="java">List<Integer> numbers = List.of(1, 1, 2, 2, 2, 3, 1, 1, 4, 4);
+
+// Method 1: Compare with previous using index
+List<Integer> noConsecDups = IntStream.range(0, numbers.size())
+    .filter(i -> i == 0 || !numbers.get(i).equals(numbers.get(i - 1)))
+    .mapToObj(numbers::get)
+    .collect(Collectors.toList());
+// [1, 2, 3, 1, 4]
+
+// Method 2: Stateful predicate (not parallel-safe)
+AtomicReference<Integer> prev = new AtomicReference<>();
+List<Integer> noConsecDups2 = numbers.stream()
+    .filter(n -> {
+        Integer p = prev.getAndSet(n);
+        return !n.equals(p);
+    })
+    .collect(Collectors.toList());
+// [1, 2, 3, 1, 4]
+
+// Method 3: Using reduce to build result
+List<Integer> noConsecDups3 = numbers.stream()
+    .reduce(new ArrayList<>(), 
+        (list, n) -> {
+            if (list.isEmpty() || !list.get(list.size() - 1).equals(n)) {
+                list.add(n);
+            }
+            return list;
+        },
+        (a, b) -> { a.addAll(b); return a; });
+
+// For strings
+String input = "aaabbcdddeee";
+String result = IntStream.range(0, input.length())
+    .filter(i -> i == 0 || input.charAt(i) != input.charAt(i - 1))
+    .mapToObj(i -> String.valueOf(input.charAt(i)))
+    .collect(Collectors.joining());
+// "abcde"</code></pre>
+</div>
+</div>
+
+<!-- Problem 19 -->
+<div class="accordion" data-cat="map">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">19</span>
+        <span class="title">Sort a map by values (ascending and descending)</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">map-sort</span>
+        <span class="tag">LinkedHashMap</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Stream map entries, sort, collect to LinkedHashMap to preserve order.
+</div>
+<pre><code class="java">Map<String, Integer> scores = Map.of(
+    "Alice", 85, "Bob", 92, "Charlie", 78, "David", 95, "Eve", 88
+);
+
+// Sort by value ascending
+Map<String, Integer> sortedAsc = scores.entrySet().stream()
+    .sorted(Map.Entry.comparingByValue())
+    .collect(Collectors.toMap(
+        Map.Entry::getKey,
+        Map.Entry::getValue,
+        (e1, e2) -> e1,
+        LinkedHashMap::new
+    ));
+// {Charlie=78, Alice=85, Eve=88, Bob=92, David=95}
+
+// Sort by value descending
+Map<String, Integer> sortedDesc = scores.entrySet().stream()
+    .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+    .collect(Collectors.toMap(
+        Map.Entry::getKey,
+        Map.Entry::getValue,
+        (e1, e2) -> e1,
+        LinkedHashMap::new
+    ));
+// {David=95, Bob=92, Eve=88, Alice=85, Charlie=78}
+
+// Sort by key
+Map<String, Integer> sortedByKey = scores.entrySet().stream()
+    .sorted(Map.Entry.comparingByKey())
+    .collect(Collectors.toMap(
+        Map.Entry::getKey,
+        Map.Entry::getValue,
+        (e1, e2) -> e1,
+        LinkedHashMap::new
+    ));
+
+// Sort by value, then by key for ties
+Map<String, Integer> multiSort = scores.entrySet().stream()
+    .sorted(Map.Entry.<String, Integer>comparingByValue()
+        .thenComparing(Map.Entry.comparingByKey()))
+    .collect(Collectors.toMap(
+        Map.Entry::getKey,
+        Map.Entry::getValue,
+        (e1, e2) -> e1,
+        LinkedHashMap::new
+    ));</code></pre>
+</div>
+</div>
+
+<!-- Problem 20 -->
+<div class="accordion" data-cat="map">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">20</span>
+        <span class="title">Invert a map (swap keys and values)</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">map-invert</span>
+        <span class="tag>toMap</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Swap key and value in toMap. Handle potential duplicate values becoming keys.
+</div>
+<pre><code class="java">// Simple case: unique values
+Map<String, Integer> original = Map.of("a", 1, "b", 2, "c", 3);
+
+Map<Integer, String> inverted = original.entrySet().stream()
+    .collect(Collectors.toMap(
+        Map.Entry::getValue,
+        Map.Entry::getKey
+    ));
+// {1=a, 2=b, 3=c}
+
+// With duplicate values - collect to list
+Map<String, Integer> withDups = Map.of("a", 1, "b", 1, "c", 2, "d", 2);
+
+Map<Integer, List<String>> invertedMulti = withDups.entrySet().stream()
+    .collect(Collectors.groupingBy(
+        Map.Entry::getValue,
+        Collectors.mapping(Map.Entry::getKey, Collectors.toList())
+    ));
+// {1=[a, b], 2=[c, d]}
+
+// Keep first key for duplicate values
+Map<Integer, String> invertedFirst = withDups.entrySet().stream()
+    .collect(Collectors.toMap(
+        Map.Entry::getValue,
+        Map.Entry::getKey,
+        (existing, replacement) -> existing  // Keep first
+    ));
+
+// BiMap pattern: invertible map
+// Validate before inversion
+boolean invertible = original.values().stream()
+    .distinct()
+    .count() == original.size();
+
+if (invertible) {
+    Map<Integer, String> safe = original.entrySet().stream()
+        .collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
+}</code></pre>
+</div>
+</div>
+
+<!-- Problem 21 -->
+<div class="accordion" data-cat="map">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">21</span>
+        <span class="title">Merge multiple maps with conflict resolution</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">merge</span>
+        <span class="tag>flatMap</span>
+        <span class="diff diff-hard">Hard</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> flatMap entries from all maps, then collect with merge function.
+</div>
+<pre><code class="java">Map<String, Integer> map1 = Map.of("a", 1, "b", 2, "c", 3);
+Map<String, Integer> map2 = Map.of("b", 20, "c", 30, "d", 4);
+Map<String, Integer> map3 = Map.of("c", 300, "e", 5);
+
+// Merge with sum for conflicts
+Map<String, Integer> merged = Stream.of(map1, map2, map3)
+    .flatMap(m -> m.entrySet().stream())
+    .collect(Collectors.toMap(
+        Map.Entry::getKey,
+        Map.Entry::getValue,
+        Integer::sum
+    ));
+// {a=1, b=22, c=333, d=4, e=5}
+
+// Merge keeping maximum value
+Map<String, Integer> maxMerge = Stream.of(map1, map2, map3)
+    .flatMap(m -> m.entrySet().stream())
+    .collect(Collectors.toMap(
+        Map.Entry::getKey,
+        Map.Entry::getValue,
+        Integer::max
+    ));
+// {a=1, b=20, c=300, d=4, e=5}
+
+// Merge to list of all values
+Map<String, List<Integer>> listMerge = Stream.of(map1, map2, map3)
+    .flatMap(m -> m.entrySet().stream())
+    .collect(Collectors.groupingBy(
+        Map.Entry::getKey,
+        Collectors.mapping(Map.Entry::getValue, Collectors.toList())
+    ));
+// {a=[1], b=[2, 20], c=[3, 30, 300], d=[4], e=[5]}
+
+// Generic merge function
+@SafeVarargs
+public static <K, V> Map<K, V> mergeMaps(
+    BinaryOperator<V> mergeFunction, Map<K, V>... maps) {
+    return Arrays.stream(maps)
+        .flatMap(m -> m.entrySet().stream())
+        .collect(Collectors.toMap(
+            Map.Entry::getKey,
+            Map.Entry::getValue,
+            mergeFunction
+        ));
+}</code></pre>
+</div>
+</div>
+
+<!-- Problem 22 -->
+<div class="accordion" data-cat="list">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">22</span>
+        <span class="title">Partition list into chunks of size N</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">chunking</span>
+        <span class="tag>grouping</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Use index-based grouping or IntStream to create sublists.
+</div>
+<pre><code class="java">List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+int chunkSize = 3;
+
+// Method 1: Using groupingBy with index
+Map<Integer, List<Integer>> grouped = IntStream.range(0, numbers.size())
+    .boxed()
+    .collect(Collectors.groupingBy(
+        i -> i / chunkSize,
+        Collectors.mapping(numbers::get, Collectors.toList())
+    ));
+
+List<List<Integer>> chunks = new ArrayList<>(grouped.values());
+// [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11]]
+
+// Method 2: Using subList
+List<List<Integer>> chunks2 = IntStream.range(0, (numbers.size() + chunkSize - 1) / chunkSize)
+    .mapToObj(i -> numbers.subList(
+        i * chunkSize,
+        Math.min((i + 1) * chunkSize, numbers.size())
+    ))
+    .collect(Collectors.toList());
+// [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11]]
+
+// Method 3: Using AtomicInteger counter
+AtomicInteger counter = new AtomicInteger();
+Collection<List<Integer>> chunks3 = numbers.stream()
+    .collect(Collectors.groupingBy(n -> counter.getAndIncrement() / chunkSize))
+    .values();
+
+// Process each chunk
+numbers.stream()
+    .collect(Collectors.groupingBy(n -> (numbers.indexOf(n)) / chunkSize))
+    .values()
+    .forEach(chunk -> System.out.println("Processing: " + chunk));</code></pre>
+</div>
+</div>
+
+<!-- Problem 23 -->
+<div class="accordion" data-cat="set">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">23</span>
+        <span class="title">Find all subsets of a set using streams</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">power-set</span>
+        <span class="tag>bit-manipulation</span>
+        <span class="diff diff-hard">Hard</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Use binary counting or reduce to generate power set.
+</div>
+<pre><code class="java">Set<Integer> set = Set.of(1, 2, 3);
+
+// Method 1: Bit manipulation
+List<Integer> list = new ArrayList<>(set);
+int n = list.size();
+
+List<Set<Integer>> powerSet = IntStream.range(0, 1 << n)  // 0 to 2^n - 1
+    .mapToObj(mask -> IntStream.range(0, n)
+        .filter(bit -> (mask & (1 << bit)) != 0)
+        .mapToObj(list::get)
+        .collect(Collectors.toSet()))
+    .collect(Collectors.toList());
+// [[], [1], [2], [1,2], [3], [1,3], [2,3], [1,2,3]]
+
+// Method 2: Using reduce (functional approach)
+Set<Set<Integer>> powerSet2 = set.stream()
+    .reduce(
+        Collections.singleton(Collections.emptySet()),
+        (acc, element) -> acc.stream()
+            .flatMap(subset -> Stream.of(
+                subset,
+                Stream.concat(subset.stream(), Stream.of(element))
+                    .collect(Collectors.toSet())
+            ))
+            .collect(Collectors.toSet()),
+        (set1, set2) -> Stream.concat(set1.stream(), set2.stream())
+            .collect(Collectors.toSet())
+    );
+
+// Count elements: |P(S)| = 2^n
+long count = (long) Math.pow(2, set.size());  // 8
+
+// Find subsets of specific size
+int targetSize = 2;
+List<Set<Integer>> subsetsOfSize2 = IntStream.range(0, 1 << n)
+    .filter(mask -> Integer.bitCount(mask) == targetSize)
+    .mapToObj(mask -> IntStream.range(0, n)
+        .filter(bit -> (mask & (1 << bit)) != 0)
+        .mapToObj(list::get)
+        .collect(Collectors.toSet()))
+    .collect(Collectors.toList());
+// [[1,2], [1,3], [2,3]]</code></pre>
+</div>
+</div>
+
+<!-- Problem 24 -->
+<div class="accordion" data-cat="list">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">24</span>
+        <span class="title">Find median of a list using streams</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">statistics</span>
+        <span class="tag>sorted</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Sort the list, then select middle element(s).
+</div>
+<pre><code class="java">List<Integer> numbers = List.of(5, 2, 9, 1, 7, 6, 3);
+
+// Sort and find median
+List<Integer> sorted = numbers.stream()
+    .sorted()
+    .collect(Collectors.toList());
+
+double median;
+int size = sorted.size();
+if (size % 2 == 0) {
+    median = (sorted.get(size/2 - 1) + sorted.get(size/2)) / 2.0;
+} else {
+    median = sorted.get(size/2);
+}
+// median = 5.0 (from sorted: [1, 2, 3, 5, 6, 7, 9])
+
+// One-liner with helper
+public static OptionalDouble median(List<Integer> numbers) {
+    if (numbers.isEmpty()) return OptionalDouble.empty();
+    
+    List<Integer> sorted = numbers.stream().sorted().collect(Collectors.toList());
+    int size = sorted.size();
+    
+    return OptionalDouble.of(size % 2 == 0
+        ? (sorted.get(size/2 - 1) + sorted.get(size/2)) / 2.0
+        : sorted.get(size/2));
+}
+
+// Using streams only (less efficient but pure)
+double median2 = numbers.stream()
+    .sorted()
+    .collect(Collectors.collectingAndThen(
+        Collectors.toList(),
+        list -> list.size() % 2 == 0
+            ? (list.get(list.size()/2 - 1) + list.get(list.size()/2)) / 2.0
+            : list.get(list.size()/2)
+    ));
+
+// For doubles
+DoubleStream.of(1.5, 2.5, 3.0, 4.0, 5.5)
+    .sorted()
+    .boxed()
+    .collect(Collectors.collectingAndThen(
+        Collectors.toList(),
+        list -> list.get(list.size() / 2)
+    ));  // 3.0</code></pre>
+</div>
+</div>
+
+<!-- Problem 25 -->
+<div class="accordion" data-cat="flatten">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">25</span>
+        <span class="title">Cartesian product of multiple lists</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">flatMap</span>
+        <span class="tag>combinations</span>
+        <span class="diff diff-hard">Hard</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Chain flatMap operations for each list dimension.
+</div>
+<pre><code class="java">List<String> colors = List.of("Red", "Blue");
+List<String> sizes = List.of("S", "M", "L");
+List<String> styles = List.of("Plain", "Striped");
+
+// Cartesian product of 2 lists
+List<String> product2 = colors.stream()
+    .flatMap(color -> sizes.stream()
+        .map(size -> color + "-" + size))
+    .collect(Collectors.toList());
+// [Red-S, Red-M, Red-L, Blue-S, Blue-M, Blue-L]
+
+// Cartesian product of 3 lists
+record Product(String color, String size, String style) {}
+
+List<Product> product3 = colors.stream()
+    .flatMap(color -> sizes.stream()
+        .flatMap(size -> styles.stream()
+            .map(style -> new Product(color, size, style))))
+    .collect(Collectors.toList());
+// 2 × 3 × 2 = 12 combinations
+
+// Generic n-way Cartesian product
+@SafeVarargs
+public static <T> Stream<List<T>> cartesianProduct(List<T>... lists) {
+    return Arrays.stream(lists)
+        .reduce(
+            Stream.of(Collections.emptyList()),
+            (acc, list) -> acc.flatMap(combo -> list.stream()
+                .map(element -> {
+                    List<T> newCombo = new ArrayList<>(combo);
+                    newCombo.add(element);
+                    return newCombo;
+                })),
+            Stream::concat
+        );
+}
+
+// Usage
+cartesianProduct(colors, sizes, styles)
+    .forEach(System.out::println);
+// [Red, S, Plain]
+// [Red, S, Striped]
+// ... etc</code></pre>
+</div>
+</div>
+
+<!-- Problem 26 -->
+<div class="accordion" data-cat="list">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">26</span>
+        <span class="title">Calculate running/cumulative sum</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">stateful</span>
+        <span class="tag>scan</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Running operations need state. Use AtomicInteger or custom collector.
+</div>
+<pre><code class="java">List<Integer> numbers = List.of(1, 2, 3, 4, 5);
+
+// Method 1: Using AtomicInteger
+AtomicInteger sum = new AtomicInteger(0);
+List<Integer> runningSum = numbers.stream()
+    .map(n -> sum.addAndGet(n))
+    .collect(Collectors.toList());
+// [1, 3, 6, 10, 15]
+
+// Method 2: Using reduce to build list
+List<Integer> runningSum2 = numbers.stream()
+    .reduce(new ArrayList<>(), 
+        (list, n) -> {
+            int newSum = list.isEmpty() ? n : list.get(list.size() - 1) + n;
+            list.add(newSum);
+            return list;
+        },
+        (a, b) -> { a.addAll(b); return a; });
+
+// Method 3: Using IntStream with access to previous elements
+List<Integer> runningSum3 = IntStream.range(0, numbers.size())
+    .map(i -> numbers.subList(0, i + 1).stream().mapToInt(Integer::intValue).sum())
+    .boxed()
+    .collect(Collectors.toList());
+
+// Running product
+AtomicLong product = new AtomicLong(1);
+List<Long> runningProduct = numbers.stream()
+    .map(n -> product.updateAndGet(p -> p * n))
+    .collect(Collectors.toList());
+// [1, 2, 6, 24, 120]
+
+// Running max
+AtomicInteger maxSoFar = new AtomicInteger(Integer.MIN_VALUE);
+List<Integer> runningMax = numbers.stream()
+    .map(n -> maxSoFar.updateAndGet(m -> Math.max(m, n)))
+    .collect(Collectors.toList());
+// [1, 2, 3, 4, 5]</code></pre>
+</div>
+</div>
+
+<!-- Problem 27 -->
+<div class="accordion" data-cat="list">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">27</span>
+        <span class="title">Rotate list elements by K positions</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">rotation</span>
+        <span class="tag>concat</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Split and concatenate using Stream.concat and subList.
+</div>
+<pre><code class="java">List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6, 7);
+int k = 3;
+
+// Rotate right by k positions
+int effectiveK = k % numbers.size();
+List<Integer> rotatedRight = Stream.concat(
+    numbers.stream().skip(numbers.size() - effectiveK),
+    numbers.stream().limit(numbers.size() - effectiveK)
+).collect(Collectors.toList());
+// [5, 6, 7, 1, 2, 3, 4]
+
+// Rotate left by k positions
+List<Integer> rotatedLeft = Stream.concat(
+    numbers.stream().skip(effectiveK),
+    numbers.stream().limit(effectiveK)
+).collect(Collectors.toList());
+// [4, 5, 6, 7, 1, 2, 3]
+
+// Generic rotation function
+public static <T> List<T> rotate(List<T> list, int k, boolean right) {
+    if (list.isEmpty()) return list;
+    int n = list.size();
+    int shift = ((k % n) + n) % n;  // Handle negative k
+    if (!right) shift = n - shift;
+    
+    int finalShift = shift;
+    return Stream.concat(
+        list.stream().skip(n - finalShift),
+        list.stream().limit(n - finalShift)
+    ).collect(Collectors.toList());
+}
+
+// Using IntStream for index manipulation
+List<Integer> rotated = IntStream.range(0, numbers.size())
+    .mapToObj(i -> numbers.get((i - k + numbers.size()) % numbers.size()))
+    .collect(Collectors.toList());</code></pre>
+</div>
+</div>
+
+<!-- Problem 28 -->
+<div class="accordion" data-cat="list">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">28</span>
+        <span class="title">Find the Nth largest/smallest element</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">top-k</span>
+        <span class="tag>sorting</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Sort + skip + findFirst. Consider distinct for unique values.
+</div>
+<pre><code class="java">List<Integer> numbers = List.of(5, 3, 9, 1, 7, 9, 4, 8);
+int n = 3;
+
+// Nth largest (with duplicates)
+Integer nthLargest = numbers.stream()
+    .sorted(Comparator.reverseOrder())
+    .skip(n - 1)
+    .findFirst()
+    .orElse(null);
+// 8 (3rd largest: 9, 9, 8)
+
+// Nth largest (distinct values)
+Integer nthLargestDistinct = numbers.stream()
+    .distinct()
+    .sorted(Comparator.reverseOrder())
+    .skip(n - 1)
+    .findFirst()
+    .orElse(null);
+// 7 (3rd distinct largest: 9, 8, 7)
+
+// Nth smallest
+Integer nthSmallest = numbers.stream()
+    .sorted()
+    .skip(n - 1)
+    .findFirst()
+    .orElse(null);
+// 3 (3rd smallest: 1, 3, 4)
+
+// Top N elements
+List<Integer> topN = numbers.stream()
+    .sorted(Comparator.reverseOrder())
+    .limit(n)
+    .collect(Collectors.toList());
+// [9, 9, 8]
+
+// Bottom N elements
+List<Integer> bottomN = numbers.stream()
+    .sorted()
+    .limit(n)
+    .collect(Collectors.toList());
+// [1, 3, 4]
+
+// Generic helper
+public static <T extends Comparable<T>> Optional<T> nthLargest(List<T> list, int n) {
+    return list.stream()
+        .distinct()
+        .sorted(Comparator.reverseOrder())
+        .skip(n - 1)
+        .findFirst();
+}</code></pre>
+</div>
+</div>
+
+<!-- Problem 29 -->
+<div class="accordion" data-cat="flatten">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">29</span>
+        <span class="title">Flatten Optional chain (filter empty optionals)</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">optional</span>
+        <span class="tag>flatMap</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Use Optional.stream() (Java 9+) or flatMap to filter empties.
+</div>
+<pre><code class="java">List<Optional<String>> optionals = List.of(
+    Optional.of("Apple"),
+    Optional.empty(),
+    Optional.of("Banana"),
+    Optional.empty(),
+    Optional.of("Cherry")
+);
+
+// Method 1: Optional.stream() (Java 9+)
+List<String> present = optionals.stream()
+    .flatMap(Optional::stream)
+    .collect(Collectors.toList());
+// [Apple, Banana, Cherry]
+
+// Method 2: filter + map (Java 8)
+List<String> present2 = optionals.stream()
+    .filter(Optional::isPresent)
+    .map(Optional::get)
+    .collect(Collectors.toList());
+
+// Process list where each operation might return Optional
+List<String> inputs = List.of("123", "abc", "456", "def", "789");
+
+List<Integer> parsed = inputs.stream()
+    .map(s -> {
+        try { return Optional.of(Integer.parseInt(s)); }
+        catch (NumberFormatException e) { return Optional.<Integer>empty(); }
+    })
+    .flatMap(Optional::stream)
+    .collect(Collectors.toList());
+// [123, 456, 789]
+
+// Chain Optional operations
+Optional<String> result = Optional.of("Hello")
+    .map(String::toUpperCase)
+    .filter(s -> s.length() > 3)
+    .flatMap(s -> s.contains("E") ? Optional.of(s + "!") : Optional.empty());
+// Optional[HELLO!]
+
+// Optional with null-returning method
+record Person(String name, Address address) {}
+record Address(String city) {}
+
+Optional<String> city = Optional.ofNullable(person)
+    .map(Person::address)
+    .map(Address::city);</code></pre>
+</div>
+</div>
+
+<!-- Problem 30 -->
+<div class="accordion" data-cat="map">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">30</span>
+        <span class="title">Group by multiple keys (composite key)</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">grouping</span>
+        <span class="tag>composite</span>
+        <span class="diff diff-hard">Hard</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Create composite key using record, List, or concatenated string.
+</div>
+<pre><code class="java">record Employee(String name, String dept, String city, double salary) {}
+
+List<Employee> employees = List.of(
+    new Employee("Alice", "IT", "NYC", 80000),
+    new Employee("Bob", "IT", "NYC", 75000),
+    new Employee("Charlie", "HR", "LA", 60000),
+    new Employee("David", "IT", "LA", 85000),
+    new Employee("Eve", "HR", "NYC", 65000)
+);
+
+// Method 1: Using record as composite key
+record DeptCity(String dept, String city) {}
+
+Map<DeptCity, List<Employee>> byDeptAndCity = employees.stream()
+    .collect(Collectors.groupingBy(e -> new DeptCity(e.dept(), e.city())));
+// {DeptCity[IT, NYC]=[Alice, Bob], DeptCity[HR, LA]=[Charlie], ...}
+
+// Method 2: Using List as key
+Map<List<String>, List<Employee>> byDeptCityList = employees.stream()
+    .collect(Collectors.groupingBy(e -> List.of(e.dept(), e.city())));
+
+// Method 3: Nested grouping
+Map<String, Map<String, List<Employee>>> nested = employees.stream()
+    .collect(Collectors.groupingBy(
+        Employee::dept,
+        Collectors.groupingBy(Employee::city)
+    ));
+// {IT={NYC=[Alice, Bob], LA=[David]}, HR={LA=[Charlie], NYC=[Eve]}}
+
+// With downstream aggregation
+Map<DeptCity, Double> avgSalaryByDeptCity = employees.stream()
+    .collect(Collectors.groupingBy(
+        e -> new DeptCity(e.dept(), e.city()),
+        Collectors.averagingDouble(Employee::salary)
+    ));
+// {DeptCity[IT, NYC]=77500.0, DeptCity[HR, LA]=60000.0, ...}
+
+// Count by composite key
+Map<DeptCity, Long> countByDeptCity = employees.stream()
+    .collect(Collectors.groupingBy(
+        e -> new DeptCity(e.dept(), e.city()),
+        Collectors.counting()
+    ));</code></pre>
+</div>
+</div>
+
+    </div><!-- end problem-list -->
+</div>
+
+<!-- ==================== STRINGS (31-45) ==================== -->
+<div class="tab-content" id="strings">
+    <h2 class="section-title"><span class="icon">🔤</span> String Operations (31-45)</h2>
+    
+    <div class="cat-filter">
+        <button class="cat-btn active" data-cat="all">All (15)</button>
+        <button class="cat-btn" data-cat="char">Characters</button>
+        <button class="cat-btn" data-cat="words">Words</button>
+        <button class="cat-btn" data-cat="pattern">Patterns</button>
+        <button class="cat-btn" data-cat="transform">Transform</button>
+    </div>
+
+    <div class="problem-list">
+
+<!-- Problem 31 -->
+<div class="accordion" data-cat="char">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">31</span>
+        <span class="title">Count occurrences of each character</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">frequency</span>
+        <span class="tag>groupingBy</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> chars() creates IntStream, map to Character, group and count.
+</div>
+<pre><code class="java">String str = "programming";
+
+// Count each character
+Map<Character, Long> charCount = str.chars()
+    .mapToObj(c -> (char) c)
+    .collect(Collectors.groupingBy(
+        Function.identity(),
+        Collectors.counting()
+    ));
+// {p=1, r=2, o=1, g=2, a=1, m=2, i=1, n=1}
+
+// Case-insensitive
+Map<Character, Long> caseInsensitive = str.toLowerCase().chars()
+    .mapToObj(c -> (char) c)
+    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+// Only count letters (ignore spaces, digits, etc.)
+Map<Character, Long> lettersOnly = str.chars()
+    .mapToObj(c -> (char) c)
+    .filter(Character::isLetter)
+    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+// Sorted by frequency (descending)
+LinkedHashMap<Character, Long> sortedByFreq = charCount.entrySet().stream()
+    .sorted(Map.Entry.<Character, Long>comparingByValue().reversed())
+    .collect(Collectors.toMap(
+        Map.Entry::getKey,
+        Map.Entry::getValue,
+        (e1, e2) -> e1,
+        LinkedHashMap::new
+    ));
+// {r=2, g=2, m=2, p=1, o=1, a=1, i=1, n=1}
+
+// Find character with highest frequency
+char mostFrequent = charCount.entrySet().stream()
+    .max(Map.Entry.comparingByValue())
+    .map(Map.Entry::getKey)
+    .orElse('\0');</code></pre>
+</div>
+</div>
+
+<!-- Problem 32 -->
+<div class="accordion" data-cat="char">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">32</span>
+        <span class="title">Find first non-repeated character</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">frequency</span>
+        <span class="tag>LinkedHashMap</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Use LinkedHashMap to preserve insertion order, then filter count==1.
+</div>
+<pre><code class="java">String str = "aabbcdde";
+
+// Find first non-repeated character
+Character firstNonRepeated = str.chars()
+    .mapToObj(c -> (char) c)
+    .collect(Collectors.groupingBy(
+        Function.identity(),
+        LinkedHashMap::new,  // Preserve insertion order!
+        Collectors.counting()
+    ))
+    .entrySet().stream()
+    .filter(e -> e.getValue() == 1)
+    .map(Map.Entry::getKey)
+    .findFirst()
+    .orElse(null);
+// 'c'
+
+// Find first repeated character
+Character firstRepeated = str.chars()
+    .mapToObj(c -> (char) c)
+    .collect(Collectors.groupingBy(
+        Function.identity(),
+        LinkedHashMap::new,
+        Collectors.counting()
+    ))
+    .entrySet().stream()
+    .filter(e -> e.getValue() > 1)
+    .map(Map.Entry::getKey)
+    .findFirst()
+    .orElse(null);
+// 'a'
+
+// Alternative: use indexOf vs lastIndexOf
+Optional<Character> firstUnique = str.chars()
+    .mapToObj(c -> (char) c)
+    .filter(c -> str.indexOf(c) == str.lastIndexOf(c))
+    .findFirst();
+
+// Find all non-repeated characters
+List<Character> allNonRepeated = str.chars()
+    .mapToObj(c -> (char) c)
+    .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()))
+    .entrySet().stream()
+    .filter(e -> e.getValue() == 1)
+    .map(Map.Entry::getKey)
+    .collect(Collectors.toList());
+// [c]</code></pre>
+</div>
+</div>
+
+<!-- Problem 33 -->
+<div class="accordion" data-cat="pattern">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">33</span>
+        <span class="title">Check if string is palindrome</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">allMatch</span>
+        <span class="tag>IntStream</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Compare characters at symmetric positions using IntStream and allMatch.
+</div>
+<pre><code class="java">String str = "racecar";
+
+// Method 1: IntStream with allMatch
+boolean isPalindrome = IntStream.range(0, str.length() / 2)
+    .allMatch(i -> str.charAt(i) == str.charAt(str.length() - 1 - i));
+// true
+
+// Method 2: Reverse and compare
+boolean isPalindrome2 = str.equals(
+    new StringBuilder(str).reverse().toString()
+);
+
+// Method 3: Using streams to reverse
+String reversed = str.chars()
+    .mapToObj(c -> String.valueOf((char) c))
+    .reduce("", (a, b) -> b + a);
+boolean isPalindrome3 = str.equals(reversed);
+
+// Case-insensitive, ignore non-alphanumeric
+String cleaned = "A man, a plan, a canal: Panama"
+    .toLowerCase()
+    .replaceAll("[^a-z0-9]", "");
+
+boolean isPalindrome4 = IntStream.range(0, cleaned.length() / 2)
+    .allMatch(i -> cleaned.charAt(i) == cleaned.charAt(cleaned.length() - 1 - i));
+// true
+
+// Find longest palindromic substring (Hard)
+String input = "babad";
+String longestPalindrome = IntStream.range(0, input.length())
+    .boxed()
+    .flatMap(i -> IntStream.rangeClosed(i + 1, input.length())
+        .mapToObj(j -> input.substring(i, j)))
+    .filter(s -> s.equals(new StringBuilder(s).reverse().toString()))
+    .max(Comparator.comparingInt(String::length))
+    .orElse("");
+// "bab" or "aba"</code></pre>
+</div>
+</div>
+
+<!-- Problem 34 -->
+<div class="accordion" data-cat="words">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">34</span>
+        <span class="title">Word frequency counter from text</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">frequency</span>
+        <span class="tag>split</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Split text into words, normalize, group and count.
+</div>
+<pre><code class="java">String text = "The quick brown fox jumps over the lazy dog. The fox is quick.";
+
+// Basic word frequency
+Map<String, Long> wordFreq = Arrays.stream(text.toLowerCase().split("\\W+"))
+    .filter(w -> !w.isEmpty())
+    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+// {the=3, quick=2, brown=1, fox=2, jumps=1, over=1, lazy=1, dog=1, is=1}
+
+// Top N most frequent words
+int n = 3;
+List<Map.Entry<String, Long>> topN = wordFreq.entrySet().stream()
+    .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+    .limit(n)
+    .collect(Collectors.toList());
+// [the=3, quick=2, fox=2]
+
+// Words by length
+Map<Integer, List<String>> byLength = Arrays.stream(text.toLowerCase().split("\\W+"))
+    .filter(w -> !w.isEmpty())
+    .distinct()
+    .collect(Collectors.groupingBy(String::length));
+// {3=[the, fox, dog], 4=[over, lazy], 5=[quick, brown, jumps]}
+
+// Find words appearing exactly once
+Set<String> uniqueWords = wordFreq.entrySet().stream()
+    .filter(e -> e.getValue() == 1)
+    .map(Map.Entry::getKey)
+    .collect(Collectors.toSet());
+// {brown, jumps, over, lazy, dog, is}
+
+// Words sorted alphabetically with count
+LinkedHashMap<String, Long> sortedFreq = wordFreq.entrySet().stream()
+    .sorted(Map.Entry.comparingByKey())
+    .collect(Collectors.toMap(
+        Map.Entry::getKey, Map.Entry::getValue,
+        (e1, e2) -> e1, LinkedHashMap::new
+    ));</code></pre>
+</div>
+</div>
+
+<!-- Problem 35 -->
+<div class="accordion" data-cat="pattern">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">35</span>
+        <span class="title">Group anagrams together</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">anagram</span>
+        <span class="tag>groupingBy</span>
+        <span class="diff diff-hard">Hard</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Anagrams have same sorted characters. Use sorted chars as grouping key.
+</div>
+<pre><code class="java">List<String> words = List.of("eat", "tea", "tan", "ate", "nat", "bat");
+
+// Group anagrams
+Map<String, List<String>> anagramGroups = words.stream()
+    .collect(Collectors.groupingBy(word -> {
+        char[] chars = word.toLowerCase().toCharArray();
+        Arrays.sort(chars);
+        return new String(chars);
+    }));
+// {abt=[bat], aet=[eat, tea, ate], ant=[tan, nat]}
+
+// Get just the groups as list of lists
+List<List<String>> anagramLists = new ArrayList<>(anagramGroups.values());
+// [[bat], [eat, tea, ate], [tan, nat]]
+
+// Check if two strings are anagrams
+BiPredicate<String, String> areAnagrams = (s1, s2) -> {
+    if (s1.length() != s2.length()) return false;
+    char[] c1 = s1.toLowerCase().toCharArray();
+    char[] c2 = s2.toLowerCase().toCharArray();
+    Arrays.sort(c1);
+    Arrays.sort(c2);
+    return Arrays.equals(c1, c2);
+};
+
+// Alternative: character frequency comparison (more efficient)
+BiPredicate<String, String> areAnagrams2 = (s1, s2) -> {
+    if (s1.length() != s2.length()) return false;
+    return s1.toLowerCase().chars()
+        .boxed()
+        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+        .equals(s2.toLowerCase().chars()
+            .boxed()
+            .collect(Collectors.groupingBy(Function.identity(), Collectors.counting())));
+};
+
+// Find largest anagram group
+List<String> largestGroup = anagramGroups.values().stream()
+    .max(Comparator.comparingInt(List::size))
+    .orElse(Collections.emptyList());
+// [eat, tea, ate]</code></pre>
+</div>
+</div>
+
+<!-- Problem 36 -->
+<div class="accordion" data-cat="transform">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">36</span>
+        <span class="title">Reverse words in a sentence</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">split-join</span>
+        <span class="tag>joining</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Split into words, reverse the stream or each word, join back.
+</div>
+<pre><code class="java">String sentence = "Hello World Java";
+
+// Reverse word order
+String reversedOrder = Arrays.stream(sentence.split(" "))
+    .reduce((a, b) -> b + " " + a)
+    .orElse("");
+// "Java World Hello"
+
+// Alternative: collect to list, reverse, join
+String reversedOrder2 = Arrays.stream(sentence.split(" "))
+    .collect(Collectors.collectingAndThen(
+        Collectors.toList(),
+        list -> {
+            Collections.reverse(list);
+            return String.join(" ", list);
+        }
+    ));
+
+// Reverse each word (not order)
+String eachWordReversed = Arrays.stream(sentence.split(" "))
+    .map(word -> new StringBuilder(word).reverse().toString())
+    .collect(Collectors.joining(" "));
+// "olleH dlroW avaJ"
+
+// Reverse both word order AND each word
+String fullyReversed = Arrays.stream(sentence.split(" "))
+    .map(word -> new StringBuilder(word).reverse().toString())
+    .reduce((a, b) -> b + " " + a)
+    .orElse("");
+// "avaJ dlroW olleH"
+
+// Preserve multiple spaces (tricky)
+String withMultipleSpaces = "Hello   World";
+String[] parts = withMultipleSpaces.split("(?<=\\s)|(?=\\s)");  // Keep delimiters
+String reversed = IntStream.range(0, parts.length)
+    .mapToObj(i -> parts[parts.length - 1 - i])
+    .collect(Collectors.joining());
+// "World   Hello"</code></pre>
+</div>
+</div>
+
+<!-- Problem 37 -->
+<div class="accordion" data-cat="char">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">37</span>
+        <span class="title">Find duplicate characters in a string</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">duplicates</span>
+        <span class="tag>filter</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Group by character, filter groups with count > 1.
+</div>
+<pre><code class="java">String str = "programming";
+
+// Find all duplicate characters
+Set<Character> duplicates = str.chars()
+    .mapToObj(c -> (char) c)
+    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+    .entrySet().stream()
+    .filter(e -> e.getValue() > 1)
+    .map(Map.Entry::getKey)
+    .collect(Collectors.toSet());
+// [g, m, r]
+
+// With their counts
+Map<Character, Long> duplicatesWithCount = str.chars()
+    .mapToObj(c -> (char) c)
+    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+    .entrySet().stream()
+    .filter(e -> e.getValue() > 1)
+    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+// {g=2, m=2, r=2}
+
+// Alternative: using Set.add() returns false for duplicates
+Set<Character> seen = new HashSet<>();
+Set<Character> dups = str.chars()
+    .mapToObj(c -> (char) c)
+    .filter(c -> !seen.add(c))  // add returns false if already present
+    .collect(Collectors.toSet());
+// [g, m, r]
+
+// Find characters appearing exactly N times
+int n = 2;
+Set<Character> appearsNTimes = str.chars()
+    .mapToObj(c -> (char) c)
+    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+    .entrySet().stream()
+    .filter(e -> e.getValue() == n)
+    .map(Map.Entry::getKey)
+    .collect(Collectors.toSet());
+// [g, m, r]</code></pre>
+</div>
+</div>
+
+<!-- Problem 38 -->
+<div class="accordion" data-cat="transform">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">38</span>
+        <span class="title">Convert string to title case</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">transform</span>
+        <span class="tag>map</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Split into words, capitalize first letter of each, join.
+</div>
+<pre><code class="java">String str = "hello world from java streams";
+
+// Title Case: capitalize first letter of each word
+String titleCase = Arrays.stream(str.split(" "))
+    .map(word -> word.isEmpty() ? word :
+        Character.toUpperCase(word.charAt(0)) + word.substring(1).toLowerCase())
+    .collect(Collectors.joining(" "));
+// "Hello World From Java Streams"
+
+// Handle multiple spaces
+String withSpaces = "hello   world";
+String titleCase2 = Pattern.compile("(\\s+)|(\\S+)")
+    .matcher(withSpaces)
+    .results()
+    .map(m -> {
+        String s = m.group();
+        if (s.isBlank()) return s;
+        return Character.toUpperCase(s.charAt(0)) + s.substring(1).toLowerCase();
+    })
+    .collect(Collectors.joining());
+
+// Sentence case: only first word capitalized
+String sentenceCase = Arrays.stream(str.split(" "))
+    .reduce((first, word) -> {
+        if (first.equals(str.split(" ")[0])) {
+            return Character.toUpperCase(first.charAt(0)) + first.substring(1) + " " + word;
+        }
+        return first + " " + word;
+    })
+    .orElse("");
+// "Hello world from java streams"
+
+// Toggle case
+String toggled = str.chars()
+    .mapToObj(c -> String.valueOf((char) (Character.isUpperCase(c) ? 
+        Character.toLowerCase(c) : Character.toUpperCase(c))))
+    .collect(Collectors.joining());
+// "HELLO WORLD FROM JAVA STREAMS"</code></pre>
+</div>
+</div>
+
+<!-- Problem 39 -->
+<div class="accordion" data-cat="pattern">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">39</span>
+        <span class="title">Check if two strings are permutations</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">permutation</span>
+        <span class="tag>sorting</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Permutations have same characters. Sort and compare or use frequency map.
+</div>
+<pre><code class="java">String s1 = "listen";
+String s2 = "silent";
+
+// Method 1: Sort and compare
+boolean arePermutations = s1.chars().sorted().boxed().collect(Collectors.toList())
+    .equals(s2.chars().sorted().boxed().collect(Collectors.toList()));
+// true
+
+// Method 2: Character frequency map
+boolean arePermutations2 = s1.length() == s2.length() &&
+    s1.chars().boxed()
+        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+        .equals(s2.chars().boxed()
+            .collect(Collectors.groupingBy(Function.identity(), Collectors.counting())));
+// true
+
+// Reusable function
+BiPredicate<String, String> isPermutation = (a, b) -> {
+    if (a.length() != b.length()) return false;
+    return a.chars().sorted().boxed().collect(Collectors.toList())
+        .equals(b.chars().sorted().boxed().collect(Collectors.toList()));
+};
+
+// Check if string is permutation of a palindrome
+String test = "civic";
+boolean canFormPalindrome = test.chars()
+    .boxed()
+    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+    .values().stream()
+    .filter(count -> count % 2 != 0)
+    .count() <= 1;
+// true (at most one character with odd count)</code></pre>
+</div>
+</div>
+
+<!-- Problem 40 -->
+<div class="accordion" data-cat="words">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">40</span>
+        <span class="title">Find longest common prefix of strings</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">prefix</span>
+        <span class="tag>reduce</span>
+        <span class="diff diff-hard">Hard</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Use reduce to progressively shrink the common prefix.
+</div>
+<pre><code class="java">List<String> strings = List.of("flower", "flow", "flight");
+
+// Find longest common prefix
+String longestPrefix = strings.stream()
+    .reduce((s1, s2) -> {
+        int minLen = Math.min(s1.length(), s2.length());
+        int i = 0;
+        while (i < minLen && s1.charAt(i) == s2.charAt(i)) {
+            i++;
+        }
+        return s1.substring(0, i);
+    })
+    .orElse("");
+// "fl"
+
+// Alternative: character by character
+String prefix = strings.isEmpty() ? "" :
+    IntStream.range(0, strings.stream().mapToInt(String::length).min().orElse(0))
+        .takeWhile(i -> {
+            char c = strings.get(0).charAt(i);
+            return strings.stream().allMatch(s -> s.charAt(i) == c);
+        })
+        .mapToObj(i -> String.valueOf(strings.get(0).charAt(i)))
+        .collect(Collectors.joining());
+// "fl"
+
+// Longest common suffix
+String longestSuffix = strings.stream()
+    .map(s -> new StringBuilder(s).reverse().toString())
+    .reduce((s1, s2) -> {
+        int i = 0;
+        while (i < Math.min(s1.length(), s2.length()) && s1.charAt(i) == s2.charAt(i)) i++;
+        return s1.substring(0, i);
+    })
+    .map(s -> new StringBuilder(s).reverse().toString())
+    .orElse("");
+
+// Find all strings with specific prefix
+String searchPrefix = "fl";
+List<String> withPrefix = strings.stream()
+    .filter(s -> s.startsWith(searchPrefix))
+    .collect(Collectors.toList());
+// [flower, flow, flight]</code></pre>
+</div>
+</div>
+
+<!-- Problem 41 -->
+<div class="accordion" data-cat="char">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">41</span>
+        <span class="title">Count vowels and consonants</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">partition</span>
+        <span class="tag>counting</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Use partitioningBy or groupingBy with custom classifier.
+</div>
+<pre><code class="java">String str = "Hello World";
+Set<Character> vowels = Set.of('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
+
+// Partition into vowels and consonants
+Map<Boolean, Long> counts = str.chars()
+    .mapToObj(c -> (char) c)
+    .filter(Character::isLetter)
+    .collect(Collectors.partitioningBy(vowels::contains, Collectors.counting()));
+// {false=7, true=3}  // 7 consonants, 3 vowels
+
+// More descriptive keys
+Map<String, Long> detailed = str.chars()
+    .mapToObj(c -> (char) c)
+    .filter(Character::isLetter)
+    .collect(Collectors.groupingBy(
+        c -> vowels.contains(c) ? "vowels" : "consonants",
+        Collectors.counting()
+    ));
+// {consonants=7, vowels=3}
+
+// Count each vowel separately
+Map<Character, Long> vowelCounts = str.toLowerCase().chars()
+    .mapToObj(c -> (char) c)
+    .filter(c -> "aeiou".indexOf(c) != -1)
+    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+// {e=1, o=2}
+
+// Using teeing for both counts
+record VowelConsonantCount(long vowels, long consonants) {}
+
+VowelConsonantCount result = str.chars()
+    .mapToObj(c -> (char) c)
+    .filter(Character::isLetter)
+    .collect(Collectors.teeing(
+        Collectors.filtering(vowels::contains, Collectors.counting()),
+        Collectors.filtering(c -> !vowels.contains(c), Collectors.counting()),
+        VowelConsonantCount::new
+    ));
+// VowelConsonantCount[vowels=3, consonants=7]</code></pre>
+</div>
+</div>
+
+<!-- Problem 42 -->
+<div class="accordion" data-cat="pattern">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">42</span>
+        <span class="title">Check if string has balanced parentheses</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">stack</span>
+        <span class="tag>reduce</span>
+        <span class="diff diff-hard">Hard</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Use reduce with a Deque as accumulator (functional stack).
+</div>
+<pre><code class="java">String expr = "((a+b)*(c-d))";
+
+// Simple: only parentheses
+boolean isBalanced = expr.chars()
+    .filter(c -> c == '(' || c == ')')
+    .mapToObj(c -> c == '(' ? 1 : -1)
+    .reduce(0, (count, delta) -> count < 0 ? count : count + delta) == 0;
+// true
+
+// Multiple bracket types: (), [], {}
+Map<Character, Character> brackets = Map.of(')', '(', ']', '[', '}', '{');
+Set<Character> openBrackets = Set.of('(', '[', '{');
+
+String expr2 = "{[()]}";
+
+Deque<Character> result = expr2.chars()
+    .mapToObj(c -> (char) c)
+    .filter(c -> openBrackets.contains(c) || brackets.containsKey(c))
+    .reduce(
+        new ArrayDeque<>(),
+        (stack, c) -> {
+            if (openBrackets.contains(c)) {
+                stack.push(c);
+            } else if (!stack.isEmpty() && stack.peek() == brackets.get(c)) {
+                stack.pop();
+            } else {
+                stack.push(c);  // Mismatch marker
+            }
+            return stack;
+        },
+        (s1, s2) -> { s1.addAll(s2); return s1; }
+    );
+
+boolean isBalanced2 = result.isEmpty();
+// true
+
+// Find position of first unbalanced bracket
+OptionalInt unbalancedPos = IntStream.range(0, expr2.length())
+    .filter(i -> {
+        char c = expr2.charAt(i);
+        String sub = expr2.substring(0, i + 1);
+        // ... check balance up to this point
+        return false; // simplified
+    })
+    .findFirst();</code></pre>
+</div>
+</div>
+
+<!-- Problem 43 -->
+<div class="accordion" data-cat="transform">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">43</span>
+        <span class="title">Remove duplicate words from sentence</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">distinct</span>
+        <span class="tag>joining</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Split into words, use distinct(), join back. Consider case sensitivity.
+</div>
+<pre><code class="java">String sentence = "the quick brown fox jumps over the lazy fox";
+
+// Remove duplicate words (keep first occurrence, preserve order)
+String unique = Arrays.stream(sentence.split("\\s+"))
+    .distinct()
+    .collect(Collectors.joining(" "));
+// "the quick brown fox jumps over lazy"
+
+// Case-insensitive deduplication
+Set<String> seen = new LinkedHashSet<>();
+String uniqueIgnoreCase = Arrays.stream(sentence.split("\\s+"))
+    .filter(word -> seen.add(word.toLowerCase()))
+    .collect(Collectors.joining(" "));
+// "the quick brown fox jumps over lazy"
+
+// Alternative: collect to LinkedHashSet then join
+String unique2 = Arrays.stream(sentence.split("\\s+"))
+    .collect(Collectors.toCollection(LinkedHashSet::new))
+    .stream()
+    .collect(Collectors.joining(" "));
+
+// Remove consecutive duplicate words only
+String input = "the the quick quick quick fox fox";
+String noConsecDups = IntStream.range(0, input.split("\\s+").length)
+    .mapToObj(i -> {
+        String[] words = input.split("\\s+");
+        return i == 0 || !words[i].equals(words[i-1]) ? words[i] : null;
+    })
+    .filter(Objects::nonNull)
+    .collect(Collectors.joining(" "));
+// "the quick fox"</code></pre>
+</div>
+</div>
+
+<!-- Problem 44 -->
+<div class="accordion" data-cat="pattern">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">44</span>
+        <span class="title">Find all substrings of a string</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">substrings</span>
+        <span class="tag>flatMap</span>
+        <span class="diff diff-med">Medium</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Generate all (i, j) pairs where i < j, extract substring(i, j).
+</div>
+<pre><code class="java">String str = "abc";
+
+// All substrings
+List<String> allSubstrings = IntStream.range(0, str.length())
+    .boxed()
+    .flatMap(i -> IntStream.rangeClosed(i + 1, str.length())
+        .mapToObj(j -> str.substring(i, j)))
+    .collect(Collectors.toList());
+// [a, ab, abc, b, bc, c]
+
+// Distinct substrings
+Set<String> distinctSubstrings = IntStream.range(0, str.length())
+    .boxed()
+    .flatMap(i -> IntStream.rangeClosed(i + 1, str.length())
+        .mapToObj(j -> str.substring(i, j)))
+    .collect(Collectors.toSet());
+
+// Substrings of specific length
+int len = 2;
+List<String> lengthN = IntStream.rangeClosed(0, str.length() - len)
+    .mapToObj(i -> str.substring(i, i + len))
+    .collect(Collectors.toList());
+// [ab, bc]
+
+// Count of all substrings: n*(n+1)/2
+long count = IntStream.range(0, str.length())
+    .mapToLong(i -> str.length() - i)
+    .sum();
+// 6 for "abc"
+
+// Longest repeated substring
+String repeated = IntStream.range(0, str.length())
+    .boxed()
+    .flatMap(i -> IntStream.rangeClosed(i + 1, str.length())
+        .mapToObj(j -> str.substring(i, j)))
+    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+    .entrySet().stream()
+    .filter(e -> e.getValue() > 1)
+    .map(Map.Entry::getKey)
+    .max(Comparator.comparingInt(String::length))
+    .orElse("");</code></pre>
+</div>
+</div>
+
+<!-- Problem 45 -->
+<div class="accordion" data-cat="transform">
+<button class="acc-header">
+    <span class="left">
+        <span class="num">45</span>
+        <span class="title">Compress string using run-length encoding</span>
+    </span>
+    <span class="tags">
+        <span class="tag pattern">RLE</span>
+        <span class="tag>reduce</span>
+        <span class="diff diff-hard">Hard</span>
+    </span>
+    <span class="arrow">▼</span>
+</button>
+<div class="acc-body">
+<div class="solution-note">
+<strong>Pattern:</strong> Group consecutive characters and encode as char+count.
+</div>
+<pre><code class="java">String str = "aabbbccccaaa";
+
+// Run-length encoding: "a2b3c4a3"
+record Run(char c, int count) {}
+
+String encoded = IntStream.range(0, str.length())
+    .mapToObj(i -> {
+        if (i == 0 || str.charAt(i) != str.charAt(i - 1)) {
+            int count = 1;
+            while (i + count < str.length() && str.charAt(i + count) == str.charAt(i)) {
+                count++;
+            }
+            return new Run(str.charAt(i), count);
+        }
+        return null;
+    })
+    .filter(Objects::nonNull)
+    .map(run -> "" + run.c + run.count)
+    .collect(Collectors.joining());
+// "a2b3c4a3"
+
+// Alternative using reduce
+String encoded2 = str.chars()
+    .mapToObj(c -> String.valueOf((char) c))
+    .reduce(new StringBuilder(), 
+        (sb, ch) -> {
+            if (sb.length() >= 2) {
+                int lastCountIdx = sb.length() - 1;
+                while (lastCountIdx > 0 && Character.isDigit(sb.charAt(lastCountIdx - 1))) {
+                    lastCountIdx--;
+                }
+                // Complex... using imperative approach is cleaner
+            }
+            return sb;
+        },
+        StringBuilder::append)
+    .toString();
+
+// Decode RLE
+String decode = "a2b3c4";
+String decoded = Pattern.compile("(\\D)(\\d+)")
+    .matcher(decode)
+    .results()
+    .map(m -> m.group(1).repeat(Integer.parseInt(m.group(2))))
+    .collect(Collectors.joining());
+// "aabbbcccc"</code></pre>
+</div>
+</div>
+
+    </div><!-- end problem-list -->
+</div>
+
+<!-- ==================== OBJECTS (46-63) ==================== -->
+<div class="tab-content" id="objects">
+    <h2 class="section-title"><span class="icon">👥</span> Object Operations (46-63)</h2>
+    
+    <div class="cat-filter">
+        <button class="cat-btn active" data-cat="all">All (18)</button>
+        <button class="cat-btn" data-cat="employee">Employee</button>
+        <button class="cat-btn" data-cat="grouping">Grouping</button>
+        <button class="cat-btn" data-cat="sorting">Sorting</button>
+        <button class="cat-btn" data-cat="aggregate">Aggregate</button>
+    </div>
+
+    <div class="problem-list">
+
+<!-- Define Employee record for all problems -->
+<div class="card" style="margin-bottom:20px">
+<h3>📋 Common Data Model</h3>
+<pre><code class="java">record Employee(
+    int id, 
+    String name, 
+    String department, 
+    String city,
+    double salary, 
+    int age,
+    String gender
+) {}
+
+List&lt;Employee&gt; employees = List.of(
+    new Employee(1, "Alice", "IT", "NYC",
